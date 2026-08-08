@@ -1,0 +1,91 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B shows each case's scope, constraint, and supplied outcome directly on the page, so a director working under a 4-minute budget can evaluate fit without clicking; A collapses both cases and all three process stages, so the landing view offers only two project names and three stage labels. B also carries the supplied/not-supplied distinction per case and in a dedicated disclosure block, while A's process disclosures open to filler sentences that add no information. On the contact action, B's validation wires per-field messages through aria-describedby and its submit copy claims nothing (reproduced locally), whereas A shows one generic message per field with no programmatic association and closes with 'Request sent. Mara will follow up directly about next steps.'",
+  "suspected_unblinding": "none — B's source carries zone/element codes (data-elem, C1/E1/P0) suggesting a more structured build method, but that identifies a method, not a treatment, and did not drive the choice",
+  "unsupported_claim_label": { "A": true, "B": true },
+  "unsupported_claims": [
+    { "label": "A", "claim": "Submit success text asserts the request was sent and that the designer will follow up — a delivery and response commitment not supplied by the brief" },
+    { "label": "B", "claim": "Each case's 'Before' beat asserts the client had no identity, wayfinding, poster system, or signage beforehand — a prior-condition claim not supplied" }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "All case-study substance is hidden behind collapsed accordions, so the default view offers no evaluable work for the stated 4-minute decision.",
+      "evidence": "A/desktop.png and A/mobile.png show only 'Harbor Room' and 'Night School' rows; A/source/index.html case-detail divs carry hidden"
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Expanding a process stage reveals only a restatement of its position in the sequence, so the required 'inspect the process' interaction yields no information.",
+      "evidence": "A/source/index.html lines 125-160: panels read 'The first of three stages, before system proposal.' / 'The third and final stage of the process.'"
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Inline validation errors are never associated with their inputs, so a screen-reader user hears an invalid field with no reason.",
+      "evidence": "Reproduced by serving A/source on localhost and submitting the empty form in Playwright: every input reports aria-invalid=true and aria-describedby=null; A/source/app.js setFieldError sets no describedby"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Success copy claims the request was transmitted and that the designer will follow up, neither of which is supplied or true of a static build.",
+      "evidence": "Reproduced: status text after a valid submit reads 'Request sent. Mara will follow up directly about next steps.' (A/source/app.js line 64)"
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Per-field error copy authored in the markup ('Enter your organization.') is dead code — the script overwrites every field with the same generic string.",
+      "evidence": "A/source/index.html lines 182-198 vs app.js line 50; A/evidence/state-01-contact-form-validation-error.png shows 'This field is required.' three times"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Each case invents the client's prior condition ('no visual identity, no gallery wayfinding'; 'no season identity, poster system, or venue signage'), which the brief does not supply.",
+      "evidence": "B/source/index.html lines 47-50 and 102; visible in B/desktop.png Before beats"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The Mechanism beat is inconsistent between cases: case 01 describes the three-stage process, case 02 restates a constraint under the same label.",
+      "evidence": "B/desktop.png Night School 'MECHANISM — Constraint: posters had to work in a single ink.' (B/source/index.html line 106)"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The page has no h1; the document starts at h2, so the top-level document title exists only in the masthead paragraph.",
+      "evidence": "Reproduced heading dump from the served page: H2 'See the work', H3 'Harbor Room', ... H2 'Decide whether to reach out'"
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D2",
+      "description": "'Open case study' reveals Scope and Constraint that largely restate the Before beat already visible above it.",
+      "evidence": "B/evidence/interaction-01-open-case-study.png: expanded Scope/Constraint duplicate the Before text for Harbor Room"
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D3",
+      "description": "In the decide zone the left half of the desktop grid is empty, leaving the disclosure and form in a narrow offset column beneath a full-width heading.",
+      "evidence": "B/desktop.png, region below 'Decide whether to reach out'"
+    }
+  ],
+  "scores": {
+    "A": { "D1": 2, "D2": 2, "D3": 3, "D4": 3, "D5": 3, "D6": 3, "D7": 2, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 4, "D3": 3, "D4": 4, "D5": 3, "D6": 4, "D7": 3, "D8": 3, "D9": 4 }
+  }
+}

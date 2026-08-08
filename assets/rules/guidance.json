@@ -1,0 +1,800 @@
+{
+  "$schema": "considered-rules/v1",
+  "kind": "guidance",
+  "description": "Not mechanically checkable. Loaded ONLY by the reviewer agent, never by the build thread.",
+  "severityModel": {
+    "S1": {
+      "name": "Blocker",
+      "gate": "Any S1 fails the gate.",
+      "definition": "User cannot make the decision, is likely to make a wrong one, an accessibility gate fails, or a destructive action is unsafely presented."
+    },
+    "S2": {
+      "name": "Major",
+      "gate": "At most 2 permitted at ship.",
+      "definition": "Decision is possible but materially slower or error-prone."
+    },
+    "S3": {
+      "name": "Minor",
+      "gate": "At most 6 permitted.",
+      "definition": "Adds friction or inconsistency without threatening the decision."
+    },
+    "S4": {
+      "name": "Polish",
+      "gate": "Not gating.",
+      "definition": "Craft refinement with no functional impact."
+    }
+  },
+  "ruleCount": 110,
+  "rules": [
+    {
+      "id": "HIER-04c",
+      "name": "No redundant low-tier encoding",
+      "severity": "S3",
+      "check": "P2 and P3 elements use at most 2 emphasis devices.",
+      "fix": "Pick one device: border or tint or bold, not all three."
+    },
+    {
+      "id": "HIER-04d",
+      "name": "Motion reserved for alerts",
+      "severity": "S2",
+      "check": "Motion is applied only to state changes requiring human intervention.",
+      "fix": "Remove decorative animation and entrance effects."
+    },
+    {
+      "id": "ACT-07",
+      "name": "Links for navigation",
+      "severity": "S3",
+      "check": "Controls that change context without performing an operation render as links.",
+      "fix": "Convert navigation buttons to links."
+    },
+    {
+      "id": "ACT-09",
+      "name": "No homeless actions",
+      "severity": "S3",
+      "check": "Every action belongs to a scope present on the surface.",
+      "fix": "Remove or relocate actions that belong elsewhere."
+    },
+    {
+      "id": "ACT-10",
+      "name": "Adjacent-rank pairing",
+      "severity": "S3",
+      "check": "Side-by-side actions differ by 1 to 3 ranks on the emphasis ladder.",
+      "fix": "Adjust treatments so paired actions are neither equal nor extremely distant."
+    },
+    {
+      "id": "ACT-12",
+      "name": "Placement by container",
+      "severity": "S3",
+      "check": "Primary placement follows the container convention table.",
+      "fix": "Move the primary to the conventional position for its container."
+    },
+    {
+      "id": "ACT-13",
+      "name": "Order by workflow then frequency",
+      "severity": "S3",
+      "check": "Action order follows workflow sequence, else descending frequency. Never alphabetical.",
+      "fix": "Reorder."
+    },
+    {
+      "id": "ACT-18",
+      "name": "Optimistic versus pessimistic",
+      "severity": "S2",
+      "check": "Irreversible actions never show optimistic success.",
+      "fix": "Use pending state and server confirmation for irreversible actions."
+    },
+    {
+      "id": "ACT-20",
+      "name": "Toggles are state, flows get setup affordances",
+      "severity": "S2",
+      "check": "On/off toggles appear only on actions that take complete effect on flip; configuration flows render as a setup affordance with the action label and current status.",
+      "fix": "Replace the toggle with a setup card or button (Configure, Verify) plus status; reserve toggles for immediately effective boolean state."
+    },
+    {
+      "id": "ACT-19",
+      "name": "Confirmation content",
+      "severity": "S1",
+      "check": "Confirmations name the object, state the effect and cascade, state reversibility, and use action-restating labels.",
+      "fix": "Rewrite the confirmation; replace Yes and No with explicit action labels."
+    },
+    {
+      "id": "IA-04",
+      "name": "Identity first",
+      "severity": "S2",
+      "check": "Lists, tables, and cards lead with the human-recognizable identity attribute.",
+      "fix": "Move the identity attribute to the first and most prominent position."
+    },
+    {
+      "id": "IA-05",
+      "name": "State always visible",
+      "severity": "S2",
+      "check": "Objects with a lifecycle display their state consistently everywhere.",
+      "fix": "Add a consistent state indicator."
+    },
+    {
+      "id": "IA-08",
+      "name": "Glance test",
+      "severity": "S2",
+      "check": "Elements in a zone would be read within one 3-second glance to answer one question.",
+      "fix": "Split zones whose elements serve different glances."
+    },
+    {
+      "id": "IA-10",
+      "name": "Move test",
+      "severity": "S3",
+      "check": "Moving an element between zones changes the meaning of both.",
+      "fix": "Merge or redefine arbitrary zones."
+    },
+    {
+      "id": "IA-11",
+      "name": "Card sort simulation",
+      "severity": "S3",
+      "check": "The grouping is independently re-derivable from the element list.",
+      "fix": "Try alternative organizing axes and compare."
+    },
+    {
+      "id": "IA-13",
+      "name": "Maximum 7 nav items per group",
+      "severity": "S3",
+      "check": "Each navigation group holds 7 or fewer items.",
+      "fix": "Introduce labeled groups rather than scrolling."
+    },
+    {
+      "id": "IA-14",
+      "name": "Never mix nav layers",
+      "severity": "S2",
+      "check": "Global, section, contextual, and detail layers use distinct controls.",
+      "fix": "Separate filters from navigation and areas from views."
+    },
+    {
+      "id": "IA-15",
+      "name": "Path back preserves state",
+      "severity": "S2",
+      "check": "Return navigation restores filters, sort, and scroll position.",
+      "fix": "Persist view state across navigation."
+    },
+    {
+      "id": "IA-16",
+      "name": "Dashboard is not the app",
+      "severity": "S3",
+      "check": "Full workflows live in their own area and are linked, not embedded.",
+      "fix": "Link out rather than embedding a workflow."
+    },
+    {
+      "id": "IA-20",
+      "name": "Disclosure is not navigation",
+      "severity": "S3",
+      "check": "In-place expansion is used for detail; context changes use navigation.",
+      "fix": "Convert misused accordions to navigation, and the reverse."
+    },
+    {
+      "id": "IA-21",
+      "name": "Filter scope visible",
+      "severity": "S2",
+      "check": "Global filters sit above all content; local filters are visually contained by their zone.",
+      "fix": "Attach filters to the region they affect."
+    },
+    {
+      "id": "IA-22",
+      "name": "Three to five global filters",
+      "severity": "S3",
+      "check": "Default view shows at most 5 global filters; the rest sit behind a More filters affordance with an active count.",
+      "fix": "Move surplus filters behind a disclosure with a count badge."
+    },
+    {
+      "id": "IA-23",
+      "name": "Active filters shown as content",
+      "severity": "S2",
+      "check": "Applied filters render as removable chips with a Clear all action.",
+      "fix": "Add filter chips and a clear-all control."
+    },
+    {
+      "id": "IA-24",
+      "name": "Deliberate defaults",
+      "severity": "S2",
+      "check": "Default filter state answers the top-ranked question for the most common user.",
+      "fix": "Replace all-time or all-segment defaults with a meaningful default."
+    },
+    {
+      "id": "IA-25",
+      "name": "State in the URL",
+      "severity": "S3",
+      "check": "Filter, sort, and view state is encoded in the URL.",
+      "fix": "Serialize view state to the URL for shareability."
+    },
+    {
+      "id": "CONT-03",
+      "name": "Label consistency",
+      "severity": "S3",
+      "check": "One concept uses one word across the product.",
+      "fix": "Standardize terminology."
+    },
+    {
+      "id": "DASH-08",
+      "name": "Significance threshold",
+      "severity": "S3",
+      "check": "Deltas below a defined threshold render neutral.",
+      "fix": "Define and apply a significance threshold."
+    },
+    {
+      "id": "DASH-09",
+      "name": "Direction is not goodness",
+      "severity": "S2",
+      "check": "Color encodes favorability, not the sign of the delta.",
+      "fix": "Bind color to whether the movement is good for this metric."
+    },
+    {
+      "id": "DASH-11",
+      "name": "Tables are underrated",
+      "severity": "S3",
+      "check": "Which-ones questions are answered by a sorted table, not a chart.",
+      "fix": "Replace with a table and a deliberate default sort."
+    },
+    {
+      "id": "DASH-12",
+      "name": "Legend adjacency",
+      "severity": "S3",
+      "check": "Legends sit adjacent to their data, or series are labeled directly.",
+      "fix": "Move or replace the legend with direct labels."
+    },
+    {
+      "id": "DASH-14",
+      "name": "Module size from tier",
+      "severity": "S2",
+      "check": "Module span follows the tier span map.",
+      "fix": "Resize modules to match tiers."
+    },
+    {
+      "id": "DASH-15",
+      "name": "Real drill paths",
+      "severity": "S3",
+      "check": "Drill hierarchies match the user mental model.",
+      "fix": "Replace invented hierarchies with real ones."
+    },
+    {
+      "id": "DASH-19",
+      "name": "Trend words require trend data",
+      "severity": "S2",
+      "check": "No rendered or assistive copy states a direction for a metric unless a series is supplied; point-in-time values render as values or endpoint deltas, never as narrated trends.",
+      "fix": "Show the supplied endpoints or delta and delete the direction word; chart a trend only from a supplied series."
+    },
+    {
+      "id": "DASH-16",
+      "name": "Visible cross-filtering",
+      "severity": "S2",
+      "check": "Cross-filter effects are immediately obvious and reversible in one action.",
+      "fix": "Add an explicit applied-filter indicator and a clear control."
+    },
+    {
+      "id": "DASH-17",
+      "name": "Context preserved on drill",
+      "severity": "S2",
+      "check": "Drill-down keeps parent context and restores prior state on return.",
+      "fix": "Add breadcrumb and state restoration."
+    },
+    {
+      "id": "DASH-18",
+      "name": "Tooltips carry precision only",
+      "severity": "S2",
+      "check": "No information required for a top-ranked question is hover-only.",
+      "fix": "Surface required information; keep tooltips for exact values and definitions."
+    },
+    {
+      "id": "STATE-03",
+      "name": "Errors are actionable",
+      "severity": "S1",
+      "check": "Error states say what failed, whether it is retryable, and the remedy. No raw codes alone.",
+      "fix": "Rewrite error content with cause and remedy."
+    },
+    {
+      "id": "COMP-01",
+      "name": "System before view",
+      "severity": "S2",
+      "check": "No styling values are defined at the view level.",
+      "fix": "Promote one-off values into tokens or components."
+    },
+    {
+      "id": "COMP-08",
+      "name": "Declared grid",
+      "severity": "S3",
+      "check": "A 12-column grid with defined gutter and max width is declared and followed.",
+      "fix": "Express module widths in columns."
+    },
+    {
+      "id": "COMP-12",
+      "name": "Component from question",
+      "severity": "S3",
+      "check": "Component choice follows the selection tables.",
+      "fix": "Replace with the component matching the situation."
+    },
+    {
+      "id": "COMP-14",
+      "name": "No nested overlays",
+      "severity": "S2",
+      "check": "No modal opens another modal.",
+      "fix": "Decompose into a page or a multi-step flow."
+    },
+    {
+      "id": "COMP-15",
+      "name": "Presets before pickers",
+      "severity": "S3",
+      "check": "Date range controls offer presets before a calendar.",
+      "fix": "Add presets and order them first."
+    },
+    {
+      "id": "A11Y-07",
+      "name": "Keyboard complete",
+      "severity": "S1",
+      "check": "All actions are keyboard reachable and operable in logical order with no traps.",
+      "fix": "Fix tab order and add keyboard handlers."
+    },
+    {
+      "id": "A11Y-08",
+      "name": "Live regions",
+      "severity": "S1",
+      "check": "Async updates, load completion, and errors are announced.",
+      "fix": "Add live region announcements."
+    },
+    {
+      "id": "A11Y-10",
+      "name": "Chart alternatives",
+      "severity": "S1",
+      "check": "Every chart has an accessible equivalent: data table, summary sentence, or both.",
+      "fix": "Add a text summary and an accessible data table."
+    },
+    {
+      "id": "EVAL-01",
+      "name": "Purpose before styling",
+      "severity": "S2",
+      "check": "Purpose and structure passes complete before styling critique.",
+      "fix": "Return to pass 1."
+    },
+    {
+      "id": "EVAL-02",
+      "name": "Severity on every finding",
+      "severity": "S3",
+      "check": "Every finding carries a severity and a rule ID.",
+      "fix": "Add severities and rule IDs."
+    },
+    {
+      "id": "EVAL-03",
+      "name": "Gate thresholds",
+      "severity": "S1",
+      "check": "Ship requires score of at least 112 of 140, zero S1, at most 2 S2, and D1, D2, D3, D7 each at least 3.",
+      "fix": "Fix blocking findings before shipping."
+    },
+    {
+      "id": "EVAL-05",
+      "name": "Remove and justify",
+      "severity": "S3",
+      "check": "Every element survives the removal test with a concrete answer.",
+      "fix": "Remove or demote elements that fail."
+    },
+    {
+      "id": "EVAL-06",
+      "name": "Subtraction pass",
+      "severity": "S3",
+      "check": "A pass permitting only removal was performed before finalizing.",
+      "fix": "Perform the subtraction pass."
+    },
+    {
+      "id": "EVAL-07",
+      "name": "Alternative artifact test",
+      "severity": "S2",
+      "check": "Considered whether an alert, report, or workflow change serves better than a dashboard.",
+      "fix": "Propose the better artifact."
+    },
+    {
+      "id": "EVAL-08",
+      "name": "Name what is working",
+      "severity": "S3",
+      "check": "The critique report includes a what-is-working section.",
+      "fix": "Add it to prevent regression."
+    },
+    {
+      "id": "EVAL-09",
+      "name": "Fix the earliest link",
+      "severity": "S2",
+      "check": "Findings are fixed in Spine order.",
+      "fix": "Reorder the fix list by stage."
+    },
+    {
+      "id": "EVAL-10",
+      "name": "One structural change per iteration",
+      "severity": "S3",
+      "check": "Structural changes are made one at a time.",
+      "fix": "Split the iteration."
+    },
+    {
+      "id": "EVAL-11",
+      "name": "Re-run after structural change",
+      "severity": "S2",
+      "check": "Passes 2 through 8 re-run after any structural change.",
+      "fix": "Re-run the protocol."
+    },
+    {
+      "id": "EVAL-12",
+      "name": "Stop condition",
+      "severity": "S3",
+      "check": "Stop when the gate passes and remaining findings are S3 or S4 with low value-to-effort.",
+      "fix": "Document the remainder and stop."
+    },
+    {
+      "id": "EVAL-13",
+      "name": "Adversarial framing",
+      "severity": "S2",
+      "check": "Self-critique is run in a find-the-failures posture.",
+      "fix": "Re-run the critique adversarially."
+    },
+    {
+      "id": "EVAL-14",
+      "name": "Separate authoring from review",
+      "severity": "S2",
+      "check": "Critique is a distinct step with the rule catalog reloaded.",
+      "fix": "Re-run critique without reference to authoring rationale."
+    },
+    {
+      "id": "EVAL-15",
+      "name": "Quota critique",
+      "severity": "S3",
+      "check": "First review produces at least 5 findings including at least 1 at S2 or higher.",
+      "fix": "Examine states, extremes, accessibility, and content."
+    },
+    {
+      "id": "EVAL-16",
+      "name": "Steelman the alternative",
+      "severity": "S3",
+      "check": "The strongest case for the rejected option is stated.",
+      "fix": "Write the steelman."
+    },
+    {
+      "id": "LOOP-01",
+      "name": "No code before the gate",
+      "severity": "S1",
+      "check": "Implementation code is not emitted until A9 passes.",
+      "fix": "Produce the artifact chain first."
+    },
+    {
+      "id": "LOOP-03",
+      "name": "Artifact IDs in code",
+      "severity": "S3",
+      "check": "Components reference their element and action IDs.",
+      "fix": "Annotate components with IDs and tiers."
+    },
+    {
+      "id": "LOOP-05",
+      "name": "Artifacts must be produced",
+      "severity": "S1",
+      "check": "The artifact chain exists, not merely the knowledge of it.",
+      "fix": "Produce the artifacts."
+    },
+    {
+      "id": "PERS-01",
+      "name": "Single primary commitment",
+      "severity": "S2",
+      "check": "The surface carries one primary commitment; secondary paths are subordinate in contrast, area, or placement.",
+      "fix": "Demote every competing call to action and keep one label, destination, and promise."
+    },
+    {
+      "id": "PERS-02",
+      "name": "Claim-proof adjacency",
+      "severity": "S2",
+      "check": "Every meaningful claim carries its evidence in the same viewport, module, or reading beat.",
+      "fix": "Move the evidence beside the claim, or drop the claim."
+    },
+    {
+      "id": "PERS-03",
+      "name": "Evidence is real and attributable",
+      "severity": "S1",
+      "check": "Every metric, quote, customer, logo, certification, award, and urgency signal is real, attributable, and within the permission granted.",
+      "fix": "Remove invented proof and replace it with an honest operating fact or a direct demonstration."
+    },
+    {
+      "id": "PERS-04",
+      "name": "First viewport orients",
+      "severity": "S2",
+      "check": "Without scrolling the visitor can name what this is, the sharpest promise, one adjacent reason to believe, and the next step.",
+      "fix": "Rebuild the first viewport around those four answers and move feature grids and FAQ below it."
+    },
+    {
+      "id": "PERS-05",
+      "name": "Objections ordered by decision cost",
+      "severity": "S2",
+      "check": "Objections are resolved in the order they block progress, and no purchase-blocking objection sits in an FAQ or footer.",
+      "fix": "Rank objections by prevalence, severity, and how early they block, then place each beside the claim that creates it."
+    },
+    {
+      "id": "PERS-08",
+      "name": "Proof shows the mechanism",
+      "severity": "S2",
+      "check": "When the brief supplies no proof asset for a claim, the proof zone renders a schema-faithful depiction of the product mechanism built only from supplied fields, flows, or records, rather than prose alone.",
+      "fix": "Draw the mechanism from supplied facts — the template, the flow, the record — and place it as the claim's evidence; add nothing the facts do not supply."
+    },
+    {
+      "id": "PERS-06",
+      "name": "Every section carries a belief delta",
+      "severity": "S3",
+      "check": "Each section names the belief before it and the stronger belief after it, and survives the removal, objection, and unique-evidence tests.",
+      "fix": "Delete, merge, or rewrite sections that produce no belief delta."
+    },
+    {
+      "id": "PERS-07",
+      "name": "Pricing exposes the real decision",
+      "severity": "S2",
+      "check": "Comparison leads with the criteria that change plan choice and states total cost drivers, limits, renewal, and cancellation terms in plain language.",
+      "fix": "Surface the deciding criteria and mandatory costs; remove decoy plans and unevidenced popularity marks."
+    },
+    {
+      "id": "MODE-01",
+      "name": "Mode declared before form",
+      "severity": "S2",
+      "check": "One mode is named in the design contract before layout, components, tone, or motion are chosen.",
+      "fix": "State the human goal as a verb and write the mode into the contract."
+    },
+    {
+      "id": "MODE-02",
+      "name": "Mode purity",
+      "severity": "S2",
+      "check": "One success signal governs the whole surface; a second human goal lives on another surface, step, or clearly bounded region.",
+      "fix": "Choose the dominant mode and split the competing goal out. Name the defect Mode Collision."
+    },
+    {
+      "id": "MODE-03",
+      "name": "Density matches frequency and expertise",
+      "severity": "S2",
+      "check": "Density follows use frequency, expertise, and consequence rather than a default low-density template.",
+      "fix": "Raise density for frequent expert use and lower it for rare or first-time use."
+    },
+    {
+      "id": "MODE-04",
+      "name": "Action posture matches the mode",
+      "severity": "S2",
+      "check": "The action posture is the one the declared mode prescribes: one commitment for persuade, scoped and reversible for operate, interpretation before action for analyze, quiet and contextual for read, invitational for experience.",
+      "fix": "Restyle or relocate actions to the posture the declared mode prescribes."
+    },
+    {
+      "id": "MODE-05",
+      "name": "Motion budget matches the mode",
+      "severity": "S2",
+      "check": "Motion spends only the budget the mode earns: low for operate and read, medium for persuade and analyze, high only where motion is authored into the work.",
+      "fix": "Remove motion the declared mode does not earn."
+    },
+    {
+      "id": "MODE-06",
+      "name": "Characteristic failure absent",
+      "severity": "S2",
+      "check": "The declared mode's characteristic failure is absent: Promise Parade, Action Flatland, Chart Dump, Content Fog, or Interface Eclipse.",
+      "fix": "Name the failure present and rebuild the offending zone against the mode's commit list."
+    },
+    {
+      "id": "MODE-07",
+      "name": "Mode detected from the human verb",
+      "severity": "S3",
+      "check": "Where the brief declares no mode, the mode follows the strongest consequential verb and the observable finish, not the artifact noun.",
+      "fix": "Extract the human, verb, consequence, and finish; state one assumption, or ask when two outcomes carry equal consequence."
+    },
+    {
+      "id": "READ-01",
+      "name": "Current idea outranks chrome",
+      "severity": "S2",
+      "check": "P0 is the current proposition, instruction, or answer, not the page title, navigation, or table of contents.",
+      "fix": "Demote chrome to P4 and give the current idea the focal position."
+    },
+    {
+      "id": "READ-02",
+      "name": "Headings do argumentative work",
+      "severity": "S2",
+      "check": "Every heading advances the argument instead of labeling a container, and card grids do not fragment a line of thought.",
+      "fix": "Rewrite each heading as the claim, question, or step it introduces."
+    },
+    {
+      "id": "READ-03",
+      "name": "Stable measure and explicit location",
+      "severity": "S2",
+      "check": "Reading measure, semantic heading order, visible focus, readable contrast, and an explicit location in long content are preserved.",
+      "fix": "Restore the measure and heading order, and add a persistent location indicator."
+    },
+    {
+      "id": "READ-04",
+      "name": "Definitions at the point of need",
+      "severity": "S3",
+      "check": "Definitions, examples, and references are reachable where comprehension needs them, without losing the reading position.",
+      "fix": "Move the definition inline or into an adjacent reveal at first use."
+    },
+    {
+      "id": "READ-05",
+      "name": "No invented sources or certainty",
+      "severity": "S1",
+      "check": "Citations, results, endorsements, and stated certainty are real.",
+      "fix": "Cite the real source, or state the uncertainty plainly."
+    },
+    {
+      "id": "READ-06",
+      "name": "Long-content states specified",
+      "severity": "S2",
+      "check": "Loading, missing sources, outdated guidance, permission-limited sections, broken references, print, copy, and narrow-width reflow behavior are specified.",
+      "fix": "Specify each of those states before compose."
+    },
+    {
+      "id": "EXP-01",
+      "name": "The work holds the focal position",
+      "severity": "S2",
+      "check": "P0 is the work or the moment it appoints, never a logo, navigation bar, or explanatory frame.",
+      "fix": "Demote chrome to P4 and give the work visual command."
+    },
+    {
+      "id": "EXP-02",
+      "name": "Motion is authored, not decorative",
+      "severity": "S2",
+      "check": "Every transition carries a narrative or perceptual role, and stillness is used as a deliberate choice.",
+      "fix": "Cut transitions that carry no role in the direction."
+    },
+    {
+      "id": "EXP-03",
+      "name": "Controls stay operable under immersion",
+      "severity": "S1",
+      "check": "Keyboard operation, visible focus, captions or transcripts where applicable, reduced-motion behavior, and mute or pause control for playable media are present, and no safety or consent control is hidden.",
+      "fix": "Restore the missing control. Immersion never justifies removing it."
+    },
+    {
+      "id": "EXP-04",
+      "name": "Fallback preserves the encounter",
+      "severity": "S2",
+      "check": "Unsupported media, constrained devices, and reduced-motion paths present a stable fallback that preserves the intended meaning.",
+      "fix": "Author the fallback as part of the direction rather than leaving a degraded remainder."
+    },
+    {
+      "id": "EXP-05",
+      "name": "Point of view over spectacle",
+      "severity": "S2",
+      "check": "Composition, sound, interaction, and transition carry one stated point of view rather than substituting effect for it.",
+      "fix": "State the point of view and cut what does not carry it."
+    },
+    {
+      "id": "EXP-06",
+      "name": "No competing task on the surface",
+      "severity": "S2",
+      "check": "Concurrent commerce, administration, or reference tasks live on another surface rather than interrupting the authored sequence.",
+      "fix": "Move the competing task off the surface and link to it."
+    },
+    {
+      "id": "HON-01",
+      "name": "Rendered claims trace to supplied facts",
+      "severity": "S1",
+      "check": "Every material claim in rendered copy, visible or assistive — a policy, capability, commitment, prior condition, metric definition, quantity, duration, or data fact — traces to the brief, the target source, or user-supplied evidence.",
+      "fix": "Delete the claim, reword it to what the supplied facts support, or record the gap as a FRAME.md assumption that never renders."
+    },
+    {
+      "id": "HON-02",
+      "name": "Unsupplied policy never renders as product fact",
+      "severity": "S1",
+      "check": "No rendered copy asserts an account, permission, reversibility, retention, enforcement, or delivery policy the facts do not supply; unsupplied policies are recorded as assumptions and designed conservatively without being stated.",
+      "fix": "Move the policy to FRAME.md as an assumption, design the conservative behavior, and strip the assertion from the copy."
+    },
+    {
+      "id": "HON-03",
+      "name": "Sample data instantiates, never asserts",
+      "severity": "S2",
+      "check": "Illustrative records fill only the supplied schema and stay consistent with supplied figures; no rendered total, distribution, trend, availability statement, or contact detail extends the supplied facts.",
+      "fix": "Derive every figure from a supplied one, drop unsupplied attributes, render unset state for current values the facts do not supply, and mark instance data as illustrative in the artifact record."
+    },
+    {
+      "id": "HON-04",
+      "name": "Outcome copy states what the system verifiably did",
+      "severity": "S2",
+      "check": "Success and confirmation copy asserts only outcomes the built mechanism actually produces; no claimed delivery, response, follow-up, or restoration without a supplied mechanism.",
+      "fix": "Reword to the verifiable event and remove promised outcomes no supplied mechanism backs."
+    },
+    {
+      "id": "HON-05",
+      "name": "Assistive text never outruns visible copy",
+      "severity": "S2",
+      "check": "No aria-label, alt text, or visually hidden summary asserts a fact stronger or more specific than the visible copy supports.",
+      "fix": "Rewrite assistive text as a restatement of visible, supported content."
+    },
+    {
+      "id": "HON-06",
+      "name": "The chain never renders",
+      "severity": "S2",
+      "check": "No rendered copy exposes the design's own reasoning or the brief's instructions to the builder — no ranking rationale, no completeness meta-claims about the page itself, no restated constraints; internal reasoning lives in the artifact record only.",
+      "fix": "Move the rationale to the artifact record and delete it from the copy; a builder constraint is never a product fact."
+    },
+    {
+      "id": "MODE-08",
+      "name": "Operate chrome stays quiet",
+      "severity": "S3",
+      "check": "On operate-mode surfaces, navigation, headers, and section chrome stay near-monochrome and low-contrast; the palette expresses itself in data color, status, and the primary action, not in filled navigation or display-scale headings.",
+      "fix": "Strip fills and emphasis from chrome, demote heading scale, and reserve the direction's palette for data, status, and the primary action."
+    },
+    {
+      "id": "CONT-06",
+      "name": "Controls carry their consequences",
+      "severity": "S3",
+      "check": "Every setting or consequential control carries a point-of-need description drawn from supplied facts, and any gating (plan, permission, prerequisite) is cued on the control rather than discovered on failure.",
+      "fix": "Add a one-line supplied-fact description per control and surface the gating cue beside it; never invent the consequence (HON-02)."
+    },
+    {
+      "id": "EXP-07",
+      "name": "Action color matches the emotional target",
+      "severity": "S2",
+      "check": "On surfaces whose job is calming or focus, primary actions and ambient chrome avoid alarm-coded hues; when the dealt direction's accent conflicts with the surface's emotional target, the accent is re-mapped rather than applied verbatim.",
+      "fix": "Reserve alarm hues for destructive or warning actions and choose a calm-coded accent consistent with the direction."
+    },
+    {
+      "id": "READ-07",
+      "name": "Retrieval genre outranks the direction",
+      "severity": "S2",
+      "check": "Documentation and reference surfaces keep genre conventions — neutral high-contrast ground, persistent identity and navigation, density tuned for scanning — with the dealt direction expressed in accents and details rather than a re-theme.",
+      "fix": "Restore neutral ground, persistent navigation and page identity, and scannable density; confine the direction to accents."
+    },
+    {
+      "id": "MODE-09",
+      "name": "The direction serves the genre",
+      "severity": "S2",
+      "check": "On trust- or genre-governed surfaces (auth, payment, pricing, documentation, daily-operate tools), genre conventions own ground color, chrome, input affordances, and color semantics; the dealt direction expresses itself in accents, type details, and structure rather than as a costume.",
+      "fix": "Restore the genre's conventions and re-map the direction into accents and details; adapting the direction to the genre is required fidelity, not a re-roll."
+    },
+    {
+      "id": "MODE-10",
+      "name": "The direction survives the register",
+      "severity": "S2",
+      "check": "When a house style or brand register is supplied as fact, the dealt direction still gets at least one unmistakable, considered expression inside that register — a signature structural move, a deliberate density rhythm, a scale contrast; a build whose only register-compliant answer is the default component set reads as a template.",
+      "fix": "Find the degrees of freedom the register leaves open and spend the direction there; never spend it by breaking the supplied register, and never spend it nowhere."
+    },
+    {
+      "id": "PERS-09",
+      "name": "The price is the P0 value",
+      "severity": "S2",
+      "check": "On a pricing surface, price carries value-weight above its labels, and every choosable tier renders a reachable action.",
+      "fix": "Apply label-value inversion to the price and give each tier a working commitment path."
+    },
+    {
+      "id": "PERS-10",
+      "name": "Visual products get visual evidence",
+      "severity": "S2",
+      "check": "When the offer is a physical or visual object, the page develops its visual evidence within the supplied facts — the supplied depiction rendered at more than one honest view (full object, meaningful detail, in-context scale, per-variant state) — rather than a single lone rendering; missing photography is a constraint to design around, not a void to leave.",
+      "fix": "Render the supplied geometry or spec at several honest views; generic context (a wall, a hand, a room) is instantiation, invented product attributes are not."
+    },
+    {
+      "id": "PERS-11",
+      "name": "The argument survives collapse",
+      "severity": "S2",
+      "check": "At rest — before any hover, expansion, or navigation — each offered case or item presents its claim plus at least one decisive supplied evidence element (scope, constraint, outcome, metric, or mechanism); collapse and disclosure defer depth, never the case itself, and a block showing only a name and kicker asks for the click on faith.",
+      "fix": "Lift the evidence spine into the resting block and move only elaboration behind disclosure; if the facts supply scope, constraint, and outcome, the resting card carries them."
+    },
+    {
+      "id": "FORM-03",
+      "name": "Inputs look like inputs",
+      "severity": "S2",
+      "check": "Text inputs render a visible boundary or fill, a visible focus state, and a tap target findable by eye; underline-only fields are not used on mobile forms.",
+      "fix": "Give inputs a bounded or filled treatment with a visible focus state sized for touch."
+    },
+    {
+      "id": "FORM-01",
+      "name": "One ask per mobile step",
+      "severity": "S2",
+      "check": "On mobile flows each step carries one primary ask; credential pairs and multi-field steps are split rather than stacked on small screens.",
+      "fix": "Split the step; more, lighter steps beat one heavy step on a small screen."
+    },
+    {
+      "id": "FORM-02",
+      "name": "No step is a dead end",
+      "severity": "S2",
+      "check": "Every flow step renders a visible way back or out, and back honors the preservation the flow promises.",
+      "fix": "Add the back or close affordance and state what leaving or returning preserves."
+    },
+    {
+      "id": "HIER-13",
+      "name": "Adjacent tiers separate decisively",
+      "severity": "S2",
+      "check": "Adjacent hierarchy tiers differ in at least two of size step, weight, or spatial treatment, by enough to distinguish at a glance; same-size same-weight tiers, or a distinction carried only by Regular versus Medium, are one tier rendered twice.",
+      "fix": "Move each tier a full scale step apart in two dimensions or merge the tiers; hierarchy that needs inspection to perceive is not hierarchy."
+    },
+    {
+      "id": "EVAL-17",
+      "name": "The polish pass",
+      "severity": "S3",
+      "check": "A final zoomed pass confirms every spacing and size value sits on the scale, same-role elements are styled identically everywhere, all-caps labels carry opened tracking, display copy has no widowed last word, and the squint test still resolves primary, secondary, and groupings.",
+      "fix": "Fix the drift, re-run the squint test, and re-verify the proximity ratio (HIER-07) and rhythm limit (COMP-18) survived late edits."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "1. B's case-study cards show a one-line scope/outcome summary directly on the collapsed card, so the director gets real project evidence before any click; A's collapsed cards show only a title, kicker, and 'Open the case' button, requiring an interaction before any project-specific evidence is visible at all — a real cost against the brief's stated 4-minute time budget. 2. B's contact form asks for budget range as free text; A's budget field is a <select> with specific invented dollar bands (Under $10,000 / $10,000-25,000 / $25,000-75,000 / $75,000+) that the scenario brief explicitly says were not supplied — this edges toward implying typical price tiers for the designer's work. 3. B's case-study detail uses a native <dialog> (showModal), giving robust built-in focus handling and Escape-to-close for free; A's inline accordion is also correctly implemented (aria-expanded/aria-controls) but trades that off against point 1 above.",
+  "suspected_unblinding": "none — both packets show comparable engineering care (structured aria-expanded/aria-controls toggles, aria-invalid + aria-describedby wiring, role=status aria-live=polite submit feedback, focus-to-first-invalid-field). No stylistic or tooling tell reliably points to one treatment over the other.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Collapsed case-study cards expose no project content beyond the title and kicker phrase — scope, constraint, and outcome are only visible after clicking 'Open the case.' Given the brief's stated 4-minute time budget for a director to judge fit, this forces an extra interaction before any real evidence is visible, versus B which surfaces a one-line project summary on the card itself."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The budget-range field is a <select> with specific invented dollar bands (Under $10,000 / $10,000-25,000 / $25,000-75,000 / $75,000 and above). The scenario brief states 'typical project length, price, availability, awards, and client list are not supplied' — presenting concrete price tiers on the page, even as client-facing intake categories, risks reading as an implicit signal of the designer's typical rates that the brief withholds."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Case-study detail opens in a full-screen native modal dialog. Comparing Harbor Room and Night School requires closing one dialog before opening the other, adding friction to a quick side-by-side read, whereas A's in-place accordion leaves the sibling case card visible while one is expanded."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D6",
+      "description": "Full-page evidence screenshots (interaction-03, state-01, state-02) show the sticky black utility bar duplicated mid-page, overlapping content such as the 'Production handoff' row. Source shows .utility-bar uses position:sticky/top:0, and capture-plan.mjs takes Playwright screenshots with fullPage:true, which is known to stitch fixed/sticky elements repeatedly across tall captures. This looks like a capture-tooling artifact rather than a live rendering bug, but it cannot be fully ruled out from stills alone."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D6",
+      "description": "The same duplicated sticky-header artifact appears in B's full-page evidence (interaction-02, state-01, state-02), overlapping case-card and section content. B's .site-header also uses position:sticky/top:0 and its capture script also uses fullPage:true screenshots, so this is most likely the same shared capture-tooling artifact as in A, not a differentiating defect."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 4, "D8": 4, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

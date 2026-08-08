@@ -1,0 +1,91 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Narrow win for B, decided on operability rather than looks. (1) I served both packages locally in an isolated Playwright chromium and probed them. In A, keyboard focus is destroyed roughly once per second: the app re-renders the entire root innerHTML on a 1s freshness ticker, so after tabbing to 'Acknowledge incident' and idling 2.6 seconds, document.activeElement was BODY. Clicking 'Rollback payments-api' left focus on BODY (not inside the alertdialog) and Escape did not dismiss it, so a keyboard-only on-call engineer cannot operate, cancel, or escape the confirmation on the single destructive action in the console. B moves focus into a native <dialog> (activeElement was the in-dialog Cancel button), Escape closes it and returns focus to the trigger, and it ships a skip link, three live regions, sr-only breach text on each metric chip, and labelled progress elements. For a role that is paged at 3am and may be driving from a terminal, that difference is load-bearing, not cosmetic. (2) B's information architecture is written as the decision itself — 'Which incident needs intervention now?' banded into Breached/At risk/Stable, then 'What's the safe next step?' with the destructive rollback fenced under an explicit 'Destructive — separated' rule, then 'What led to this?' and 'Do we have headroom to respond?'. Payments API is the first item under 'BREACHED — ACT NOW' and is identifiable well inside five seconds. A also passes the five-second test and its visual hierarchy is frankly sharper — one red ACT NOW banner carrying p95, error rate, failed checkouts and the deploy-to-first-error gap on a single 1440x900 screen with no scrolling — but it then repeats the same Payments numbers in a card directly beneath, and its actions are a flat stack in which 'Rollback payments-api' sits between two non-destructive buttons with only color separating it. (3) At 390px I measured document.scrollWidth 426 against clientWidth 390 in A — a 36px horizontal overflow, visible in its own narrow-viewport evidence as timeline labels clipped off both edges — while B measured 390 against 390 with clean stacking. Against this, A wins two real things I weighed heavily the other way: its 'Open payments runbook' opens a substantive drawer restating the breach, the deploy, capacity and ordered next steps, whereas B's runbook button produces no visible change whatsoever (its interaction-01 evidence is pixel-identical to its baseline; the only response is a screen-reader announcement); and A's default state is faithful to the brief, while B hardcodes INITIAL_AGE_MS = 125000 and imageProcessingFailed = true, so B's console permanently opens claiming data is out of date and permanently hides Image processing's supplied 4.1s/0.2% figures behind a Retry. Those two defects are why this is a narrow call and why B does not reach Ship.",
+  "suspected_unblinding": "none — nothing identified either treatment or builder. Recorded for completeness and not acted on: A's source/README.md is written for this dashboard and documents ?state= URL flags for reaching the required states, while B's source/README.md still reads 'An empty static starter: one HTML shell with <main id=\"app\">, a CSS reset, and an empty ES module' despite shipping 561 lines of app.js and 938 lines of CSS, i.e. unedited scaffold boilerplate. Separately, B's runbook button announces copy that refers to 'this brief'. These indicate different authoring processes and different care about leftover scaffolding, not which treatment a label received, and I could not infer a direction from them.",
+  "unsupported_claim_label": { "A": true, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "The rollback confirmation dialog states 'This action is not reversible from this console.' The brief supplies only that 'Rollback requires a confirmation step' — it says nothing about reversibility or what this console can undo. This is an invented capability/policy claim, and it is asserted at the exact moment it would most influence a high-stakes decision."
+    },
+    {
+      "label": "B",
+      "claim": "The rollback dialog states 'Rolling back is disruptive to any deploy since.' The brief lists no deploys after payments-api 2026.07.28.3 and asserts no consequence of rollback beyond requiring confirmation. Milder than A's claim because it reads as generic caution, but it is still an asserted outcome the brief does not supply."
+    },
+    {
+      "label": "B",
+      "claim": "The capacity table renders 'No capacity concern reported.' for Search workers. The brief supplies only that search workers are at 63% utilization; it reports neither the presence nor the absence of a concern for that pool. Low severity — an absence claim rather than an invented figure — but it is a statement about a report that does not exist in the brief."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S1",
+      "dimension": "D7",
+      "description": "The whole console is unusable by keyboard. app.js re-renders root.innerHTML from a setInterval every 1000ms, so every focusable element is destroyed and recreated once per second. Verified in a locally launched isolated chromium: pressing Tab landed focus on 'Acknowledge incident', and 2.6 seconds later document.activeElement was BODY with no interaction from me. A keyboard or screen-reader user cannot reliably reach any control, and the capacity number input cannot be typed into for longer than a second at a time. Fix: diff-render only the freshness string on the ticker instead of replacing the root, or at minimum record and restore document.activeElement across renders."
+    },
+    {
+      "label": "A",
+      "severity": "S1",
+      "dimension": "D4",
+      "description": "The rollback confirmation — the one destructive action in the console and the one the brief explicitly requires a confirmation step for — is not keyboard-operable. Verified in an isolated browser: after clicking 'Rollback payments-api', activeElement remained BODY rather than moving into the role=\"alertdialog\", and pressing Escape left the modal open (a .modal-backdrop was still in the DOM). There is no focus trap, no Escape handler, and no backdrop-click close on the modal itself. A keyboard user who opens this dialog is stuck in front of it and can reach neither Cancel nor Confirm. Fix: use a native <dialog> with showModal(), or move focus to Cancel on open, trap Tab within the dialog, bind Escape to cancel, and restore focus to the trigger on close."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "'Open payments-api runbook' — one of the three required interactions and a permitted action in the brief — does nothing a sighted operator can perceive. Its onclick handler only writes to the sr-only live region; no drawer, panel, sheet, or inline content appears. B's own interaction-01 evidence screenshot is indistinguishable from its baseline desktop.png, which is what confirmed this rather than the code alone. Under a 60-second budget an SRE will click it, see nothing, and click again. Fix: render the runbook as a visible panel or dialog built from the brief's facts (breach figures, deploy correlation, capacity, ordered permitted actions), the way the announcement already implies."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "Two required degraded states are hardcoded as the permanent default rather than being states the console can enter and leave. state.lastUpdatedAt is seeded to Date.now() - 125000 and state.imageProcessingFailed is initialised true, so the console always boots past the 120-second staleness budget with the amber 'Data may be out of date' banner occupying the top of the fold, and Image processing always shows 'Status unavailable — fetch failed for this region'. Consequences: the brief's supplied Image processing figures (p95 4.1s vs 5.0s SLO, 0.2% vs 0.5% SLO) are invisible until the operator clicks Retry, so the third service cannot be cleared without an extra interaction; and a freshness warning that is always on is a freshness warning an on-call engineer learns to ignore, which is precisely the signal the brief makes load-bearing. Fix: boot fresh and un-failed, and reach both states through a URL flag or control the way the loading state is already time-gated."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D9",
+      "description": "The layout overflows horizontally at the required 390px viewport. Measured document.documentElement.scrollWidth 426 against clientWidth 390 — a 36px overflow forcing sideways scrolling on the whole page. It is visible in A's own state-04 evidence (captured 426px wide): the timeline row is clipped at both edges, with 'Deploy 2026.07.28.3 · 2h 31m ago' running off the left and 'Search degradation started · 18m ago' cut off at the right. B measured 390 against 390 at the same viewport. Separately, the equal-height service cards and the capacity panel leave several hundred pixels of dead space when stacked. Fix: let the timeline track scroll inside its own overflow-x container and drop the fixed card heights below the stacking breakpoint."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Payments API is presented twice in the top two thirds of the screen with substantially the same content: the ACT NOW banner carries p95 2.8s vs 750ms, 8.4% vs 1.0%, and 842 failed checkouts, and the CRITICAL card immediately beneath repeats all three. The duplication costs vertical space that the timeline and capacity panels then compete for, and it makes the three-card row read as a comparison set with one member already answered above. Fix: let the banner carry the decision and the card row carry the comparison, without restating the same three figures in both."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Product copy leaks the evaluation framing to the end user. Activating a runbook button announces '...no runbook document is provided in this brief, so this demonstrates the action only.' An on-call SRE has no concept of 'this brief'. The instinct — not fabricating a runbook the scenario never supplied — is right; the wording addresses the reviewer instead of the operator. Fix: say what the console can say in its own voice, e.g. show the runbook steps derivable from the supplied facts, or state that no runbook is linked for this service."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The decision-driving numbers are rendered as small monospace chips ('P95 LATENCY !2.8s vs 750ms SLO') at roughly the same visual weight as the search row's within-target chips, so the incident list leans on the red left stripe and band heading to carry urgency rather than on the figures themselves. Meanwhile the amber staleness banner is the single largest coloured element above the fold, outranking the breach it sits above. The large 2.8s / 8.4% treatment exists but only in the detail panel further down. Fix: promote the breached figures in the row itself and de-emphasise the freshness banner to a strip that does not outweigh an active breach."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The stale-data transition is silent for assistive technology in practice. The stale banner carries role=\"alert\", but it only exists in the DOM while stale and the surrounding root is wholly replaced every second, so the alert is re-inserted repeatedly rather than announced once on transition; at runtime I found zero live regions present in the default state. There is also no announcement for acknowledging, paging, or initiating rollback — those are conveyed only by a checkmark in the button label. Fix: keep a persistent polite live region in the static HTML and write transition text into it."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The capacity form's number input accepts 0 to 20 additional checkout workers and 'Request capacity change' confirms 'Requested +N checkout workers.' The brief permits 'adjust worker capacity' but supplies no bounds, units, or provisioning capability, so the 0–20 range and the request confirmation imply a capability the facts do not establish. Minor because the wording stays in the language of a request. Fix: either drop the numeric bound or state that the range is illustrative."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 3, "D3": 4, "D4": 3, "D5": 3, "D6": 3, "D7": 1, "D8": 3, "D9": 2 },
+    "B": { "D1": 3, "D2": 4, "D3": 3, "D4": 3, "D5": 3, "D6": 3, "D7": 4, "D8": 3, "D9": 4 }
+  }
+}

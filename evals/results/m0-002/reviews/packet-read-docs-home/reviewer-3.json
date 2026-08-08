@@ -1,0 +1,48 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "1. At the required 390px viewport state, A's mobile sidebar fails to re-collapse after being expanded at desktop width (the resize handler in app.js only ever expands, never collapses), so the nav list renders open and overlaps the CLI reference table, truncating command text exactly where a blocked developer needs to look something up (A/evidence/state-04-390-px-viewport.png). B's 390px state renders cleanly with a properly collapsed sidebar and a wrapped, legible table. 2. B provides a 'Copy command' affordance on every command shown (install, both login variants, both release commands, the Node check), while A only wires up a copy button for the install command in step 1 — the other five commands require manual select-and-copy, which works against the stated 5-minute time budget. 3. B's two-panel color-coded contrast block for 'preview only' vs 'publishes' gives the safe/publish distinction stronger visual weight than A's inline text badges, better serving the acceptance check that this distinction be hard to miss.",
+  "suspected_unblinding": "none — no builder or tooling identifiers found in either packet; the two implementations differ in normal ways (markup structure, icon system, copy-button coverage, section ordering) consistent with independent builds",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D9",
+      "description": "At the required 390px viewport state, the sidebar does not collapse after being opened at desktop width, so it renders inline and overlaps the CLI reference table, truncating command and description text (e.g. 'destination for a release...' and 'previewed with atlas r...plan.')."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "Only the step-1 install command has a working copy button (source/index.html shows a <button class=\"copy-button\"> only in the Install list item); atlas login, atlas login --device, atlas release plan, atlas release apply, and the Troubleshooting node --version command are plain <pre><code> blocks with no copy affordance, despite looking identical in style to the copyable one."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The copy-button handler in app.js always sets the label to 'Copied' and announces 'Command copied to clipboard' after the try/catch, regardless of whether navigator.clipboard.writeText actually succeeded. If the clipboard write throws (falls into the catch branch, which only selects the text), the UI still claims success, silently misrepresenting the outcome to the user."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The sidebar nav lists sections in the order Get started, Guides, CLI reference, Configuration, CI, Troubleshooting, but the actual document/reading order is Get started, Troubleshooting, CLI reference, Configuration, Guides, CI (confirmed in source/index.html and visible in desktop.png, where 'Troubleshooting' content appears second). The nav's stated order does not match what a reader actually encounters scrolling top to bottom."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Because only one of six command blocks has a copy button, the page does not present a consistent visual pattern for 'this code block is copyable' versus 'this one is not' — the single blue Copy button reads as a one-off rather than part of a system."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 2, "D5": 4, "D6": 2, "D7": 3, "D8": 2, "D9": 2 },
+    "B": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 4, "D6": 3, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

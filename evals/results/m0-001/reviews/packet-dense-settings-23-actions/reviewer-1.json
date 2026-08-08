@@ -1,0 +1,84 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "The job is to change the session timeout and be confident it took effect. In A I reproduced the full path: selecting 12 hours shows a role=status unsaved bar, saving updates the panel value, the header summary ('SESSION TIMEOUT 12 hours'), and announces 'Session timeout updated to 12 hours. Applies after each member's next sign-in.' via aria-live=polite, and the value survives navigating to other sections. In B the same path leaves the panel reading 'Currently 30 days' after Save changes, because that string is hardcoded to the FACTS constant (source/app.js:393), and the success toast is not a live region — so the administrator gets no truthful confirmation of the one change they came to make. B is better on breadth and honesty (all 23 actions explicitly labelled, empty tables stated as 'no data in this preview'), and A loses points for inventing member identities and token records, but that does not block the task the way B's stale post-save state misleads it.",
+  "suspected_unblinding": "none that identifies a treatment. B does surface eval scaffolding in the product UI (a 'YOUR TASK' badge on the session-timeout card and a 'Jump to session timeout' header link), which reveals the brief framing but says nothing about which team built it.",
+  "unsupported_claim_label": { "A": true, "B": false },
+  "unsupported_claims": [
+    { "label": "A", "claim": "Invented API token records with names and last-used dates ('CI deployment token — 2 days ago', 'Local development token — 14 days ago'); the scenario supplies only that token names and last-used dates are shown, not any specific tokens." },
+    { "label": "A", "claim": "Invented named members with email addresses (e.g. Priya Shah / priya@northwindresearch.org, Marcus Webb, Elena Ortiz) and an invented seat figure ('90 seats purchased, 84 occupied'); only the 84-member count was supplied." }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "After saving the new session timeout the panel still states 'Currently 30 days', so the administrator cannot confirm the policy change actually applied.",
+      "evidence": "Reproduced locally (Playwright, chromium, 1440x900): selected '12 hours', clicked 'Save changes', unsaved bar cleared, but main text still read 'Currently 30 days. Reversible; applies after a member's next sign-in.'; cause visible in source/app.js:393 where the description interpolates FACTS.sessionTimeout instead of state."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "No accessible confirmation of the save, and the destructive dialog cannot be dismissed with Escape and loses focus on cancel.",
+      "evidence": "Reproduced: after save, zero elements matching [aria-live],[role=status],[role=alert] contained text (only the save bar carries role=status, source/app.js:520; the success toast has none). In the delete dialog, Escape left it open and Cancel returned focus to <body>; Tab left the dialog on the second press despite aria-modal=true."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "Fabricates domain data the scenario never supplied: named members with email addresses, two API tokens with last-used dates, and a purchased-seat count.",
+      "evidence": "A/desktop.png (API tokens table 'CI deployment token / 2 days ago'); reproduced section text for Members ('Priya Shah / priya@northwindresearch.org') and Billing ('90 seats purchased, 84 occupied by current members')."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Delete-workspace dialog is labelled and receives focus but sets no aria-modal and does not trap Tab, so keyboard users can reach background controls while the destructive confirmation is open.",
+      "evidence": "Reproduced: dialog role=dialog, aria-modal null; six consecutive Tab presses reported focus outside the dialog (body and page controls). Escape did close it and restored focus to the 'Delete workspace' trigger."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The unsaved-changes bar is positioned over the following card, overlapping the 'Require MFA' control while a change is pending.",
+      "evidence": "A/evidence/interaction-01-set-session-timeout-12h.png — the dark 'Session timeout changed to 12 hours, not yet saved' bar sits on top of the Require MFA card."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the section navigation becomes a horizontal strip whose later items (Billing, Danger zone) are clipped off-screen with no visible affordance that more exist.",
+      "evidence": "B/mobile.png — the nav row ends mid-way through 'Security & access'; Billing and Danger zone are not visible."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Evaluation scaffolding is rendered as product chrome: a 'YOUR TASK' badge on the session-timeout card and a 'Jump to session timeout' link in the global header.",
+      "evidence": "B/desktop.png; source/app.js:225 emits a task-badge span for the featured card."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D7",
+      "description": "Two <main> landmarks are present because the app renders its own <main> inside the shell's <main>.",
+      "evidence": "Reproduced: document.querySelectorAll('main').length === 2; source/index.html:10 and source/app.js:126."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "At 390 px the summary strip's SSO/SCIM cell wraps so the status dots and labels collide.",
+      "evidence": "A/mobile.png — 'SSO on ·' and 'SCIM off' overlap in the workspace summary card."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 3, "D5": 2, "D6": 4, "D7": 3, "D8": 3, "D9": 3 },
+    "B": { "D1": 2, "D2": 4, "D3": 3, "D4": 4, "D5": 2, "D6": 2, "D7": 2, "D8": 3, "D9": 2 }
+  }
+}

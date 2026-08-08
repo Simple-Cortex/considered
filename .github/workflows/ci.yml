@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: test (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 20 is the floor declared in package.json engines. Keep it until that changes.
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+
+      # No dependencies: the project is intentionally zero-install.
+      # There is no lockfile to cache and nothing to install.
+      - name: Validate rule manifests and decks
+        run: npm run validate
+
+      - name: Run fixture tests
+        run: npm test
+
+  package:
+    name: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Run prepack checks
+        run: npm run prepack
+
+      # Proves the published tarball actually contains the skill surface.
+      # --ignore-scripts keeps prepack's stdout out of the JSON. prepack is already
+      # run as its own step above, so nothing is skipped by doing this.
+      - name: Verify package contents
+        run: |
+          npm pack --dry-run --ignore-scripts
+          npm pack --dry-run --json --ignore-scripts > /tmp/pack.json
+          node -e "
+            const files = require('/tmp/pack.json')[0].files.map(f => f.path);
+            const commands = ['init', 'frame', 'structure', 'compose', 'critique', 'subtract', 'harden', 'document'];
+            const required = [
+              'SKILL.md',
+              'README.md',
+              'LICENSE',
+              'bin/considered.mjs',
+              'assets/rules/guidance.json',
+              'references/workflow.md',
+              ...commands.map(c => 'skills/' + c + '/SKILL.md')
+            ];
+            const missing = required.filter(f => !files.includes(f));
+            if (missing.length) {
+              console.error('Missing from package tarball:', missing.join(', '));
+              process.exit(1);
+            }
+            console.log('Package contains all ' + required.length + ' required entries (' + files.length + ' files total).');
+          "
+
+  install:
+    name: install smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      # install.mjs must never write outside the destination it is given.
+      - name: Install into a scratch destination
+        run: |
+          node scripts/install.mjs --dest /tmp/skills/considered
+          test -f /tmp/skills/considered/SKILL.md
+          test -f /tmp/skills/considered/references/workflow.md
+          test -f /tmp/skills/considered/skills/frame/SKILL.md
+          echo "install smoke test passed"

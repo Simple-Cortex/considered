@@ -1,0 +1,8 @@
+{
+  "freshContext": true,
+  "gate": {
+    "decision": "looks good to me",
+    "score": 126,
+    "dimensions": {"D1":4,"D2":4,"D3":4,"D4":4,"D5":4,"D6":3,"D7":4,"D8":3,"D9":3}
+  }
+}

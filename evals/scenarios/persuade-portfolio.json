@@ -1,0 +1,27 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "persuade-portfolio",
+  "track": "persuade-read",
+  "mode": "persuade",
+  "title": "Independent designer portfolio",
+  "brief": {
+    "role": "Museum program director commissioning identity and wayfinding work",
+    "job": "Decide whether to request a project conversation with designer Mara Ortiz.",
+    "time_budget": "4 minutes",
+    "consequence": "A poor fit wastes a limited exhibition timeline; a strong fit must be visible through the work and process rather than generic self-description.",
+    "facts": [
+      "Mara Ortiz is an independent designer working on exhibition identity, editorial systems, and public wayfinding.",
+      "Case: Harbor Room, a community archive exhibition. Scope: visual identity, gallery wayfinding, and a 64-page field guide. Constraint: bilingual English and Spanish visitor materials. Outcome supplied: the field guide and wayfinding were installed for the exhibition opening. No attendance or revenue result is supplied.",
+      "Case: Night School, a public lecture series. Scope: season identity, poster system, and venue signage. Constraint: posters had to work in a single ink. Outcome supplied: a modular typographic system used across six lectures. No client quote is supplied.",
+      "Mara's process has three stages: listening and site study; system proposal; production handoff. Typical project length, price, availability, awards, and client list are not supplied.",
+      "The appropriate primary action is Request a project conversation. The contact form asks for organization, project, timeline, and budget range, but it must not promise a response time."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Open a case study", "Inspect the process", "Request a project conversation"],
+    "required_states": ["contact-form validation error", "reduced-motion preference", "390 px viewport"],
+    "acceptance_checks": ["The work itself provides the strongest evidence of fit.", "The portfolio distinguishes supplied outcomes from unsupplied commercial claims.", "The contact action is clear but does not compete with case-study evaluation."]
+  }
+}

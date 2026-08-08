@@ -1,0 +1,28 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "dense-chart-dump-rescue",
+  "track": "dense",
+  "mode": "analyze",
+  "title": "Trial conversion chart-dump rescue",
+  "brief": {
+    "role": "Product analytics manager",
+    "job": "Explain the weekly trial-to-paid conversion decline well enough to choose the next investigation.",
+    "time_budget": "10 minutes",
+    "consequence": "A false explanation sends a limited experiment cycle toward the wrong product change.",
+    "facts": [
+      "Trial-to-paid conversion fell from 18.6% in week 27 to 14.2% in week 28. The comparison period is the immediately preceding week.",
+      "Traffic rose from 12,400 to 15,300 visitors; trial starts rose from 1,182 to 1,336; completed onboarding fell from 71% to 54%; activated trials fell from 62% to 49%.",
+      "The largest drop is among self-serve trials on mobile web: completed onboarding fell from 68% to 41%. Desktop self-serve completion changed from 73% to 70%. Sales-assisted completion changed from 76% to 75%.",
+      "A new required workspace-name step shipped to mobile web on Tuesday of week 28. No causal conclusion is supplied by the data.",
+      "Available cuts are week, acquisition channel, device, plan intent, onboarding step, and country. Country-level samples under 25 trials should be labeled as insufficient for comparison.",
+      "The requested source material is a legacy page containing 14 unlabeled charts, six KPI cards, a pie chart with seven slices, and no stated question."
+    ]
+  },
+  "build": {
+    "route": "/analytics/trials",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Change a segment", "Inspect the onboarding-step evidence", "Reveal the country sample caveat"],
+    "required_states": ["loading skeleton", "no data for a filter combination", "partial data failure", "390 px viewport"],
+    "acceptance_checks": ["The first reading establishes what changed, in whom, and what remains unproven.", "The design does not convert correlation into causation.", "Charts or tables answer named analytical questions rather than display every available field."]
+  }
+}

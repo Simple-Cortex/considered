@@ -1,0 +1,91 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "Both preserve the five seed records exactly and default to a stale-only filtered view with a live match count, but B's bulk-disable error dialog invents an unstated policy ('No owner on record — assign an owner before disabling'), which materially misleads the admin about why a stale, ownerless, obsolete connection can't be disabled. A's equivalent error ('Connection was modified by another admin. Retry.') is a plausible generic concurrency failure that asserts no new business rule. A also renders correctly in every captured dialog state, while B's primary confirm button shows blank/unlabeled text in two separate evidence captures (bulk-disable confirm and bulk-result retry), a reproducible defect that undermines action clarity at the exact moment of a destructive/semi-destructive decision.",
+  "suspected_unblinding": "none — packet A ships extra source/artifacts screenshots (desktop-default, disable-confirm, mobile variants) that B's source folder lacks; this is a packaging/assembly asymmetry, not a content signal about which build used which condition, and was not used to infer treatment identity.",
+  "unsupported_claim_label": {
+    "A": false,
+    "B": true
+  },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "Bulk-disable failure message states a connection with no owner cannot be disabled until an owner is assigned — no such ownership-gating rule appears in the scenario facts, and the facts explicitly show an active, ownerless record (Legacy Forms) among the initial data with no indication disabling requires ownership."
+    }
+  ],
+  "gate_by_label": {
+    "A": "Ship",
+    "B": "Revise"
+  },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "Bulk-disable error dialog invents an ownership-gating business rule not present in the supplied scenario facts.",
+      "evidence": "B/evidence/state-03-bulk-action-error-for-one-selected-record.png: '1 failed: Legacy Forms — No owner on record — assign an owner before disabling.'"
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "Primary confirm button in the bulk-disable confirmation dialog renders with no visible label, leaving the destructive-adjacent action unnamed at the moment of commitment.",
+      "evidence": "B/evidence/interaction-03-bulk-disable-with-confirmation.png: blank button next to 'Cancel' where 'Disable 2 connections' should read (app.js line 451 defines the label, so this is a render-time defect, not a missing template)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The same blank-button rendering defect recurs in the bulk-result dialog's action row, suggesting a systemic issue with the dialog action button component rather than a one-off.",
+      "evidence": "B/evidence/state-03-bulk-action-error-for-one-selected-record.png: unlabeled button beside 'Retry this record'."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "'Production-critical' column shows 'Unconfirmed' as a red badge for nearly every stale row, visually reading like a status/error at a glance rather than an explicit prompt to verify — dense but not miscategorizing.",
+      "evidence": "A/desktop.png and A/evidence/interaction-01: repeated red 'Unconfirmed' badges across most rows in the PRODUCTION-CRITICAL column."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D3",
+      "description": "Placeholder rows labeled 'Connection 024', 'Connection 042', etc. read as generic filler once several appear consecutively, slightly diluting the sense that each row is a real, distinct decision to make.",
+      "evidence": "B/desktop.png: rows 3, 4, 6, 8, 9 on page 1 use 'Connection0NN' placeholder names with a 'placeholder' tag."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Terminal-style monospace theme is dense and consistent but the PRODUCTION-CRITICAL column header wraps awkwardly and the red 'Unconfirmed' badge competes visually with the orange 'Stale candidate' badge on the same row.",
+      "evidence": "A/desktop.png: header 'PRODUCTION-CRITICAL' wraps to two lines; each stale row carries two same-weight colored badges (orange + red)."
+    }
+  ],
+  "scores": {
+    "A": {
+      "D1": 4,
+      "D2": 4,
+      "D3": 3,
+      "D4": 4,
+      "D5": 4,
+      "D6": 4,
+      "D7": 3,
+      "D8": 3,
+      "D9": 4
+    },
+    "B": {
+      "D1": 3,
+      "D2": 4,
+      "D3": 4,
+      "D4": 2,
+      "D5": 2,
+      "D6": 3,
+      "D7": 3,
+      "D8": 2,
+      "D9": 4
+    }
+  }
+}

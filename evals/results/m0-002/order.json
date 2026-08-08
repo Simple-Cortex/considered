@@ -1,0 +1,56 @@
+{
+  "seed": "20260803",
+  "note": "order.mjs at fb2edb2 enumerates all 25 files in evals/scenarios/ (stress-round variants included); the ten catalog-1.0.0 entries are extracted here verbatim. Same repo state + seed replays identically.",
+  "order": [
+    {
+      "scenario_id": "dense-admin-bulk-destructive",
+      "first": "baseline",
+      "second": "considered"
+    },
+    {
+      "scenario_id": "dense-chart-dump-rescue",
+      "first": "considered",
+      "second": "baseline"
+    },
+    {
+      "scenario_id": "dense-settings-23-actions",
+      "first": "considered",
+      "second": "baseline"
+    },
+    {
+      "scenario_id": "dense-sre-console",
+      "first": "baseline",
+      "second": "considered"
+    },
+    {
+      "scenario_id": "dense-support-queue",
+      "first": "baseline",
+      "second": "considered"
+    },
+    {
+      "scenario_id": "persuade-portfolio",
+      "first": "considered",
+      "second": "baseline"
+    },
+    {
+      "scenario_id": "persuade-pricing-page",
+      "first": "baseline",
+      "second": "considered"
+    },
+    {
+      "scenario_id": "persuade-saas-landing",
+      "first": "considered",
+      "second": "baseline"
+    },
+    {
+      "scenario_id": "read-changelog",
+      "first": "baseline",
+      "second": "considered"
+    },
+    {
+      "scenario_id": "read-docs-home",
+      "first": "baseline",
+      "second": "considered"
+    }
+  ]
+}

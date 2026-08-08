@@ -1,0 +1,53 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Both builds deliver an identical core quickstart flow (prerequisites, install, auth, safe-preview vs publish, node-version fix) with facts matching the brief exactly, so the deciding factor is documentation completeness. A's sidebar explicitly disables two of the six documented sections (Guides, CI) as inert, tooltip-marked 'Not included in this preview' entries, and its CLI reference is a short prose recap rather than a real reference; B implements all six sections as working anchors with a structured, scannable CLI reference matching the facts. That better serves the stated job of finding the right reference if blocked, even though A has a stronger accessibility/motion-reduction baseline.",
+  "suspected_unblinding": "none — no builder-identifying markers found in sanitized source or evidence",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Guides and CI nav items are permanently disabled dead entries despite being documented sections, which can dead-end a developer who clicks them expecting content.",
+      "evidence": "A/source/index.html lines 43-44 and 52-53 (class rail-link--inert, aria-disabled=true, title=\"Not included in this preview\"); visibly greyed in A/desktop.png sidebar."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "CLI reference section is a single prose paragraph recapping already-shown commands rather than a structured, scannable reference.",
+      "evidence": "A/source/index.html lines 154-162 (one <p> block) vs. the brief's fact that CLI reference should be the authoritative flag reference."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Full-page screenshots taken after in-page anchor navigation show the sticky header/search bar rendered a second time mid-document, a reproducible artifact of position:sticky combined with a scrolled full-page capture.",
+      "evidence": "B/evidence/interaction-02-quickstart-to-cli-reference.png and interaction-03-find-node-version-remedy.png; B/source/styles.css lines 100-101 (.docs-header{position:sticky;top:0})."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Explicit :focus-visible styling is only declared for the search input; nav links and the copy button have no custom focus style in source, unlike A's universal focus-visible rule.",
+      "evidence": "B/source/styles.css — only two focus-related rules total (lines 73, 126) vs. A/source/styles.css lines 121-129 (global :focus-visible outline on all elements, tagged A11Y-04)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "Reduced-motion support only disables scroll-behavior and the copy-button transition, not a blanket rule, so other transitions are not guaranteed to collapse under prefers-reduced-motion.",
+      "evidence": "B/source/styles.css lines 325-333 vs. A/source/styles.css lines 547-556 (catch-all * selector disabling all animation/transition durations)."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 2, "D3": 4, "D4": 4, "D5": 4, "D6": 3, "D7": 4, "D8": 4, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 3, "D4": 3, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 4 }
+  }
+}

@@ -1,0 +1,402 @@
+{
+  "$schema": "considered-rules/v1",
+  "kind": "contract",
+  "description": "High-confidence validation of CONSIDERED-CONTRACT v1 syntax, references, and internal consistency. Visual and state behavior belongs in the independent review packet.",
+  "severityModel": {
+    "S1": {
+      "name": "Blocker",
+      "gate": "Any S1 fails the gate.",
+      "definition": "User cannot make the decision, is likely to make a wrong one, an accessibility gate fails, or a destructive action is unsafely presented."
+    },
+    "S2": {
+      "name": "Major",
+      "gate": "At most 2 permitted at ship.",
+      "definition": "Decision is possible but materially slower or error-prone."
+    },
+    "S3": {
+      "name": "Minor",
+      "gate": "At most 6 permitted.",
+      "definition": "Adds friction or inconsistency without threatening the decision."
+    },
+    "S4": {
+      "name": "Polish",
+      "gate": "Not gating.",
+      "definition": "Craft refinement with no functional impact."
+    }
+  },
+  "tierCounts": {
+    "P0": [
+      1,
+      1
+    ],
+    "P1": [
+      3,
+      5
+    ]
+  },
+  "tierBudgets": {
+    "P0": [
+      4,
+      6
+    ],
+    "P1": [
+      2,
+      3
+    ],
+    "P2": [
+      1,
+      2
+    ],
+    "P3": [
+      0,
+      1
+    ],
+    "P4": [
+      0,
+      0
+    ]
+  },
+  "encodingDevicePoints": {
+    "position": 2,
+    "size": 2,
+    "weight": 1,
+    "color": 2,
+    "enclosure": 1,
+    "whitespace": 1,
+    "motion": 3
+  },
+  "moduleBudget": {
+    "operational": [
+      6,
+      10
+    ],
+    "analytical": [
+      8,
+      12
+    ],
+    "strategic": [
+      4,
+      6
+    ],
+    "embedded": [
+      3,
+      6
+    ]
+  },
+  "ruleCount": 36,
+  "rules": [
+    {
+      "id": "CONTRACT-01",
+      "name": "Contract syntax and completeness",
+      "severity": "S1",
+      "check": "The contract block exists, every required field is present, and every declared record parses under the v1 grammar.",
+      "fix": "Use assets/templates/contract-block.md exactly, or provide the .considered/STRUCTURE.md sidecar.",
+      "checker": "contractSyntax"
+    },
+    {
+      "id": "HIER-02",
+      "name": "Visual rank equals logical rank",
+      "severity": "S1",
+      "check": "Compare the logical rank order of the top 8 elements with the observed visual rank order. Top 3 must match.",
+      "fix": "Re-encode. Promote the logically top element; demote chrome and decoration.",
+      "checker": "rankEquivalence"
+    },
+    {
+      "id": "HIER-03",
+      "name": "Module size derives from priority",
+      "severity": "S2",
+      "check": "No two elements of different tiers share the same footprint by default.",
+      "fix": "Assign module spans from the tier span map before layout.",
+      "checker": "sizeFromPriority"
+    },
+    {
+      "id": "HIER-04",
+      "name": "Encoding budget respected",
+      "severity": "S2",
+      "check": "Sum device points per element: position 2, size 2, weight 1, color 2, enclosure 1, whitespace 1, motion 3. P0 4-6, P1 2-3, P2 1-2, P3 0-1, P4 0.",
+      "fix": "Remove redundant encodings from over-emphasized elements.",
+      "checker": "encodingBudget"
+    },
+    {
+      "id": "HIER-04a",
+      "name": "Only one element exceeds 4 points",
+      "severity": "S2",
+      "check": "Count elements with device points greater than 4. Must be at most 1.",
+      "fix": "Demote all but the intended P0.",
+      "checker": "singleElementOver4"
+    },
+    {
+      "id": "HIER-05",
+      "name": "Exactly one P0",
+      "severity": "S2",
+      "check": "Count P0 elements in A5. Must equal 1.",
+      "fix": "Split the view or demote the competing element.",
+      "checker": "exactlyOneP0"
+    },
+    {
+      "id": "HIER-06",
+      "name": "P1 count between 3 and 5",
+      "severity": "S2",
+      "check": "Count P1 elements in A5.",
+      "fix": "Demote surplus P1s or split the view into tabs.",
+      "checker": "p1Count3to5"
+    },
+    {
+      "id": "ACT-02",
+      "name": "Every action is tiered",
+      "severity": "S2",
+      "check": "Every row in A6 has a tier.",
+      "fix": "Run the tier assignment procedure on untiered actions.",
+      "checker": "everyActionTiered"
+    },
+    {
+      "id": "ACT-03",
+      "name": "Monotonic emphasis decay",
+      "severity": "S2",
+      "check": "Highest emphasis at a narrower scope is strictly lower than at the enclosing scope.",
+      "fix": "Lower the treatment rank of the narrower-scope action.",
+      "checker": "monotonicEmphasisDecay"
+    },
+    {
+      "id": "ACT-04",
+      "name": "Overflow beyond three",
+      "severity": "S3",
+      "check": "Any scope with more than 3 actions places the surplus in overflow, ordered by frequency.",
+      "fix": "Move low-frequency actions into a menu.",
+      "checker": "overflowBeyondThree"
+    },
+    {
+      "id": "ACT-08",
+      "name": "Destructive is never the default primary",
+      "severity": "S1",
+      "check": "No destructive action carries the primary tier outside a destruction-purposed scope.",
+      "fix": "Demote to tertiary with danger treatment in a separated zone.",
+      "checker": "destructiveNeverPrimary"
+    },
+    {
+      "id": "ACT-14",
+      "name": "Grouping implies relationship",
+      "severity": "S2",
+      "check": "Grouped actions operate on the same object at the same scope.",
+      "fix": "Split false groups.",
+      "checker": "groupingImpliesRelationship"
+    },
+    {
+      "id": "ACT-15",
+      "name": "Destructive separation",
+      "severity": "S1",
+      "check": "Destructive actions are separated from constructive ones by divider, position, or overflow.",
+      "fix": "Add separation or move to a danger zone.",
+      "checker": "destructiveSeparation"
+    },
+    {
+      "id": "ACT-16",
+      "name": "All action states defined",
+      "severity": "S2",
+      "check": "Each action defines default, hover, focus, active, loading, disabled, and error behavior.",
+      "fix": "Specify the missing states.",
+      "checker": "allActionStatesDefined"
+    },
+    {
+      "id": "IA-01",
+      "name": "No orphan elements",
+      "severity": "S1",
+      "check": "Every element traces to a ranked question in A2.",
+      "fix": "Delete the orphan. Do not invent a justifying question.",
+      "checker": "everyElementTracesToQuestion"
+    },
+    {
+      "id": "IA-02",
+      "name": "Group by question and object",
+      "severity": "S2",
+      "check": "Zones cluster elements answering the same question or acting on the same object.",
+      "fix": "Re-run the grouping procedure from step 3.",
+      "checker": "groupedByQuestionOrObject"
+    },
+    {
+      "id": "IA-06",
+      "name": "Group size 3 to 7",
+      "severity": "S3",
+      "check": "Each zone holds between 3 and 7 elements.",
+      "fix": "Merge undersized zones; subdivide oversized ones.",
+      "checker": "zoneSize3to7"
+    },
+    {
+      "id": "IA-07",
+      "name": "No duplication across zones",
+      "severity": "S3",
+      "check": "Each element appears in exactly one zone.",
+      "fix": "Assign to the zone of the highest-ranked question it answers.",
+      "checker": "noZoneDuplication"
+    },
+    {
+      "id": "IA-09",
+      "name": "Heading test",
+      "severity": "S2",
+      "check": "Every zone heading is a user-language question, object, or decision. Overview, Metrics, KPIs, Charts, Tables, Other and Analytics are banned.",
+      "fix": "Rewrite the heading; if impossible, the group is not real.",
+      "checker": "headingTest"
+    },
+    {
+      "id": "IA-12",
+      "name": "Maximum 3 nav levels",
+      "severity": "S2",
+      "check": "Navigation hierarchy depth is 3 or fewer.",
+      "fix": "Replace the fourth level with in-page tabs or filtering.",
+      "checker": "navDepth"
+    },
+    {
+      "id": "IA-17",
+      "name": "Default view answers top questions fully",
+      "severity": "S1",
+      "check": "The default view completely answers the top-ranked questions rather than partially answering all.",
+      "fix": "Defer lower-ranked questions behind disclosure.",
+      "checker": "defaultAnswersTopQuestions"
+    },
+    {
+      "id": "IA-18",
+      "name": "Three-level disclosure limit",
+      "severity": "S2",
+      "check": "Routinely needed answers are reachable within 2 disclosure levels.",
+      "fix": "Restructure; promote frequently needed content.",
+      "checker": "disclosureDepth"
+    },
+    {
+      "id": "CONT-02",
+      "name": "Define once, reachable everywhere",
+      "severity": "S2",
+      "check": "Every metric has one definition, reachable from every place it appears.",
+      "fix": "Add an info affordance bound to a single definition source.",
+      "checker": "metricDefinedOnce"
+    },
+    {
+      "id": "CONT-05",
+      "name": "Time framing and freshness",
+      "severity": "S2",
+      "check": "Time-sensitive values state their window and last-updated time.",
+      "fix": "Add window and freshness labels.",
+      "checker": "timeFramingDeclared"
+    },
+    {
+      "id": "DASH-01",
+      "name": "Four-layer structure",
+      "severity": "S2",
+      "check": "The view implements orient, state, explain, act in reading order with decreasing weight.",
+      "fix": "Add the missing layer. Act is the most commonly missing.",
+      "checker": "fourLayerStructure"
+    },
+    {
+      "id": "DASH-02",
+      "name": "Do not mix dashboard types",
+      "severity": "S2",
+      "check": "One declared type per view.",
+      "fix": "Split into separate linked views.",
+      "checker": "singleDeclaredType"
+    },
+    {
+      "id": "DASH-03",
+      "name": "Module budget",
+      "severity": "S2",
+      "check": "Module count is within the declared type budget: operational 6-10, analytical 8-12, strategic 4-6, embedded 3-6.",
+      "fix": "Delete or defer modules to reach the budget.",
+      "checker": "moduleBudget"
+    },
+    {
+      "id": "DASH-04",
+      "name": "KPI qualification gate",
+      "severity": "S2",
+      "check": "Elements at P0 or P1 pass at least 4 of 5 gates: owner, decision, baseline, actionability, sensitivity.",
+      "fix": "Demote or delete metrics scoring 3 or fewer.",
+      "checker": "kpiQualificationGate"
+    },
+    {
+      "id": "DASH-05",
+      "name": "Every value carries context",
+      "severity": "S2",
+      "check": "Each displayed value has a target, a prior-period comparison, a trend with magnitude, or a distribution position.",
+      "fix": "Add the comparison basis.",
+      "checker": "valueCarriesContext"
+    },
+    {
+      "id": "DASH-07",
+      "name": "So-what test",
+      "severity": "S2",
+      "check": "For each zone, a one-sentence takeaway can be written.",
+      "fix": "Remove or restructure zones with no takeaway.",
+      "checker": "soWhatPerZone"
+    },
+    {
+      "id": "STATE-02",
+      "name": "Empty states are distinct",
+      "severity": "S2",
+      "check": "Empty first-use differs from empty filtered in copy and offered action.",
+      "fix": "Write distinct copy and actions for each.",
+      "checker": "emptyStatesDistinct"
+    },
+    {
+      "id": "STATE-04",
+      "name": "Extremes verified",
+      "severity": "S2",
+      "check": "Verified against zero, one, many, very many, negative, null, and very long strings.",
+      "fix": "Fix layout and formatting for the failing case.",
+      "checker": "extremesVerified"
+    },
+    {
+      "id": "STATE-05",
+      "name": "Freshness budget",
+      "severity": "S2",
+      "check": "Each data source declares expected freshness and a designed stale state.",
+      "fix": "Declare the budget and design the stale indicator.",
+      "checker": "freshnessBudget"
+    },
+    {
+      "id": "ROLL-01",
+      "name": "Assigned roll provenance",
+      "severity": "S2",
+      "check": "ROLL records three structure ids, one direction id, a cns reproduction key, and a generation so the assigned hand is replayable.",
+      "fix": "Run scripts/roll.mjs and record the exact assigned hand.",
+      "checker": "rollProvenance",
+      "supersedes": "EVAL-04",
+      "note": "Source EVAL-04 ('two structural options minimum') is intentionally not carried forward: assignment replaces option-generation in this project's architecture. See README Attribution."
+    },
+    {
+      "id": "LOOP-02",
+      "name": "Compressed chain minimum",
+      "severity": "S2",
+      "check": "If code is demanded immediately, an abbreviated A2, A4, A5, A6 precedes it.",
+      "fix": "Emit the compressed chain above the code.",
+      "checker": "contractPrecedesCode"
+    },
+    {
+      "id": "LOOP-04",
+      "name": "Declare deletions",
+      "severity": "S2",
+      "check": "The output states what was requested but removed, and why.",
+      "fix": "Add the deleted list.",
+      "checker": "deletionsDeclared"
+    }
+  ],
+  "version": "0.2.0",
+  "modeModuleBudget": {
+    "persuade": [
+      3,
+      8
+    ],
+    "operate": [
+      6,
+      10
+    ],
+    "analyze": [
+      8,
+      12
+    ],
+    "read": [
+      3,
+      8
+    ],
+    "experience": [
+      1,
+      6
+    ]
+  }
+}

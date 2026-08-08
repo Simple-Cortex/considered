@@ -1,0 +1,48 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "persuade-product-detail-house-style",
+  "track": "persuade",
+  "mode": "persuade",
+  "title": "Product detail page for a limited print (house style supplied)",
+  "brief": {
+    "role": "A first-time visitor who clicked a design-newsletter link straight to one product page in the Meridian Press shop",
+    "job": "Decide whether this print belongs on their wall and in their budget, choose a size and frame, and add it to the cart with no unanswered doubt about quality, authenticity, or delivery.",
+    "time_budget": "three minutes from landing to add-to-cart",
+    "consequence": "This page is the product's only salesroom. A visitor who cannot picture the object, or who hits a doubt the page does not answer — edition, materials, returns — leaves and does not come back.",
+    "facts": [
+      "Meridian No. 3 is a two-colour screen print: a full-bleed deep ultramarine rectangle crossed by a single ochre circular arc of uniform thickness entering at the lower-left edge and exiting at the upper-right corner, with a 12mm off-white margin on all sides, on 300gsm cotton paper. The print must be depicted from this description; no photograph assets exist.",
+      "It is a signed, hand-numbered edition of 150; 61 remain.",
+      "Sizes and prices: A3 $90, A2 $140, A1 $210. Frame options: none (default), oak +$60, black aluminium +$55. Framed prints ship ready to hang.",
+      "Ships worldwide within 4 business days — rigid tube unframed, corner-protected crate framed. Shipping cost is calculated at checkout, not on this page.",
+      "Returns are accepted within 30 days if undamaged; framed returns pay their own return shipping.",
+      "The artist is Ines Vidal, printed in Porto. The only supplied bio sentence: \"Ines Vidal makes reduction screen prints about coastlines and light.\"",
+      "No reviews exist; the shop has no review system.",
+      "House style, supplied by the client's brand system and binding like any other fact: light pure white ground; 2 accent hues drawn from: black, red; interface type is a grotesque sans set in mixed; display type differs from interface type; corners slightly rounded; borders hairline; shadows none; overall density moderate; standard chrome includes: top navigation bar, search icon, cart icon, heart/save icon, size selector grid, color swatch row, primary action button, breadcrumb/related links, price label, thumbnail carousel; imagery register: product photography; backgrounds flat."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "required_interactions": [
+      "Choose each size and watch the price follow",
+      "Choose a frame option and watch the price follow",
+      "Add to cart"
+    ],
+    "required_states": [
+      "default",
+      "each size selected",
+      "a framed option selected",
+      "added-to-cart confirmation"
+    ],
+    "acceptance_checks": [
+      "The print is depicted faithfully from the supplied geometry alone; no invented photography, rooms, or product attributes.",
+      "Every doubt the facts can answer — edition, materials, shipping, returns — is answerable where the doubt arises, not only in a distant tab.",
+      "The price shown always reflects the current size and frame selection, including at the moment of add-to-cart.",
+      "Scarcity renders only as supplied (61 of an edition of 150) with no invented urgency, and the absence of reviews is not papered over with invented social proof.",
+      "The build stays within the supplied house style register; the assigned direction expresses itself only within it."
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Within the stated four-minute budget, B puts the work in front of the director and A does not. In A, both case modules are content-free at rest — the desktop capture shows only 'Harbor Room / Community archive exhibition' and 'Night School / Public lecture series' above an 'Open the case' link — so scope and constraint require two interactions to reach, while the largest elements on the page are a self-descriptive headline plus a bordered contact panel with a red submit and a sticky red-underlined 'Start a conversation' bar. That inverts the scenario's own consequence note that fit must be visible through the work rather than generic self-description, and it puts the ask in competition with case evaluation. B's cards carry scope and constraint as running text before any click, and the dialog then adds Scope / Constraint / 'Outcome supplied' plus an explicit per-case line naming what was not supplied ('Attendance and revenue results were not supplied for this project.'; 'A client quote was not supplied for this project.'). Second, B marks the supplied/unsupplied boundary where the decision is actually made — per case, at the point of reading — whereas A carries a single global 'Not yet shared here' list buried inside the contact panel, so A's outcome lines read as unqualified claims at the moment the director evaluates them. Third, on the interaction I could verify by running both packages, B's case study is a native modal dialog that opens with focus moved to its close control, closes on Escape, and returns focus to the invoking button; A's successful submit hides the form and drops focus to document.body. A is the stronger artifact on two counts I weighed and did not treat as decisive: its typographic system is far more distinctive and internally coherent, and its contact form is the better-wired one (aria-describedby and aria-invalid maintained per field, which B omits entirely). Those raise A's D7 and D8 above B's but do not offset a page whose primary evidence is hidden behind clicks while its ask is the loudest thing on screen.",
+  "suspected_unblinding": "Two asymmetries noted and not acted on. (1) B/source/ contains an extra file, capture.mjs, hardcoded to http://localhost:8791 and writing differently-named screenshots (01-desktop-home.png etc.) than the packet's own evidence/capture-plan.mjs — a builder-side artifact that survived sanitization in B but has no counterpart in A, so the two source trees were not scrubbed identically. (2) A's source carries structured authoring annotations absent from B: HTML comments of the form 'Zone A :: E1 [P0]', 'C1 [P4 chrome]', and a CSS header naming a design direction with an ID ('Direction: Medu Art Ensemble Poster (cns-a4e6uh32/0)'), plus a code comment referencing a 'contract DELETED item'. These suggest A was produced against some explicit spec artifact. Neither tells me which treatment either label received, and I scored only the rendered behavior and markup.",
+  "unsupported_claim_label": { "A": true, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "The hero subhead states 'Two recent cases and her process for taking on a project follow.' Recency is not in the supplied facts — the brief describes Harbor Room and Night School without any date, and a program director weighing a limited exhibition timeline may read 'recent' as evidence of current activity. Evidence: A/source/index.html, .claim__subhead; visible in A/desktop.png."
+    },
+    {
+      "label": "A",
+      "claim": "The budget-range control is a select whose options are fixed dollar tiers — 'Under $10,000', '$10,000–$25,000', '$25,000–$75,000', '$75,000 and above'. The brief supplies only that the form asks for a budget range and states explicitly that price is not supplied. The tiers introduce a currency and a project-cost scale the closed fact set does not contain, and they read as an implicit price band for the practice. Evidence: A/source/index.html #field-budget; visible in A/desktop.png. I record this as a lesser instance than the 'recent' claim, since it is an input affordance rather than an assertion about Mara."
+    },
+    {
+      "label": "B",
+      "claim": "The hero subhead ends '— not a summary of results that were never measured.' The brief says no attendance or revenue result and no client quote were supplied; that is a statement about what this exercise provides, not evidence that measurement never occurred. B asserts the stronger claim about the projects themselves. Evidence: B/source/index.html, .hero-sub; visible in B/desktop.png."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "The case modules hold no evidence until interacted with. At rest each shows only a name, a one-line kicker, a two-letter mark, and an 'Open the case' control; scope, constraint, and outcome all sit behind a toggle. Against a four-minute budget and a brief whose consequence note says fit must be visible through the work rather than generic self-description, the director's first screen offers a self-descriptive headline and paragraph instead of the work. Evidence: A/desktop.png and A/source/index.html — .case__detail carries the hidden attribute and contains the entire dl of Scope/Constraint/Outcome. Suggested fix: surface scope and constraint as visible card text, and let the toggle reveal only the remaining detail."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "A successful contact submission destroys the user's focus position. app.js sets form.hidden = true after a 400 ms delay, which removes the submit button that held focus; I confirmed in a locally served isolated Chromium run that document.activeElement is body afterwards. The success text is in a role=status live region so it is announced, but a keyboard or screen-reader user is returned to the top of the document with no landing point. Evidence: A/source/app.js initContactForm success branch; verified by running A/source with require('playwright'). Suggested fix: keep the confirmation in a focusable container and move focus to it rather than hiding the form outright."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Opening one case leaves a large empty field inside the sibling card. The two cases sit in a two-column grid whose rows stretch to equal height, so expanding Harbor Room stretches the collapsed Night School card to match, producing roughly 250 px of blank cream below its kicker. It reads as missing content rather than as a collapsed state. Evidence: A/evidence/interaction-01-open-a-case-study.png; A/source/styles.css .case grid. Suggested fix: set align-items: start on the .case grid."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The disclosure of what is not supplied is correct in substance but misplaced for the decision. 'Not yet shared here — Project pricing / Current availability / Awards and client list' sits inside the contact panel at the bottom of the page, so while the director is reading the two Outcome lines those lines carry no marker distinguishing a supplied outcome from an unmeasured one. B, by contrast, qualifies each case at the point of reading. Evidence: A/source/index.html .disclosure, placed inside section.contact. Suggested fix: mark the supplied/unsupplied boundary per case alongside the Outcome term as well as globally."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The focus indicator is a box-shadow with outline explicitly removed globally (*:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--white), 0 0 0 5px var(--black) }). Box-shadow is not painted in Windows High Contrast / forced-colors mode, so keyboard focus becomes invisible for exactly the users most dependent on it. The ring is otherwise well-formed and clearly visible in the validation-error capture. Evidence: A/source/styles.css line ~94; A/evidence/state-01-contact-form-validation-error.png. Suggested fix: keep the box-shadow and restore a transparent outline of equal width so forced-colors substitutes a system color."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "No contact field is programmatically associated with its error message. All four inputs lack aria-describedby entirely — I confirmed by reading the live DOM after an invalid submit that describedby is null on every control while the visible error text is present. The errors carry role=alert so they announce once when revealed, but a screen-reader user who tabs back to the organization field afterwards hears the label with no error attached, and aria-invalid is only added at submit time. A wires this correctly and B does not. Evidence: B/source/index.html fields; verified by running B/source in a locally launched isolated Chromium. Suggested fix: give each input a permanent aria-describedby pointing at its error paragraph."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The case-study dialog has no accessible name. #case-dialog carries neither aria-label nor aria-labelledby, and its heading is injected into #case-dialog-content at open time without being referenced, so the dialog announces as an unnamed modal. Focus handling itself is correct — I verified the dialog opens with focus on the close button, closes on Escape, and returns focus to the invoking 'Open case study' button. Evidence: B/source/index.html dialog markup and B/source/app.js renderCase; verified by running B/source. Suggested fix: set aria-labelledby to the injected case title, or aria-label to the case name at showModal time."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The hero overreaches on the one line where the page is otherwise scrupulous. 'not a summary of results that were never measured' converts 'no result was supplied' into an assertion that no measurement occurred. Everywhere else B is precise — the work-section note, the per-case unsupplied lines, and the process caveat all say 'not supplied.' Evidence: B/source/index.html .hero-sub; B/desktop.png. Suggested fix: match the wording used elsewhere on the page."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "The primary action is under-labelled at the point of commitment and duplicated above it. The section heading and the header pill both read 'Request a project conversation,' but the button that performs it says only 'Send,' which is the least specific label on the page and the one the director actually presses. Correctly, no response time is promised anywhere. Evidence: B/source/index.html .submit-button; B/desktop.png. Suggested fix: label the button with the action, e.g. 'Request a conversation.'"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The form-status region distinguishes success but not failure. app.js sets status.dataset.state to 'error' or 'success', and styles.css defines a color only for [data-state='success']; the error message 'Fix the highlighted fields before sending.' renders in default body ink at 0.9rem below the button, visually indistinguishable from ordinary copy. The per-field errors do carry the accent color, so the state is recoverable. Evidence: B/source/styles.css .form-status rules; B/evidence/state-01-contact-form-validation-error.png. Suggested fix: give data-state='error' the same treatment as the field errors."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D2",
+      "description": "The modal presentation means the two cases can never be seen together. Each opens over the page and the other is dimmed behind it, so comparing Harbor Room against Night School requires holding one in memory. With only two cases this is minor, and the cards' visible summaries partly compensate; A's inline expansion is the better model on this one point. Evidence: B/evidence/interaction-01-open-a-case-study.png. Suggested fix: consider inline expansion, or repeat the comparable terms on the card face."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 2, "D2": 3, "D3": 2, "D4": 3, "D5": 2, "D6": 3, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 3, "D4": 3, "D5": 3, "D6": 3, "D7": 2, "D8": 3, "D9": 4 }
+  }
+}

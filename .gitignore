@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+
+# npm pack / publish output
+*.tgz
+
+# Evaluation results are collected per-run and are not part of the package.
+# The harness and scenarios are tracked; recorded results are not.
+evals/results/*
+
+# Artifacts the skill writes into a consuming workspace. Never tracked here.
+.considered/
+
+# Session handoffs and working specs. Local coordination state, not part of the skill.
+tasks/
+
+# Local agent/editor tooling
+.serena/
+.codebase-memory/
+.claude/
+.playwright-mcp/
+.playwright-cli/
+test-results/
+
+# Working screenshots. The `skills` CLI clones the whole repo into a consumer's
+# skill directory, so anything tracked here ships to every user. Keep it clean.
+*.png
+*.jpeg
+*.jpg
+!assets/**/*.png
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Logs and editor scratch
+*.log
+*.swp
+.idea/
+.vscode/
+
+# Exception: the m0-001 record's analyzable core is published in-repo.
+# Binary evidence (screenshots, sources, packets) stays local/archived.
+!evals/results/m0-001
+evals/results/m0-001/*
+!evals/results/m0-001/result.json
+!evals/results/m0-001/environment.json
+!evals/results/m0-001/label-map.json
+!evals/results/m0-001/reviews
+!evals/results/m0-001/reviews/**
+
+# Exception: the m0-002 record's analyzable core is published in-repo (m0-001 model),
+# plus its frozen scenario copies, seeded order, and tally.
+!evals/results/m0-002
+evals/results/m0-002/*
+!evals/results/m0-002/result.json
+!evals/results/m0-002/environment.json
+!evals/results/m0-002/label-map.json
+!evals/results/m0-002/order.json
+!evals/results/m0-002/tally.md
+!evals/results/m0-002/reviews
+!evals/results/m0-002/reviews/**
+!evals/results/m0-002/scenarios
+!evals/results/m0-002/scenarios/**
+

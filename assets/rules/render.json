@@ -1,0 +1,103 @@
+{
+  "$schema": "considered-rules/v1",
+  "kind": "render",
+  "description": "Attested screenshot evidence validated by lint-render.mjs. Measurements must be produced by an independent reviewer or renderer; Node does not infer them from image bytes alone.",
+  "severityModel": {
+    "S1": {
+      "name": "Blocker",
+      "gate": "Any S1 fails the gate.",
+      "definition": "User cannot make the decision, is likely to make a wrong one, an accessibility gate fails, or a destructive action is unsafely presented."
+    },
+    "S2": {
+      "name": "Major",
+      "gate": "At most 2 permitted at ship.",
+      "definition": "Decision is possible but materially slower or error-prone."
+    },
+    "S3": {
+      "name": "Minor",
+      "gate": "At most 6 permitted.",
+      "definition": "Adds friction or inconsistency without threatening the decision."
+    },
+    "S4": {
+      "name": "Polish",
+      "gate": "Not gating.",
+      "definition": "Craft refinement with no functional impact."
+    }
+  },
+  "ruleCount": 9,
+  "rules": [
+    {
+      "id": "HIER-01",
+      "name": "Exactly one focal point",
+      "severity": "S2",
+      "check": "Blur the view 8-12px. Exactly one region remains dominant.",
+      "fix": "Raise device points on the intended P0; remove points from competitors. Subtract before adding.",
+      "checker": "focalDominance"
+    },
+    {
+      "id": "HIER-07",
+      "name": "Proximity ratio",
+      "severity": "S2",
+      "check": "For each zone, gap inside must be at most half of gap between.",
+      "fix": "Reduce intra-group gaps or increase inter-group gaps to reach a 2:1 ratio.",
+      "checker": "proximityRatio"
+    },
+    {
+      "id": "HIER-08",
+      "name": "Declared viewport",
+      "severity": "S3",
+      "check": "A7 states a target viewport. P0 and all P1 fit without scrolling.",
+      "fix": "Declare the viewport and verify above-the-fold content.",
+      "checker": "p0AboveFold"
+    },
+    {
+      "id": "HIER-10",
+      "name": "Status outranks accent",
+      "severity": "S3",
+      "check": "Where a danger state and a primary action are both visible, the danger state reads first.",
+      "fix": "Do not fight status color; verify the status deserves the priority.",
+      "checker": "statusOutranksAccent"
+    },
+    {
+      "id": "HIER-11",
+      "name": "Grayscale test",
+      "severity": "S2",
+      "check": "Render in grayscale. Hierarchy and status meaning survive.",
+      "fix": "Re-encode hue-dependent hierarchy with size, weight, position, space.",
+      "checker": "grayscaleSurvival"
+    },
+    {
+      "id": "HIER-12",
+      "name": "Five-second test",
+      "severity": "S2",
+      "check": "After 5 seconds of exposure, the single most important element and its state are correctly identified.",
+      "fix": "Strengthen the P0 and reduce competing emphasis.",
+      "checker": "fiveSecondApprox"
+    },
+    {
+      "id": "DASH-06",
+      "name": "Value dominates label",
+      "severity": "S3",
+      "check": "In a metric block the value has larger size and stronger color than its label.",
+      "fix": "Invert the current treatment.",
+      "checker": "valueDominatesLabel"
+    },
+    {
+      "id": "COMP-06",
+      "name": "Whitespace budget",
+      "severity": "S3",
+      "check": "Negative space is 30 to 40 percent for strategic and analytical, 20 to 30 percent for operational.",
+      "fix": "Adjust density toward the budget.",
+      "checker": "whitespaceBudget"
+    },
+    {
+      "id": "COMP-09",
+      "name": "Priority holds across breakpoints",
+      "severity": "S2",
+      "check": "Reflow order equals tier order at every breakpoint.",
+      "fix": "Define one priority order and reflow against it.",
+      "checker": "breakpointPriorityOrder"
+    }
+  ],
+  "version": "0.2.0"
+}

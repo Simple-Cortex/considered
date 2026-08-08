@@ -1,0 +1,81 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B better enables a support operations leader to decide about a 14-day trial in two minutes. First, the brief names migration effort as the primary objection, and B answers it in visible page content: a titled 'Bringing your incident log over' block stating CSV import plus guided template setup, an expandable three-step import detail, and an explicit note that no typical import duration has been published. In A the entire migration answer sits behind a plain underlined text link ('See how CSV import works', A/source/index.html:40-42) whose target section is hidden by default (A/source/index.html:94 `hidden`), so a reader who does not click never encounters the answer to the decisive objection — and A's default-state page (A/desktop.png) is a hero and a stranded footer button with a large empty region, giving no signal that further content exists. Second, on evidence adjacency, B places the qualified 31-to-9 figure, the explicit 'This is one customer case, not a universal claim' qualifier, and the approved Priya Nair testimonial together in visible content (B/desktop.png, B/source/index.html:167-192); A shows only a summarized metric with a qualifier and hides the testimonial and full case behind a disclosure (A/source/index.html:72-92). Third, on inspectable interaction quality, B ships a skip link (B/source/index.html:14), a global :focus-visible rule (B/source/styles.css:132), disclosure panels placed immediately after their controlling buttons, and a reduced-motion block that also neutralizes scroll-behavior (B/source/styles.css:89-98); A has no skip link, styles focus only on the email input (A/source/styles.css:204), and its one motion effect is a JS scrollIntoView({behavior:'smooth'}) (A/source/app.js:11) that its CSS reduced-motion block (A/source/styles.css:277-283, transitions and animations only) does not and cannot cover, so A's reduced-motion state is not honored for the only animation it has. A's genuine advantage is that its trial form sits above the fold at 1440x900 while B requires a scroll or an anchor click to reach the form; that is real but does not outweigh a buried objection answer, buried proof, and a hollow default page.",
+  "suspected_unblinding": "B's shipped markup carries what looks like authoring-method scaffolding: data-zone=\"A\"/\"B\"/\"C\"/\"E\" on sections, data-el=\"C1,C2,E1..E8\" on elements, data-action=\"S1\" on CTAs, and HTML comments naming numbered decision questions (\"Q1: what is this, is it for me, what do I do next\", \"Q3: has this worked for a team like mine\", \"Q5/Q6\") at B/source/index.html:16, 33, 93-95, 166, 226. That reads as residue of a structured design process rather than of an unstructured build, and could hint at which treatment B received. I have not acted on it: the choice above rests on inspectable behavior and content coverage, and I would have reached it from the rendered pages and evidence alone. Two packaging asymmetries also exist but do not indicate treatment: B duplicates its evidence PNGs inside source/ while A ships a capture.mjs there, and in both packets the reduced-motion evidence file is byte-identical to that packet's own desktop.png (verified by sha1), so neither packet's reduced-motion still carries information — I judged reduced-motion from CSS and JS instead.",
+  "unsupported_claim_label": { "A": true, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "On successful submit the page states \"We'll email {address} to confirm your 14-day workspace.\" (A/source/app.js:58, rendered into #form-success). The brief supplies only that the trial lasts 14 days, requires a work email, requires no credit card, and that trial workspaces can be deleted by an administrator. It does not supply that a confirmation email is sent, and this static build has no backend that could send one. This is an invented outcome and capability presented to the user as a commitment."
+    },
+    {
+      "label": "B",
+      "claim": "Two elaborations exceed the supplied facts. (1) The case disclosure states \"Relay Notes has one published case so far\" (B/source/index.html:219-220); the brief says the Brightline result is one customer case and not a universal claim, which is not the same as an assertion about how many cases the company has published — that is an invented availability claim, though it errs toward understatement. (2) Import step 3, \"New and imported incidents use the same structured handoff from there on\" (B/source/index.html:155), and step 2's field-mapping description assert import mechanics the brief does not supply beyond \"imports CSV incident logs and offers a guided template setup.\" Both are plausible extrapolations rather than fabricated proof, and neither invents a customer, metric, quote, price, or guarantee."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "The answer to the scenario's stated primary objection is invisible in the default state. Migration content lives in section#csv-panel, which carries the hidden attribute (A/source/index.html:94) and is revealed only by a plain underlined text link styled like body copy (A/source/index.html:40-42, .link-btn in A/source/styles.css:98-108). A/desktop.png confirms the default page is a hero plus a stranded footer button with roughly a third of the viewport empty and no section headings, so nothing signals that migration, the case detail, or the testimonial exist below. Within a two-minute budget a reader can plausibly finish the page having seen neither the import mechanism nor the approved testimonial. Fix: surface at least a short migration block and the testimonial as visible content, and reserve disclosure for the detail beneath them."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The success state asserts an unsupplied outcome: \"We'll email {address} to confirm your 14-day workspace.\" (A/source/app.js:58). No confirmation-email behavior is in the brief, and the static build cannot perform it. Because this appears at the moment of commitment it shapes the reader's expectation of what starting a trial actually does. Fix: confirm only what the build did (a captured request) or restate supplied terms, as the parallel handling in B/source/app.js:69-70 does."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The required reduced-motion state is not actually honored. A's only motion is panel.scrollIntoView({ behavior: \"smooth\" }) in A/source/app.js:11; the reduced-motion media query at A/source/styles.css:277-283 overrides transition-duration, animation-duration, and animation-iteration-count only, none of which affect a JS-specified smooth scroll. A user with prefers-reduced-motion still gets an animated scroll on every disclosure open. The supplied evidence cannot show this: A/evidence/state-02-reduced-motion-preference.png is byte-identical (sha1 d95408d3) to A/desktop.png, so it captures the page at rest rather than the motion in question. Fix: read window.matchMedia('(prefers-reduced-motion: reduce)') and pass behavior 'auto' when it matches."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Keyboard and screen-reader affordances are thinner than the markup otherwise suggests. There is no skip link; the only focus style in the stylesheet is on #work-email (A/source/styles.css:204-207), leaving every button and link on the user-agent default; and when a disclosure opens, focus stays on the toggle while the page scrolls elsewhere (A/source/app.js:6-13), so a keyboard user is moved visually without being moved in the focus order. The disclosure semantics themselves are correct — aria-expanded and aria-controls are set and kept in sync, and the error uses role=\"alert\" with aria-invalid — so this is degradation, not absence. Fix: add a skip link, a shared :focus-visible rule, and move focus to the revealed panel."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The default composition leaves substantial unresolved space and a redundant terminal action. In A/desktop.png the right column ends at the trial card with roughly 450px of empty canvas beneath it, and the footer 'Start trial' button (A/source/index.html:113) is an anchor to #trial-form — a form that is visible on the same screen, directly above it. The result reads as an unfinished page rather than a deliberately short one. Fix: either let the case and migration content occupy that space or drop the footer CTA, which cannot earn its place while the form is already in view."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Internal authoring scaffolding ships in the production markup: data-zone attributes on sections, data-el=\"C1,C2\" / \"E1\"–\"E8\" on elements, data-action=\"S1\" on CTAs, and HTML comments phrased as numbered design questions (B/source/index.html:16, 28, 33-34, 37, 40, 46, 61, 93-96, 103, 132, 144, 159, 166-167, 170, 200, 226, 243, 249). None of it affects rendering or assistive technology, but it is process residue in a shipped artifact and, in a review context, it partially telegraphs how the page was made. Fix: strip the attributes and comments at build time."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "On successful submit the handler sets the submit button's disabled property (B/source/app.js:71). A keyboard user whose focus is on that button loses it to document.body, so the confirmation in .form-status is announced via aria-live but the user's place in the page is gone and the next Tab restarts from the top. Fix: keep the button enabled and rely on the status message, or move focus to the status element before disabling."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Two claims run slightly ahead of the supplied facts: \"Relay Notes has one published case so far\" (B/source/index.html:219-220), which converts the brief's scoping caveat into an assertion about the company's published evidence; and the framing \"The biggest question before switching tools is usually what happens to the incident history you already have\" (B/source/index.html:133-134), which generalizes the brief's statement that migration effort is this reader's primary objection into a claim about buyers at large. Neither fabricates proof and both push toward understatement, but they are assertions the closed fact set does not license. Fix: scope both to the supplied case and this reader."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "At 390px the offer section develops an unexplained vertical gap between the work-email input and the 'Start your trial' button (B/mobile.png, lower third) where the desktop row layout unstacks. The controls remain legible, ordered, and reachable, so this is polish rather than friction. Fix: normalize the stacked field-to-button spacing in the max-width 480px block."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 2, "D3": 3, "D4": 3, "D5": 3, "D6": 3, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 3, "D9": 4 }
+  }
+}

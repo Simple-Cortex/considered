@@ -1,0 +1,24 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "1. Source inspection shows B's 'unsaved changes' bar and its 'Create token' form both use CSS class rules that set display:flex unconditionally (styles.css), which overrides the HTML `hidden` attribute at equal specificity — the bar and form render open regardless of actual state. This is directly visible in state-04 (a fresh full-page reload) where the session timeout has reverted to its true default of 30 days yet the bar still claims unsaved changes exist, and it recurs in nearly every B screenshot (desktop.png, mobile.png, all three interaction captures, state-02). A's equivalent bar toggles cleanly via a dedicated .is-visible class over a default display:none, verified correct in source and consistent across every A screenshot. 2. At the 390px viewport this same stuck-open bar in B overlaps and partially occludes the 'Verify domain' control, a real mobile usability defect; A's mobile layout has no such occlusion. 3. A's weakness by comparison is smaller and isolated: its disabled delete-workspace confirm button (functionally gated correctly per app.js) gives no visual dimming to signal it is inert, versus B's explicit :disabled styling — a real but narrower craft gap that doesn't compound across the packet the way B's CSS/hidden-attribute conflict does.",
+  "suspected_unblinding": "none — READMEs are identical boilerplate; no builder names, tool signatures, or other identifying metadata found in either packet's source or evidence.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    { "label": "B", "severity": "S2", "dimension": "D6", "description": "The `.unsaved-bar` CSS rule sets `display: flex` unconditionally, overriding the `hidden` HTML attribute on `#unsaved-bar`, so the 'You have unsaved changes.' banner renders even when no field is dirty. Confirmed via source (styles.css .unsaved-bar; index.html `hidden` attribute at #unsaved-bar) and via evidence/state-04-390-px-viewport.png, captured after a full page reload, which still shows the banner while the session timeout has correctly reset to '30 days' — a false positive with no pending change." },
+    { "label": "B", "severity": "S2", "dimension": "D8", "description": "The same pattern affects `.token-form` (`display: flex` in styles.css overriding its `hidden` attribute in index.html), so the API-token creation input/button pair is permanently open at the same time as the separate 'Create token' trigger button — two duplicate, redundant controls shown simultaneously in every B screenshot in the packet, including the plain desktop.png/mobile.png captures." },
+    { "label": "B", "severity": "S3", "dimension": "D9", "description": "Because the unsaved-changes bar is fixed-position and stuck visible (see above), at the 390px viewport it overlaps and partially hides the 'Verify domain' button (evidence/state-04-390-px-viewport.png)." },
+    { "label": "A", "severity": "S3", "dimension": "D3", "description": "The 'Delete workspace' confirm button in the danger-zone modal is functionally disabled until the workspace name is typed exactly (verified: app.js sets `deleteConfirm.disabled = deleteInput.value !== WORKSPACE_NAME`), but it carries no visual dimming or other disabled affordance in styles.css, so it looks identical to its enabled state in every screenshot (interaction-02, state-03)." },
+    { "label": "A", "severity": "S4", "dimension": "D7", "description": "The five settings-section navigation buttons (General/Members & access/Security/Billing/Danger zone) have no ARIA tab semantics — no role=\"tablist\"/\"tab\", no aria-selected, no roving tabindex — unlike a proper tab pattern; screen-reader users get a flat list of buttons instead of a labeled group with position/count context." },
+    { "label": "B", "severity": "S4", "dimension": "D1", "description": "The unsaved-changes banner text is generic ('You have unsaved changes.') rather than naming the field and target value the way A's does ('session timeout will be set to 12 hours'), so even when the bar legitimately reflects the session-timeout edit, the administrator cannot tell from the bar alone which of several dirty-trackable fields (session timeout, seat count, business hours, etc.) is unsaved." }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 4, "D5": 4, "D6": 4, "D7": 2, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 4, "D3": 2, "D4": 2, "D5": 4, "D6": 1, "D7": 4, "D8": 1, "D9": 1 }
+  }
+}

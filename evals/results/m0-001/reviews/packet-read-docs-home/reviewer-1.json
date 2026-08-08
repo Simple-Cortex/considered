@@ -1,0 +1,79 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A makes every documented command directly actionable — five copy buttons across install, both login forms, release plan, and node --version, all keyboard-operable and announced via an aria-live status — whereas B ships one copy button against eighteen code blocks. A's reading path also foregrounds the two things that cause failed releases: a Node 22 prerequisite banner above step 1 that links to the remedy, and a plan-vs-apply safety note attached to the preview step. B is better on reference completeness (a real CLI reference listing all four commands, and all six sections populated), but it renders wrong on the required 390 px viewport (its own state-04 capture is 595 px wide) and does not move focus on in-page jumps, so keyboard retrieval of that reference is worse in practice. On balance A gets the role through install, auth, preview, and the Node remedy faster and more reliably.",
+  "suspected_unblinding": "A's source/app.js carries structured rule codes in comments (ACT-16, ACT-18, READ-04, A11Y-09, COMP-09, STATE-01) and P0/P1 priority labels, which signals that A was produced under a formal design-rule system while B was not. I scored on observed behavior and artifacts only, but the packet is not fully blind on the source side.",
+  "unsupported_claim_label": { "A": true, "B": false },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "Page dek promises the install-to-preview path takes \"about five minutes\"; no duration is supplied in the scenario facts. Low materiality — it sets an expectation rather than misdirecting a command."
+    }
+  ],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D9",
+      "description": "At a 390 px device viewport the six-item nav renders as a 579 px non-wrapping row, forcing a 595 px layout viewport, so the whole page scales to roughly 66% on a phone and body text lands near 9 physical px.",
+      "evidence": "Reproduced locally at viewport 390x844: document.scrollWidth 595 vs innerWidth 390, widest offender nav.docs-nav width 579; A measured 390/390 with no overflow under identical settings. B's own B/evidence/state-04-390px-viewport.png and B/mobile.png are 595 px wide; A's equivalents are 390 px."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Clicking an in-page section link (e.g. \"CLI reference →\") scrolls the page but leaves focus on document.body, so a keyboard user who follows the pointer to the reference resumes tabbing from the top of the document.",
+      "evidence": "Reproduced: after clicking the CLI reference link, window.scrollY 1539 but document.activeElement is <body>. Same probe against A returned activeElement id \"reference\" (the article carries tabindex=-1)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Only the install command is copyable; the other seventeen code blocks (atlas login, atlas login --device, atlas release plan, atlas release apply, node --version) must be hand-selected, which is where transcription errors happen.",
+      "evidence": "Reproduced DOM query: 18 <code> elements, 1 button matching copy. Visible in B/desktop.png — a Copy control appears only on the step 2 block."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "Copy success is signalled only by swapping the button label to \"Copied\"; there is no live region, so a screen-reader user copying by pointer gets no confirmation, and the no-results state hides the whole nav with no clear/reset control.",
+      "evidence": "Reproduced: after clicking Copy the only [role=status] node on the page is the search-empty paragraph, still hidden and unchanged. Typing \"zzzznotathing\" left zero visible nav links and no button or link matching clear/reset."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Two of the six documented sections, Guides and CI, are inert <span> entries marked aria-disabled with a \"Not included in this preview\" tooltip, so a third of the advertised navigation is a dead end.",
+      "evidence": "A/source/index.html nav list items for Guides and CI; visible as greyed, non-linked entries in A/desktop.png. Reproduced tab order skips both (13 stops, no Guides or CI)."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The \"CLI reference\" target is a prose card restating the four commands rather than a reference; a blocked developer arrives at a paragraph that says the reference is authoritative but lists no per-command behavior or flags.",
+      "evidence": "A/source/index.html article#reference and A/desktop.png; contrast with B/source/docs/index.html #cli-reference, which gives a definition list of atlas login, atlas login --device, atlas release plan, and atlas release apply with distinct descriptions."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D7",
+      "description": "The search no-results message is a plain hidden paragraph outside any live region, so filtering to zero matches is silent for screen-reader users even though the visual recovery affordance is good.",
+      "evidence": "Reproduced: filtering to \"zzzznotathing\" reveals \"No sections or commands match ...\" plus a Clear search button, but the node carries no role=status or aria-live (the page's only live region is the copy announcer)."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The dek asserts the path takes \"about five minutes\", a duration not present in the supplied facts.",
+      "evidence": "A/desktop.png header copy; A/source/index.html p.page-dek."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 4, "D8": 4, "D9": 4 },
+    "B": { "D1": 3, "D2": 4, "D3": 3, "D4": 2, "D5": 4, "D6": 3, "D7": 2, "D8": 3, "D9": 1 }
+  }
+}

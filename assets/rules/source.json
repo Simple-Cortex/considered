@@ -1,0 +1,345 @@
+{
+  "$schema": "considered-rules/v1",
+  "kind": "source",
+  "description": "Heuristic review leads from CSS, markup, and common utility-class patterns. It does not prove per-view semantics or accessibility.",
+  "severityModel": {
+    "S1": {
+      "name": "Blocker",
+      "gate": "Any S1 fails the gate.",
+      "definition": "User cannot make the decision, is likely to make a wrong one, an accessibility gate fails, or a destructive action is unsafely presented."
+    },
+    "S2": {
+      "name": "Major",
+      "gate": "At most 2 permitted at ship.",
+      "definition": "Decision is possible but materially slower or error-prone."
+    },
+    "S3": {
+      "name": "Minor",
+      "gate": "At most 6 permitted.",
+      "definition": "Adds friction or inconsistency without threatening the decision."
+    },
+    "S4": {
+      "name": "Polish",
+      "gate": "Not gating.",
+      "definition": "Craft refinement with no functional impact."
+    }
+  },
+  "restraintBudget": {
+    "typeSizes": 5,
+    "fontWeights": 3,
+    "textColors": 3,
+    "accentHues": 1,
+    "dataColors": 6,
+    "borderStyles": 2,
+    "radiusValues": 2,
+    "shadowLevels": 2,
+    "iconStyles": 1
+  },
+  "bannedActionLabels": [
+    "Submit",
+    "OK",
+    "Yes",
+    "No",
+    "Go",
+    "Click here",
+    "Manage",
+    "Update",
+    "Continue"
+  ],
+  "bannedZoneHeadings": [
+    "Overview",
+    "Metrics",
+    "KPIs",
+    "Charts",
+    "Tables",
+    "Other",
+    "Analytics",
+    "Data",
+    "Stats",
+    "Misc"
+  ],
+  "ruleCount": 35,
+  "rules": [
+    {
+      "id": "HIER-04b",
+      "name": "Accent color scarcity",
+      "severity": "S2",
+      "check": "Accent color appears at most twice per view: the P0 and the primary action.",
+      "fix": "Replace surplus accent usage with neutral values.",
+      "checker": "accentUsageCount"
+    },
+    {
+      "id": "HIER-09",
+      "name": "Space before borders",
+      "severity": "S3",
+      "check": "Grouping is expressed by spacing; borders added only where space cannot work.",
+      "fix": "Remove borders that spacing already implies.",
+      "checker": "bordersSpacingImplies"
+    },
+    {
+      "id": "ACT-01",
+      "name": "One primary per scope",
+      "severity": "S2",
+      "check": "At most one primary per scope value; at most 2 filled high-emphasis treatments per viewport.",
+      "fix": "Demote surplus primaries to secondary or overflow.",
+      "checker": "filledButtonCount"
+    },
+    {
+      "id": "ACT-05",
+      "name": "Verb plus object labels",
+      "severity": "S3",
+      "check": "Every label is a verb plus an object, 3 words or fewer, in user vocabulary.",
+      "fix": "Rewrite Submit, OK, Go, Continue, Manage, Update with outcome-naming labels.",
+      "checker": "bannedActionLabels"
+    },
+    {
+      "id": "ACT-06",
+      "name": "Icon-only requires a name",
+      "severity": "S1",
+      "check": "Every icon-only control has an accessible name and a tooltip.",
+      "fix": "Add accessible name plus tooltip, or add a visible label.",
+      "checker": "iconOnlyNoName"
+    },
+    {
+      "id": "ACT-11",
+      "name": "Secondary weight caution",
+      "severity": "S3",
+      "check": "Dense surfaces such as toolbars, rows, and card footers use ladder ranks 4 to 8 only.",
+      "fix": "Replace outlined secondaries with subtle or text treatments in dense surfaces.",
+      "checker": "denseSurfaceEmphasis"
+    },
+    {
+      "id": "ACT-17",
+      "name": "Never disable silently",
+      "severity": "S2",
+      "check": "Every disabled control exposes the reason and the condition to enable it.",
+      "fix": "Add tooltip or adjacent text, or keep enabled and explain on activation.",
+      "checker": "disabledWithoutReason"
+    },
+    {
+      "id": "IA-03",
+      "name": "Never name groups by type or source",
+      "severity": "S2",
+      "check": "No zone heading is a component type, a chart type, or a system name.",
+      "fix": "Rename using the user question or the object.",
+      "checker": "bannedZoneHeadings"
+    },
+    {
+      "id": "IA-19",
+      "name": "Signposted disclosure",
+      "severity": "S3",
+      "check": "Collapsed regions state what they contain and, where cheap, how much.",
+      "fix": "Add descriptive labels and counts to disclosure triggers.",
+      "checker": "unlabeledDisclosure"
+    },
+    {
+      "id": "CONT-01",
+      "name": "User vocabulary",
+      "severity": "S2",
+      "check": "No schema names, internal codenames, or unexplained abbreviations appear in the UI.",
+      "fix": "Rename to the user term; add a definition affordance.",
+      "checker": "schemaLeakLabels"
+    },
+    {
+      "id": "CONT-04",
+      "name": "Units and precision",
+      "severity": "S3",
+      "check": "Units are stated; precision matches the decision, not the database.",
+      "fix": "Round for summaries; keep full precision in detail and export.",
+      "checker": "unitsAndPrecision"
+    },
+    {
+      "id": "DASH-10",
+      "name": "Chart from question",
+      "severity": "S3",
+      "check": "Chart type follows the question per the selection table.",
+      "fix": "Replace with the chart matching the question. No 3D, no dual axes, no pies over 3 slices.",
+      "checker": "chartAntiPatterns"
+    },
+    {
+      "id": "DASH-13",
+      "name": "Axis discipline",
+      "severity": "S3",
+      "check": "Axes are labeled with units; bar value axes start at zero; gridlines minimized.",
+      "fix": "Fix axes and remove non-informative lines.",
+      "checker": "axisDiscipline"
+    },
+    {
+      "id": "STATE-01",
+      "name": "Full state set specified",
+      "severity": "S1",
+      "check": "Every data region specifies loading, empty first-use, empty filtered, partial, stale, error, no permission, and too much data.",
+      "fix": "Specify the missing states.",
+      "checker": "stateBranchesPresent"
+    },
+    {
+      "id": "STATE-06",
+      "name": "No layout shift on load",
+      "severity": "S3",
+      "check": "Loading skeletons match final dimensions.",
+      "fix": "Match skeleton geometry to final content.",
+      "checker": "skeletonDimensions"
+    },
+    {
+      "id": "COMP-02",
+      "name": "Type scale limits",
+      "severity": "S3",
+      "check": "At most 5 type sizes, 3 weights, 3 text colors per view.",
+      "fix": "Collapse to the scale.",
+      "checker": "countDistinctType"
+    },
+    {
+      "id": "COMP-03",
+      "name": "Tokenized spacing",
+      "severity": "S3",
+      "check": "Every margin, padding, and gap uses a spacing token.",
+      "fix": "Replace arbitrary values with tokens.",
+      "checker": "offScaleSpacing"
+    },
+    {
+      "id": "COMP-04",
+      "name": "Semantic token names",
+      "severity": "S3",
+      "check": "Token names describe role, not appearance.",
+      "fix": "Rename literal tokens to semantic ones.",
+      "checker": "literalTokenNames"
+    },
+    {
+      "id": "COMP-05",
+      "name": "Module consistency",
+      "severity": "S3",
+      "check": "All modules share padding, radius, border, and title treatment unless variation encodes meaning.",
+      "fix": "Standardize module chrome.",
+      "checker": "moduleChromeVariance"
+    },
+    {
+      "id": "COMP-07",
+      "name": "Non-data ink justified",
+      "severity": "S3",
+      "check": "Every decorative element justifies its presence against the data it competes with.",
+      "fix": "Remove decoration: gradients, superfluous icons, 3D, animated counters.",
+      "checker": "decorativeInk"
+    },
+    {
+      "id": "COMP-10",
+      "name": "Semantic elevation",
+      "severity": "S3",
+      "check": "Shadow encodes transience; permanent surfaces do not float.",
+      "fix": "Remove decorative shadows.",
+      "checker": "shadowLevels"
+    },
+    {
+      "id": "COMP-11",
+      "name": "One radius family",
+      "severity": "S3",
+      "check": "At most 2 radius values per view, applied consistently.",
+      "fix": "Standardize radii.",
+      "checker": "radiusFamily"
+    },
+    {
+      "id": "COMP-13",
+      "name": "Cards versus tables",
+      "severity": "S2",
+      "check": "Homogeneous comparable records use a table, not a card grid.",
+      "fix": "Convert card grids of identical records to tables.",
+      "checker": "cardGridOfIdenticalRecords"
+    },
+    {
+      "id": "COMP-16",
+      "name": "Restraint budget",
+      "severity": "S3",
+      "check": "Per view: 5 type sizes, 3 weights, 3 text colors, 1 accent hue, 6 data colors, 2 border styles, 2 radii, 2 shadow levels, 1 icon style.",
+      "fix": "Reduce each overage.",
+      "checker": "restraintBudget"
+    },
+    {
+      "id": "COMP-17",
+      "name": "Alignment discipline",
+      "severity": "S3",
+      "check": "Elements align to the grid; alignment edges minimized; numbers right-aligned; text left-aligned.",
+      "fix": "Fix alignment and never center-align data columns.",
+      "checker": "centeredDataColumns"
+    },
+    {
+      "id": "COMP-18",
+      "name": "Rhythm limit",
+      "severity": "S3",
+      "check": "At most 3 distinct vertical spacing values between siblings within a zone.",
+      "fix": "Collapse to 3 values.",
+      "checker": "siblingGapVariance"
+    },
+    {
+      "id": "A11Y-01",
+      "name": "Text contrast",
+      "severity": "S1",
+      "check": "4.5:1 for text under 18px or under 14px bold; 3:1 for larger.",
+      "fix": "Raise contrast. Do not lower it for aesthetic lightness.",
+      "checker": "textContrast"
+    },
+    {
+      "id": "A11Y-02",
+      "name": "Non-text contrast",
+      "severity": "S1",
+      "check": "3:1 for UI boundaries, icons, focus rings, and meaningful chart marks.",
+      "fix": "Raise contrast of controls and data marks.",
+      "checker": "nonTextContrast"
+    },
+    {
+      "id": "A11Y-03",
+      "name": "Color independence",
+      "severity": "S1",
+      "check": "No meaning is conveyed by color alone.",
+      "fix": "Pair color with text, icon, pattern, or position.",
+      "checker": "colorOnlyMeaning"
+    },
+    {
+      "id": "A11Y-04",
+      "name": "Focus visible",
+      "severity": "S1",
+      "check": "Every interactive element has a visible focus indicator at 3:1 against adjacent colors.",
+      "fix": "Restore and strengthen focus indicators.",
+      "checker": "focusVisible"
+    },
+    {
+      "id": "A11Y-05",
+      "name": "Accessible names",
+      "severity": "S1",
+      "check": "Every control has an accessible name; icon-only controls have explicit labels.",
+      "fix": "Add accessible names.",
+      "checker": "accessibleNames"
+    },
+    {
+      "id": "A11Y-06",
+      "name": "Target size",
+      "severity": "S1",
+      "check": "44x44px minimum for touch; 24x24px with adequate spacing for pointer.",
+      "fix": "Increase target size or spacing.",
+      "checker": "targetSize"
+    },
+    {
+      "id": "A11Y-09",
+      "name": "Motion safety",
+      "severity": "S1",
+      "check": "Reduced-motion preference respected; no essential meaning conveyed only by motion.",
+      "fix": "Add reduced-motion handling.",
+      "checker": "reducedMotion"
+    },
+    {
+      "id": "A11Y-11",
+      "name": "Heading structure",
+      "severity": "S1",
+      "check": "Logical heading levels, no skipped levels, one h1 per view.",
+      "fix": "Fix heading hierarchy.",
+      "checker": "headingStructure"
+    },
+    {
+      "id": "A11Y-12",
+      "name": "Error identification",
+      "severity": "S1",
+      "check": "Errors are identified in text, associated with their field, and describe the remedy.",
+      "fix": "Add text errors bound to fields.",
+      "checker": "errorIdentification"
+    }
+  ],
+  "version": "0.2.0"
+}

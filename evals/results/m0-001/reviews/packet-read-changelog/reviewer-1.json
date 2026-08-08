@@ -1,0 +1,81 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "B's in-page search hides the breaking-change note along with everything else: with a non-matching term I reproduced zero visible notes, so a release engineer searching 'deploy' or 'dry-run' loses the one note that can stop a release, while A exempts the breaking note from search and says so in a visible scope line. B's app.js also rewrites the URL to /changelog/3.4.0 via history.replaceState on load, and I reproduced a 404 plus a fully unstyled page on reload — which is also why B's own required-state screenshots are unstyled and show neither the copy confirmation nor a no-results state. A additionally offers per-category jump links, an aria-live search status, accessible names on every note section, and a copy fallback that never falsely claims success. Both pages state the facts accurately and neither invents material claims.",
+  "suspected_unblinding": "Partial. A's source comments reference an internal rule vocabulary ('the Objection First framing', '(A11Y-08)', 'S1 secondary action') and A's placeholder page refers to 'the scenario facts this changelog is built from', which suggests A was built under an explicit named rule system. I noticed this only while reading source after forming the pairwise choice, and the choice rests on behavior I reproduced in a locally launched browser, not on those comments.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "In-page search filters the breaking-change note out of view along with every other note, so searching a term that does not appear in it removes the one release-blocking item from the page.",
+      "evidence": "Reproduced locally (served B/source on port 8732, Playwright chromium): filling #note-search with 'zzz-no-match-zzz' left breakingStillVisible=false and visibleNotes=0; B/source/app.js selects all [data-note] sections including #breaking."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "app.js rewrites the address bar to /changelog/3.4.0 on every load, so reloading, bookmarking, or sharing the resulting URL 404s and the page renders with no CSS or JS.",
+      "evidence": "Reproduced locally: after page.goto('/index.html') the URL became http://127.0.0.1:8732/changelog/3.4.0; page.reload() returned 404 and computed body background fell to rgba(0,0,0,0). Source: B/source/app.js lines 3-6."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The supplied required-state evidence does not demonstrate the states it claims: all three state screenshots render unstyled, the copy-confirmation shot still reads 'Copy key' with no confirmation, and the no-results shot shows every note visible with no no-results message.",
+      "evidence": "B/evidence/state-01-copy-confirmation.png, state-02-search-no-results.png, state-03-390px-viewport.png (compare styled B/desktop.png). The states do work when the source is served correctly, which I verified separately."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Search results are never announced to assistive technology and the note sections carry no accessible names, so a screen-reader user filtering the release gets no feedback on what changed.",
+      "evidence": "Reproduced locally: the only [aria-live] region is #copy-confirm; all six <section> elements returned aria-labelledby 'none'. A exposes #search-status (aria-live=polite) reading 'No results for \"zzz-no-match-zzz\".' and labels all five sections."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The copy action confirms twice — the button relabels itself to 'Copied!' while a separate role=status span also unhides with 'Copied' — and the execCommand fallback reports success without checking its return value.",
+      "evidence": "B/source/app.js lines 33-60; reproduced button innerText 'Copied!' with #copy-confirm simultaneously unhidden after pressing Enter on the focused button."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "In the Changed, Added and Deprecated headings the category badge and the inline code token occupy the first line and push the rest of the heading sentence onto a second line, so the heading reads as two disconnected fragments.",
+      "evidence": "A/desktop.png: 'Changed  relay deploy' on one line, 'now fails before upload when the target is missing' on the next; same split on Added and Deprecated."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The linked configuration-reference placeholder breaks the product fiction by explaining itself in evaluation terms ('the scenario facts this changelog is built from'), which is not text a release engineer should ever see.",
+      "evidence": "A/source/configuration-reference.html lines 16-20; reached by clicking 'Open configuration reference' (A/evidence/interaction-03-navigate-to-configuration-reference-placeholder.png)."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "At 390 px the category jump bar becomes a horizontal scroll container with no visible affordance, so Fixed and Deprecated are silently off-screen.",
+      "evidence": "Reproduced at 390 px: .utility__jump scrollWidth 505 vs clientWidth 358 with overflow-x auto; A/evidence/state-03-390px-viewport.png shows the row ending after 'Added'."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D4",
+      "description": "Activating the jump link scrolls the breaking section into view but leaves focus on the body, so a keyboard user must tab back through the header to reach the copy action.",
+      "evidence": "Reproduced locally: after clicking a[href=\"#breaking\"], document.activeElement was BODY while #breaking had a bounding top of 64 px. B behaves identically."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 3, "D9": 3 },
+    "B": { "D1": 3, "D2": 3, "D3": 4, "D4": 3, "D5": 4, "D6": 2, "D7": 2, "D8": 3, "D9": 3 }
+  }
+}

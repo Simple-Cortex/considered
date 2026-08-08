@@ -1,0 +1,28 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "read-docs-home",
+  "track": "persuade-read",
+  "mode": "read",
+  "title": "Documentation home",
+  "brief": {
+    "role": "Developer evaluating the Atlas CLI for a local release workflow",
+    "job": "Find the shortest reliable path to install Atlas, authenticate, preview a release, and locate the right reference if blocked.",
+    "time_budget": "5 minutes",
+    "consequence": "A misleading quickstart creates failed releases or makes the developer abandon an otherwise relevant tool.",
+    "facts": [
+      "Atlas CLI requires Node 22 or later and is installed with npm install -g @atlas/cli.",
+      "Authentication uses atlas login and opens a browser. Device-code login is available with atlas login --device.",
+      "atlas release plan previews files, version, and destination without publishing. atlas release apply publishes the planned release.",
+      "The documentation sections are Get started, Guides, CLI reference, Configuration, CI, and Troubleshooting.",
+      "The most common first-run error is missing Node 22. The documented remedy is to check node --version and install a supported Node release before retrying.",
+      "Configuration lives in atlas.config.json. The CLI reference is the authoritative place for flags; no flags beyond those named here should be invented."
+    ]
+  },
+  "build": {
+    "route": "/docs",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Copy an install command", "Move from quickstart to CLI reference", "Find the Node-version remedy"],
+    "required_states": ["copy confirmation", "search no-results state", "reduced-motion preference", "390 px viewport"],
+    "acceptance_checks": ["The reading path makes prerequisites, safe preview, and publish distinction hard to miss.", "Navigation supports retrieval without overpowering the current instructional step.", "Commands and capability statements match the supplied facts exactly."]
+  }
+}

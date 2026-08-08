@@ -1,0 +1,29 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "read-changelog",
+  "track": "persuade-read",
+  "mode": "read",
+  "title": "Developer-tool changelog",
+  "brief": {
+    "role": "Release engineer maintaining CI pipelines",
+    "job": "Determine whether Relay 3.4.0 changes an existing pipeline and find any required follow-up before upgrading.",
+    "time_budget": "5 minutes",
+    "consequence": "Missing a breaking change can stop a production release; treating every note as equally urgent slows routine maintenance.",
+    "facts": [
+      "Relay 3.4.0 was released on 2026-07-28.",
+      "Breaking: the default artifact retention changed from 90 days to 30 days for new projects. Existing project retention is unchanged. Set retentionDays in relay.config.json to retain a different period.",
+      "Changed: relay deploy now fails before upload when the configured target is missing. The error names the missing target.",
+      "Added: relay deploy --dry-run prints the resolved target and artifact list without publishing.",
+      "Fixed: environment variables containing an equals sign are preserved in generated shell scripts.",
+      "Deprecated: relay init --legacy will be removed in Relay 4.0. Use relay init --format yaml instead.",
+      "The audience needs a readable distinction among breaking, changed, added, fixed, and deprecated notes, with a path to the related configuration reference. No migration guide URL is supplied."
+    ]
+  },
+  "build": {
+    "route": "/changelog/3.4.0",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Jump to breaking changes", "Copy the retention configuration key", "Navigate to the configuration reference placeholder"],
+    "required_states": ["copy confirmation", "in-page search no-results state", "390 px viewport"],
+    "acceptance_checks": ["A release engineer can identify the applicable breaking change and existing-project exception in one scan.", "The page keeps a readable release narrative instead of becoming a card grid.", "Every command, version, and behavioral claim matches the supplied facts."]
+  }
+}

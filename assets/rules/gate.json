@@ -1,0 +1,24 @@
+{
+  "$schema": "considered-gate/v1",
+  "kind": "gate",
+  "description": "Ship-gate policy. These thresholds are the tuning surface for the evaluation harness and are deliberately data, not code, so a calibration run can change them without touching the gate implementation.",
+  "findingLimits": {
+    "S1": 0,
+    "S2": 2,
+    "S3": 6
+  },
+  "review": {
+    "maxScore": 140,
+    "minimumScore": 120,
+    "criticalDimensions": ["D1", "D2", "D3", "D7", "D8"],
+    "dimensionFloor": 3,
+    "shipVerdict": "SHIP",
+    "recognizedVerdicts": ["SHIP", "REVISE", "REDESIGN", "BLOCKED"]
+  },
+  "notes": {
+    "findingLimits": "Counts apply only to high-confidence findings. Heuristic source findings are reviewer leads and never gate automatically.",
+    "minimumScore": "Calibrated against the 60 scored m0-001 review rows: reviewers never issued SHIP below 121, while 112 sat inside typical REVISE territory (REVISE median 114, p75 120). 120 keeps the backstop below every observed legitimate SHIP and above the REVISE bulk. Provisional: one evaluation, model reviewers, ten scenarios.",
+    "criticalDimensions": "Dimensions that cannot be averaged away: purpose, information architecture, hierarchy, accessibility, and craft. D8 added by the same calibration: reviewers never shipped with craft below 3, and blind gold-standard panels ranked SHIP-gated builds last on craft grounds — the rubric weight (3 of 35) cannot express that veto, so the floor does.",
+    "recognizedVerdicts": "A review whose verdict is absent or unrecognized is not a usable review. The gate returns REVIEW-REQUIRED rather than inferring intent."
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A answers the shift lead's question directly: a headline verdict names Login as closest to breach with a single primary 'Move an agent to Login' action, and queues are grouped into risk-ordered zones, so the 60-second job needs no scanning. B presents four equal-weight cards in fixed order with an equally prominent 'Reassign to X' primary button on every queue (including healthy General), and at 390px the top-risk Login sits below Billing, below the fold. A's escalation is behind an inspect panel plus an explicit confirm; B de-emphasizes escalation well but offers no allocation recommendation. A also verified stronger on reproduced accessibility behavior (live announcements, focus moved to the inspect heading).",
+  "suspected_unblinding": "A's app.js comments cite a named rules document ('derived only from supplied facts (see FRAME.md A1)') and B's header comment says 'Facts only: no invented customers, metrics, policies, or capabilities' — both hint at a fact-discipline treatment; A's explicit document reference made a treatment guessable, though not which label maps to which team.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D8",
+      "description": "The sanitized source as packaged does not parse — both docblocks in app.js (lines 53 and 71) are missing their closing '*/' (2 openers, 0 closers), so the page renders empty when served as-is; behavior matched the packet screenshots only after re-adding the two closers, and the symmetric-loss pattern indicates sanitizer damage rather than builder error.",
+      "evidence": "node --check A/source/app.js fails at line 53; served page throws 'Invalid or unexpected token' and renders 0 buttons; reproduced working app after inserting the two ' */' lines in a scratch copy."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "After reassigning Agent 1 to Login, the Login card still reads 'Agents staffed 3' — the move is reflected only in the sidebar ('Assigned to Login', 'Agent 1 → Login'), so card-level staffing misstates the post-move allocation.",
+      "evidence": "Reproduced on repaired copy: announcer said 'Agent 1 moved to Login.' while the Login dl still showed 'Agents staffed 3'; also visible in A/evidence/interaction-01-reassign-agent.png."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Focus drops to body after reassign/undo because the whole app re-renders, so keyboard users lose their place; mitigated by polite live-region announcements and by explicit focus management on the inspect panel.",
+      "evidence": "Reproduced: document.activeElement was BODY after the reassign click; announcer emitted 'Agent 1 moved to Login.'; inspect click moved focus to h3#inspect-heading-login."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D2",
+      "description": "At 390px the available-agents panel and undo controls stack below all four queue cards, so undoing a move on mobile requires scrolling past the full queue list.",
+      "evidence": "A/mobile.png — 'Available agents' and 'Recent reassignments' render at the bottom of the 390px page."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D3",
+      "description": "All four queues render as equal-weight cards in fixed order (Billing first); only a border and badge distinguish the top-risk Login, and at 390px Login sits below the fold beneath Billing — the at-risk queue is not visually dominant as the acceptance check requires.",
+      "evidence": "B/evidence/interaction-01-inspect-breach.png (desktop grid) and my reproduced 390px loaded capture (reviewer2-verify/B-390-loaded.png) showing Billing first, Login second."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "Every queue, including healthy General, carries an equally prominent primary 'Reassign to X' button and an agent picker, making misallocation as low-friction as the correct move; there is no summary verdict or recommended action for the two available agents.",
+      "evidence": "B/evidence/interaction-01-inspect-breach.png — identical blue primary buttons on Billing, Login, API, and General."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Reassignment/undo feedback is not reliably announced — the undo banner is created with role='status' at render time (no persistent live region), the full re-render resets focus to body, and there is no focus management anywhere.",
+      "evidence": "Source: renderUndoBanner() creates a fresh role='status' div per render; index.html has no aria-live node; reproduced activeElement BODY after clicking 'Reassign to Login'."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Billing is badged '✓ On pace, some due soon' in green despite 3 conversations due within 10 minutes and the largest near-term due count after Login — the green check under-signals near-term risk relative to the supplied facts.",
+      "evidence": "B/evidence/interaction-01-inspect-breach.png — green check badge on Billing with 'Due within 10 min: 3' in red."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D1",
+      "description": "computeTopRiskId falls back to the full queue list when no queue is over target, so some queue is always labeled 'Greatest near-term breach risk' even in an all-healthy dataset.",
+      "evidence": "B/source/app.js computeTopRiskId(): 'const pool = overTarget.length ? overTarget : queues' then sorted[0] is always returned."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "The packet's primary captures (desktop.png, mobile.png, state-04-390px-viewport.png) all show only the loading skeleton — the loaded layout appears nowhere in B's own top-level or 390px evidence; I verified the loaded 1440px and 390px views by serving the source locally (no horizontal scroll, cards stack cleanly).",
+      "evidence": "B/desktop.png, B/mobile.png, B/evidence/state-04-390px-viewport.png (skeleton only) vs reproduced reviewer2-verify/B-390-loaded.png after the 600 ms simulated fetch resolves."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "A 'Demo controls (state testing)' panel ships visibly in the product surface on every view.",
+      "evidence": "Visible at the bottom of every B screenshot including B/evidence/interaction-01-inspect-breach.png."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 2, "D3": 2, "D4": 2, "D5": 3, "D6": 3, "D7": 2, "D8": 3, "D9": 3 }
+  },
+  "notes": {
+    "evidence_viewed": "desktop / mobile / interactions / states / sanitized source / locally reproduced interactions (both builds served locally and driven with a locally launched Playwright chromium)",
+    "score_observations": {
+      "A": {
+        "D5": "Staffed count on the queue card does not reflect a completed reassignment (finding above).",
+        "D7": "Announcements, labels, headings, reduced-motion, and inspect focus management all verified; focus reset to body after action re-render is the remaining gap.",
+        "D8": "Visual system is consistent and matches across all evidence; docked one point because the packaged source does not parse as shipped (likely sanitizer damage — see finding), which blocks out-of-the-box verification."
+      },
+      "B": {
+        "D2": "Flat fixed-order grid; agent pool only discoverable inside per-card dropdowns; no grouping by risk.",
+        "D3": "Top-risk highlight is border-and-badge only; buried below the fold at 390px.",
+        "D4": "Equal-prominence reassign primaries on all queues; escalation de-emphasis with explanatory note is genuinely good.",
+        "D7": "Good static semantics (h1/h2, dl, labeled controls, focus-visible, reduced-motion) but no reliable announcements and no focus management.",
+        "D9": "Scored from my reproduced 390px loaded capture since the packet's own mobile/390 evidence shows only the skeleton."
+      }
+    },
+    "weighted_totals_out_of_140": { "A": 129, "B": 87 },
+    "caveats": "Pairwise choice was recorded before scoring. A's runtime behavior was verified on a scratch copy repaired only by re-adding the two stripped '*/' comment closers; every reproduced behavior matched A's packet screenshots, so I treated the screenshots as honest. Packet assembly should re-check the sanitizer (comment-closer stripping in A) and B's capture timing (screenshots taken before the 600 ms simulated fetch resolves)."
+  }
+}

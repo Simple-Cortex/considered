@@ -1,0 +1,156 @@
+{
+  "seed": "20260803",
+  "created_at": "2026-08-04T18:03:21.622Z",
+  "packets": {
+    "packet-dense-admin-bulk-destructive": {
+      "scenario_id": "dense-admin-bulk-destructive",
+      "condition_by_label": {
+        "A": "considered",
+        "B": "baseline"
+      },
+      "run_id_by_label": {
+        "A": "dense-admin-bulk-destructive-considered-001",
+        "B": "dense-admin-bulk-destructive-baseline-002"
+      },
+      "redactions_by_label": {
+        "A": 31,
+        "B": 0
+      }
+    },
+    "packet-dense-chart-dump-rescue": {
+      "scenario_id": "dense-chart-dump-rescue",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "dense-chart-dump-rescue-baseline-001",
+        "B": "dense-chart-dump-rescue-considered-002"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 49
+      }
+    },
+    "packet-dense-settings-23-actions": {
+      "scenario_id": "dense-settings-23-actions",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "dense-settings-23-actions-baseline-001",
+        "B": "dense-settings-23-actions-considered-002"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 32
+      }
+    },
+    "packet-dense-sre-console": {
+      "scenario_id": "dense-sre-console",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "dense-sre-console-baseline-002",
+        "B": "dense-sre-console-considered-001"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 31
+      }
+    },
+    "packet-dense-support-queue": {
+      "scenario_id": "dense-support-queue",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "dense-support-queue-baseline-002",
+        "B": "dense-support-queue-considered-001"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 33
+      }
+    },
+    "packet-persuade-portfolio": {
+      "scenario_id": "persuade-portfolio",
+      "condition_by_label": {
+        "A": "considered",
+        "B": "baseline"
+      },
+      "run_id_by_label": {
+        "A": "persuade-portfolio-considered-002",
+        "B": "persuade-portfolio-baseline-001"
+      },
+      "redactions_by_label": {
+        "A": 28,
+        "B": 1
+      }
+    },
+    "packet-persuade-pricing-page": {
+      "scenario_id": "persuade-pricing-page",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "persuade-pricing-page-baseline-001",
+        "B": "persuade-pricing-page-considered-001"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 58
+      }
+    },
+    "packet-persuade-saas-landing": {
+      "scenario_id": "persuade-saas-landing",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "persuade-saas-landing-baseline-001",
+        "B": "persuade-saas-landing-considered-001"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 30
+      }
+    },
+    "packet-read-changelog": {
+      "scenario_id": "read-changelog",
+      "condition_by_label": {
+        "A": "considered",
+        "B": "baseline"
+      },
+      "run_id_by_label": {
+        "A": "read-changelog-considered-001",
+        "B": "read-changelog-baseline-001"
+      },
+      "redactions_by_label": {
+        "A": 27,
+        "B": 0
+      }
+    },
+    "packet-read-docs-home": {
+      "scenario_id": "read-docs-home",
+      "condition_by_label": {
+        "A": "baseline",
+        "B": "considered"
+      },
+      "run_id_by_label": {
+        "A": "read-docs-home-baseline-001",
+        "B": "read-docs-home-considered-001"
+      },
+      "redactions_by_label": {
+        "A": 0,
+        "B": 25
+      }
+    }
+  }
+}

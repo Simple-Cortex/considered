@@ -1,0 +1,148 @@
+{
+  "fixture_set_version": "1.0.0",
+  "lint_contract": [
+    {
+      "id": "valid-operate",
+      "target": "contracts/valid-operate.tsx",
+      "expected_exit": 0,
+      "expected_findings": []
+    },
+    {
+      "id": "missing-contract",
+      "target": "contracts/missing-contract.tsx",
+      "expected_exit": 1,
+      "required_findings": [
+        {
+          "rule": "CONTRACT-01",
+          "severity": "S1"
+        }
+      ]
+    },
+    {
+      "id": "invalid-operate",
+      "target": "contracts/invalid-operate.tsx",
+      "expected_exit": 1,
+      "required_findings": [
+        {
+          "rule": "ACT-08",
+          "severity": "S1"
+        },
+        {
+          "rule": "IA-09",
+          "severity": "S2"
+        },
+        {
+          "rule": "IA-17",
+          "severity": "S1"
+        },
+        {
+          "rule": "DASH-03",
+          "severity": "S2"
+        },
+        {
+          "rule": "HIER-05",
+          "severity": "S2"
+        },
+        {
+          "rule": "HIER-06",
+          "severity": "S2"
+        },
+        {
+          "rule": "ACT-03",
+          "severity": "S2"
+        },
+        {
+          "rule": "LOOP-04",
+          "severity": "S2"
+        },
+        {
+          "rule": "ROLL-01",
+          "severity": "S2"
+        }
+      ]
+    }
+  ],
+  "lint_source": [
+    {
+      "id": "clean-source",
+      "target": "source/clean",
+      "expected_exit": 0,
+      "expected_findings": []
+    },
+    {
+      "id": "violation-source",
+      "target": "source/violations",
+      "expected_exit": 0,
+      "required_findings": [
+        {
+          "rule": "A11Y-04",
+          "severity": "S1"
+        },
+        {
+          "rule": "ACT-06",
+          "severity": "S1"
+        },
+        {
+          "rule": "STATE-01",
+          "severity": "S1"
+        },
+        {
+          "rule": "A11Y-09",
+          "severity": "S1"
+        },
+        {
+          "rule": "A11Y-11",
+          "severity": "S1"
+        },
+        {
+          "rule": "ACT-01",
+          "severity": "S2"
+        },
+        {
+          "rule": "IA-03",
+          "severity": "S2"
+        },
+        {
+          "rule": "COMP-03",
+          "severity": "S3"
+        },
+        {
+          "rule": "COMP-04",
+          "severity": "S3"
+        },
+        {
+          "rule": "COMP-07",
+          "severity": "S3"
+        },
+        {
+          "rule": "COMP-17",
+          "severity": "S3"
+        }
+      ]
+    }
+  ],
+  "inventory": [
+    {
+      "id": "existing-system",
+      "target": "projects/system",
+      "expected_exit": 0,
+      "required_json_properties": [
+        "tokens.--surface",
+        "tokens.--text-primary",
+        "components.StatusCard",
+        "fonts"
+      ]
+    },
+    {
+      "id": "empty-project",
+      "target": "projects/empty",
+      "expected_exit": 0,
+      "required_json_properties": [
+        "files",
+        "tokens",
+        "components"
+      ]
+    }
+  ],
+  "roll_cases": "roll/cases.json"
+}

@@ -1,0 +1,72 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B lets the 2-minute evaluator see the actual decision material without interaction: the qualified 31→9 proof is a hero stat card, the migration objection is the first section with a concrete 3-step import answer and an honest no-duration caveat, and a labeled example handoff shows exactly what the product produces. A presents the same facts honestly but hides the Brightline case detail and the CSV import answer behind collapsed accordions and renders the handoff fields as empty label chips, so the core evidence requires clicks the time budget penalizes. B also has the stronger verified states (distinct empty/format/personal-email validation messages, focused success state, reduced-motion honored in CSS and JS). B's one fact-discipline slip (an unsupported definition of 'handoff omission') is outweighed by its clearer enablement of the stated job.",
+  "suspected_unblinding": "Labels themselves gave nothing away, but B's source/ retains process artifacts — a self-captured evidence/ folder (relaynotes-pslc-01..07) and step-labeled comments like 'E8: trial-form validation error' — suggesting a checklist- or workflow-driven treatment; A's source has no such artifacts. I do not know which team is which.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "Expanded Brightline card defines a 'handoff omission' ('a gap the next shift found: a missing owner, an undocumented decision, or a next step nobody wrote down') and asserts Brightline counted by that definition; the supplied facts give the 31-to-9 numbers but no such definition."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "The core proof (Brightline before/after and the approved testimonial) and the migration-objection answer are both hidden behind collapsed accordions by default, so a 2-minute evaluator scanning the page sees only two accordion headers where the decisive evidence should be.",
+      "evidence": "A/desktop.png shows both accordions collapsed; A/evidence/interaction-02-inspect-brightline-case.png and interaction-03-see-csv-import.png show the content only appears after a click."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "'What a handoff contains' renders the five fields as empty label chips with no example values, adding almost no information for someone evaluating what the product actually outputs.",
+      "evidence": "A/desktop.png, 'What a handoff contains' section (Owner / Customer impact / Latest decision / Next step / Linked evidence chips with no content)."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The accordion's '+' indicator does not change when the panel is expanded, so the visual control state contradicts the open panel (native details/summary still conveys state programmatically).",
+      "evidence": "A/evidence/interaction-02-inspect-brightline-case.png shows the Brightline panel open with the '+' icon unchanged."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D3",
+      "description": "The full-viewport hero leaves a large blank band between the CTA and the first content section, spending roughly a third of the first two screens on empty space.",
+      "evidence": "A/desktop.png, region between 'Work email required. No credit card.' and 'What a handoff contains'."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The expanded Brightline card states an operational definition of 'handoff omission' as fact; the definition is plausible but not among the supplied facts, and it materially shapes how the 31-to-9 evidence is read.",
+      "evidence": "B/evidence/interaction-02-inspect-brightline-case.png and B/source/index.html ('A handoff omission is a gap the next shift found...')."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The example handoff (Jordan M., checkout API incident, ticket #4821) is invented content; it is explicitly labeled 'Example handoff — illustrative, not a real incident', which qualifies it, but the concrete detail still carries some risk of being read as real product data.",
+      "evidence": "B/desktop.png, 'What a handoff actually contains' table with its italic qualifier line."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "On the 390 px viewport the proof stat card stacks below the CTA, so the Brightline evidence falls off the first mobile screen while the commitment button remains above it.",
+      "evidence": "B/mobile.png and B/evidence/state-03-390px-viewport.png (stat card appears after the START TRIAL button)."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 3, "D4": 4, "D5": 3, "D6": 3, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 3, "D8": 4, "D9": 4 }
+  }
+}

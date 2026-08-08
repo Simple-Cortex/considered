@@ -1,0 +1,79 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B surfaces every supplied case fact (scope, constraint, supplied outcome, and what was not supplied) on load, so a director on a 4-minute budget can evaluate fit without discovery clicks; A collapses all case evidence behind accordions and its process reveals contain filler that only restates stage order. B's interaction layer is also stronger under reproduction: working skip link as first tab stop, aria-describedby error associations, focus management on in-page navigation, and reduced-motion-aware behavior. B's faults (invented before-states, evaluator-facing success copy, red label misuse) are revise-level, while A's hidden evidence directly slows the stated job.",
+  "suspected_unblinding": "B's source comments cite structured rule codes ('A1, S1 primary', 'A2/A3, S2 secondary, reversible toggles') and its copy mirrors evaluation vocabulary ('supplied outcome', 'not supplied and are not stated here'), which suggests a checklist-driven treatment and made the condition guessable. Verdict was based on the packet evidence regardless.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "Invented 'before' conditions in both cases (client had 'no visual identity, no gallery wayfinding' / 'no season identity, poster system, or venue signage') — prior-state facts not supplied by the scenario, used to build a before/after persuasion frame."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "All case-study evidence is collapsed by default, so the landing view shows only two project titles and the strongest evidence of fit requires discovery clicks within the 4-minute budget.",
+      "evidence": "A/desktop.png (both cards collapsed, no case content visible) vs A/evidence/interaction-01-open-case-study.png (scope/constraint/outcome only after expanding)"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The required inspect-the-process interaction yields no information: each step's revealed detail merely restates its position ('The second of three stages, between site study and production handoff').",
+      "evidence": "A/evidence/interaction-02-inspect-process.png; A/source/index.html process-detail panels"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Field error messages are not programmatically associated with their inputs — no aria-describedby is ever set, so screen readers announcing a focused invalid field do not get its error text.",
+      "evidence": "Reproduced with local Playwright: after empty submit, aria-describedby was absent on all four fields (organization/project/timeline/budget); A/source/app.js setFieldError sets only aria-invalid"
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D4",
+      "description": "Success copy 'Request sent. Mara will follow up directly about next steps' promises a follow-up; it honors the no-response-time constraint by the letter but edges toward a response promise not supplied.",
+      "evidence": "Reproduced on local serve (same text after valid submit); A/evidence/interaction-03-request-project-conversation.png"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Both case panels assert invented prior-state facts ('no visual identity, no gallery wayfinding'; 'no season identity, poster system, or venue signage') that the scenario did not supply.",
+      "evidence": "B/desktop.png BEFORE columns; B/source/index.html case markup"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "The submit success state addresses the evaluator rather than the visitor ('This build has no backend, so nothing was actually transmitted') behind an artificial 400 ms 'Sending…' delay; the captured evidence shows the button stuck at 'Sending…', and the copy could not ship as-is.",
+      "evidence": "B/evidence/interaction-03-request-project-conversation.png (button reads 'Sending…' with success text below); B/source/app.js window.setTimeout(..., 400); success text reproduced on local serve"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The 'AFTER — SUPPLIED OUTCOME' labels use the same alarm red as validation errors and the primary CTA, so supplied outcomes read as warnings and error states compete with the action color.",
+      "evidence": "B/desktop.png (red outcome labels and red CTA) compared with B/evidence/state-01-contact-form-validation-error.png (identical red for errors)"
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The budget field placeholder 'e.g. 20,000–35,000' can be read as the designer's typical engagement band — a price signal the scenario does not supply.",
+      "evidence": "B/desktop.png contact section; B/evidence/state-01-contact-form-validation-error.png placeholder visible"
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 3, "D3": 3, "D4": 4, "D5": 3, "D6": 3, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 3, "D4": 3, "D5": 3, "D6": 4, "D7": 4, "D8": 3, "D9": 4 }
+  }
+}

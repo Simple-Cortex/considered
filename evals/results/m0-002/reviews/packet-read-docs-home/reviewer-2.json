@@ -1,0 +1,73 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "Both outputs complete the install → authenticate → preview path with correct commands and all required states evidenced. A wins on fact fidelity and retrieval structure: every capability statement in A is traceable to the supplied facts, its page section order matches the sidebar order (Get started, Guides, CLI reference, Configuration, CI, Troubleshooting), its stub sections redirect the reader to Get started and the CLI reference instead of dead-ending, and its quickstart makes the plan/apply distinction explicit in text ('it is the only command in this workflow that publishes anything') plus Does-not-publish/Publishes badges repeated in the reference table. B has the stronger visual treatment — side-by-side preview-vs-publish comparison cards, copy buttons on every command, a cleaner heading outline — but it asserts 'Preview only — nothing leaves your machine' in the safety-critical comparison card, a capability the facts do not supply (they only support 'previews without publishing'), its body section order diverges from its own nav order, and its Guides/CI sections are dead-end placeholders ('Task-based guides live here'). Given the scenario's stated consequence (a misleading quickstart causes failed releases or abandonment) and the instruction not to award a win for decorative treatment, A's tighter adherence to the closed fact set outweighs B's superior visual hierarchy.",
+  "suspected_unblinding": "B's app.js contains comments referencing coded requirement IDs (e.g. 'C2/A3/A4 — Search (client-side index over this page's own content; required state: no-results)'), which suggests one build followed a coded checklist or method. I do not know which treatment such codes map to and did not use this in judging; recorded per instructions.",
+  "unsupported_claim_label": { "A": true, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "'Preview only — nothing leaves your machine' (comparison card for atlas release plan, desktop.png and source index.html). The facts support only 'previews files, version, and destination without publishing'; whether the command performs network activity is not supplied. This is an invented capability claim in the highest-stakes spot on the page."
+    },
+    {
+      "label": "B",
+      "claim": "'Task-based guides live here.' and 'Continuous-integration setup lives here.' assert that guide/CI content exists; no such content is supplied and the sections are empty placeholders."
+    },
+    {
+      "label": "A",
+      "claim": "'Task-based guides aren't published yet.' and 'This documentation set doesn't yet cover CI-specific setup' invent a publication status not in the facts. Low materiality: the statements steer the reader back to supported sections rather than implying unsupplied capability."
+    }
+  ],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The preview card claims 'nothing leaves your machine' for atlas release plan. The supplied facts only establish that plan does not publish; asserting fully local behavior overstates safety in exactly the place the scenario says a misleading claim causes harm (a developer on a restricted network or with confidentiality constraints could act on it). Fix: restate as 'previews without publishing', matching the facts."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Body section order (Get started, Troubleshooting, CLI reference, Configuration, Guides, CI) diverges from the sidebar order (Get started, Guides, CLI reference, Configuration, CI, Troubleshooting). Nav clicks jump non-sequentially and scroll position no longer tracks the menu, adding retrieval friction. Evidence: desktop.png and index.html section order versus nav list."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Guides and CI sections are one-line placeholders ('Task-based guides live here.', 'Continuous-integration setup lives here.') that imply content and give the blocked reader nowhere to go. A's equivalent stubs cross-link to Get started and the CLI reference; B's do not."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "index.html renders six h1 elements, one per section (get-started-heading through troubleshooting-heading). Multiple h1s flatten the document outline for screen-reader and heading-navigation users; sections should be h2 under a single page h1. Evidence: source/index.html."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Only the install command has a copy button (source shows one data-copy-target and the app.js clipboard fallback wired to it); atlas login, plan, and apply must be selected manually. The required interaction (copy an install command) is met, but B demonstrates the stronger pattern with labeled copy buttons on every command."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D3",
+      "description": "The plan/apply distinction relies on small inline badges ('Safe preview — publishes nothing' / 'Publishes the release') plus body text. Adequate and repeated in the reference table, but less glanceable than B's structural side-by-side comparison; a skimming reader could miss the badges."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "'Task-based guides aren't published yet' invents a publication status not in the fact set. Low materiality since it redirects to supported sections, but the sentence could simply describe where the supported paths live without asserting status."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 3, "D5": 4, "D6": 4, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 3, "D3": 4, "D4": 4, "D5": 2, "D6": 4, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

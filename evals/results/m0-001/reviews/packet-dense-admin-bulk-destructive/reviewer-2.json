@@ -1,0 +1,79 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A's default view is an exception feed (stale candidates first, filter on with a 27-of-46 count) and it surfaces the brief's central uncertainty as a per-row 'Production-critical: Unconfirmed' column, so the admin can distinguish stale candidates from active production integrations before acting. B's bulk-disable confirm button and result 'Done' button render white text on a white background (reproduced: computed color and background both rgb(255,255,255)), leaving the confirm control unreadable at the decisive moment of the required bulk action. B's simulated bulk error also asserts an unsupplied policy ('No owner on record — assign an owner before disabling') that its own single-record disable contradicts, and that would block disabling Legacy Forms, the clearest obsolete candidate. Both preserve the five seed records exactly and gate delete behind a typed-count confirmation with no bulk delete.",
+  "suspected_unblinding": "none — no treatment, tool, or team is named in either build; visual styles differ (dark terminal vs light neutral) but neither implies a specific treatment",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "Bulk-error copy asserts an unsupplied policy that ownerless connections cannot be disabled and directs the admin to 'assign an owner', a capability the scenario's action set does not include; the build's own single-record disable succeeds unconditionally for the same record, contradicting the claim."
+    }
+  ],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D4",
+      "description": "The bulk-disable confirmation button and the result dialog's 'Done' button render white text on a white background, so the confirm control for the required bulk action is unreadable and distinguishable from Cancel only by position.",
+      "evidence": "Reproduced live: #confirm-bulk-disable and #close-bulk-result computed color rgb(255,255,255) on background rgb(255,255,255); cause is styles.css where '.dialog-actions button' (0-1-1) overrides '.btn-primary' background while '.btn-primary' color:#fff survives. Visible as blank pills in B/evidence/interaction-03-bulk-disable-with-confirmation.png and B/evidence/state-03-bulk-action-error-for-one-selected-record.png."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The bulk failure reason invents a standing policy (ownerless connections cannot be disabled; 'assign an owner before disabling') that has no supplied basis, no corresponding UI action, and is contradicted by disableSingle, which disables ownerless records unconditionally — misleading the admin about how to remediate the most obviously obsolete record (Legacy Forms).",
+      "evidence": "B/source/app.js: failure branch reason 'No owner on record — assign an owner before disabling.' vs function disableSingle setting status='disabled' with no owner check; shown in B/evidence/state-03-bulk-action-error-for-one-selected-record.png."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Modal dialogs cannot be dismissed with the keyboard and focus is not moved into the dialog on open, despite aria-modal='true' being declared.",
+      "evidence": "Reproduced live: Escape pressed with bulk-confirm dialog open leaves #bulk-confirm-overlay mounted and document.activeElement outside the dialog; B/source/app.js contains no keydown handler."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "A red 'Delete' link is the most visually salient action on every row of all 46 records on desktop and on every mobile card, giving the destructive, non-bulk action constant prominence even though it is gated by typed confirmation.",
+      "evidence": "B/desktop.png actions column and B/mobile.png card footers; footnote in the same captures confirms delete is permanent."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Production-critical status — the brief's central pre-action uncertainty — is not represented in the table at all; it appears only after opening a record's detail modal or in the bulk confirm text, so per-row triage cannot see it.",
+      "evidence": "B/desktop.png (no such column) vs B/evidence/interaction-02-inspect-one-record.png ('Production-critical: Not specified — verify before disabling')."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Dialogs use role='alertdialog' with aria-labelledby but omit aria-modal, and focus is not moved into the dialog when it opens, so keyboard/AT users start outside the modal (Escape-to-close does work and focus is restored on re-render).",
+      "evidence": "Reproduced live: with A's bulk-confirm modal open, document.activeElement is outside the .modal element; A/source/app.js has a global Escape handler and captureFocus/restoreFocus but no focus-into-dialog on open."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The 'Stale candidate' badge alternates between inline-after-name and wrapped-to-second-line placement from row to row, adding scan noise to the application column.",
+      "evidence": "A/desktop.png rows: inline for Asset Uploader/Onboarding Bot, wrapped for Password Rotator/Partner API Bridge/Access Reviewer."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "The 390 px view is a very long single-column card stack (10 dense cards per page) with right-aligned metadata pairs that crowd the card edge, making the 5-minute triage job slower on mobile though all fields and selection are preserved.",
+      "evidence": "A/evidence/state-04-390-px-viewport.png and A/mobile.png."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 4, "D5": 4, "D6": 4, "D7": 3, "D8": 3, "D9": 3 },
+    "B": { "D1": 3, "D2": 3, "D3": 3, "D4": 2, "D5": 2, "D6": 3, "D7": 2, "D8": 2, "D9": 3 }
+  }
+}

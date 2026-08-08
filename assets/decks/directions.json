@@ -1,0 +1,688 @@
+{
+  "$schema": "considered-deck/v1",
+  "kind": "directions",
+  "version": "1.1.0",
+  "entries": [
+    {
+      "id": "du-bois-paris-data-portraits",
+      "name": "Du Bois Paris Data Portraits",
+      "source": "W. E. B. Du Bois and the Atlanta University team, statistical charts for the Exhibit of American Negroes at the 1900 Exposition Universelle in Paris, Progressive Era data portraiture.",
+      "strength": "dual",
+      "verb": "argues",
+      "modes": [
+        "persuade",
+        "analyze",
+        "read"
+      ],
+      "thesis": "Evidence becomes advocacy when every geometric comparison is composed as a claim about lives, so the interface feels like a brief being proved rather than a dashboard being decorated.",
+      "laws": {
+        "palette": "Warm cream #F2E6C9 is the field, brick red #B43A2F marks the claim, deep navy #18345A carries comparison, mustard #D7A62A signals change, olive #667044 supports secondary series, and carbon black #171717 anchors labels.",
+        "type": "Use compact serif or grotesque captions in small capitals, oversized handbill-scale numerals for decisive facts, and terse sentence fragments placed as evidence labels rather than generic headings.",
+        "topology": "Build each view around one emphatic diagram, with radial wedges, stepped bars, or folded bands occupying the center and marginal annotations behaving like a curator's case notes.",
+        "controls": "Filters appear as labeled paper tabs, selected states fill with brick red or navy, comparison toggles change the geometry itself, and primary actions use black rules with squared corners.",
+        "motion": "Series may draw, unfold, or rotate once to reveal the argument; labels, axes, and the cream field must never drift or pulse. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A workforce dashboard opens with a red spiral whose widening turns represent promotion gaps by tenure, while a navy marginal note states the exact policy decision the pattern demands.",
+      "borrowSkeleton": "Take the proposition-first page, one diagram as the dominant sentence, annotations as supporting clauses, and navigation as an index of claims, not a card grid of metrics.",
+      "rating": 3
+    },
+    {
+      "id": "isotype-gesellschaft-wirtschaft",
+      "name": "Isotype Gesellschaft und Wirtschaft",
+      "source": "Otto Neurath, Marie Reidemeister, and Gerd Arntz, Gesellschaft und Wirtschaft pictorial statistical atlas, Leipzig, 1930, Vienna Method social information design.",
+      "strength": "composition",
+      "verb": "argues",
+      "modes": [
+        "persuade",
+        "analyze",
+        "read"
+      ],
+      "thesis": "Repeated signs make quantities socially legible, so an interface in this system insists that comparison should be counted by the eye before it is interpreted by prose.",
+      "laws": {
+        "palette": "Paper white #F4F0E6 is the base, vermilion #D83B2D identifies the focal population, coal black #111111 defines pictograms and type, cobalt #2459A6 carries comparison, ochre #D39B2A marks resources, and leaf green #3F7B4A indicates favorable outcomes.",
+        "type": "Use a plain geometric sans in short labels, sentence case for explanation, tabular numerals, and no ornamental display face; scale changes only between plate title, row label, and note.",
+        "topology": "Organize views as horizontal counting fields with stable baselines, repeated unit signs, a narrow label rail, and a legend that remains adjacent to the evidence it decodes.",
+        "controls": "Selectors are compact legend chips carrying both icon and word, active states invert to black and white, and range changes add or remove full units instead of morphing them into abstract blobs.",
+        "motion": "Units may enter by counted groups or reorder along a baseline; pictogram shape, unit value, and legend position must never animate ambiguously. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A benefits comparison replaces four pricing cards with aligned rows of worker, clinic, and calendar signs, each red figure representing one covered outcome and each blue figure representing one uncovered burden.",
+      "borrowSkeleton": "Take the shared baseline, repeated semantic unit, adjacent legend, and row-by-row comparison; do not paste pictograms onto conventional cards.",
+      "rating": 3
+    },
+    {
+      "id": "mexico-68-olympic-program",
+      "name": "México 68 Olympic Program",
+      "source": "Lance Wyman, Pedro Ramírez Vázquez, and Eduardo Terrazas, identity and environmental graphics for the 1968 Mexico City Olympic Games, Op Art fused with Huichol line traditions.",
+      "strength": "dual",
+      "verb": "performs",
+      "modes": [
+        "experience",
+        "operate",
+        "persuade"
+      ],
+      "thesis": "Identity and wayfinding become one continuous rhythm, making an interface feel inevitable because every path, label, and transition grows from the same concentric line logic.",
+      "laws": {
+        "palette": "Hot pink #E6007E leads, Olympic orange #F36C21 and sun yellow #F5C400 mark adjacent sections, turquoise #00A6A6 and grass green #4C9F38 identify routes, black #111111 carries the linework, and white #FFFFFF provides optical separation.",
+        "type": "Use a wide geometric grotesque with concentric inline display lettering for only the largest identity moments, uppercase route labels, compact numerals, and plain sans text for instructions.",
+        "topology": "Divide space into bold route bands, circular event nodes, vertical sign pylons, and dense edge-to-edge pattern fields interrupted by clean operational clearings.",
+        "controls": "Buttons are solid route-color lozenges or squared sign panels, selected states gain a black concentric keyline, focus states use a double white and black outline, and icons share one monoline pictogram family.",
+        "motion": "Line bands may travel toward a destination and concentric marks may resolve from interference; body copy, controls under pointer, and accessibility labels must remain still. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A checkout progress indicator becomes five colored lanes that converge into a black-ringed payment node, then separate toward pickup and delivery destinations.",
+      "borrowSkeleton": "Take the route network as information architecture, nodes as states, color as destination ownership, and pattern as a threshold between sections, not as wallpaper behind cards.",
+      "rating": 3
+    },
+    {
+      "id": "blue-note-reid-miles-sleeves",
+      "name": "Reid Miles Blue Note Session Sleeve",
+      "source": "Reid Miles and Francis Wolff, Blue Note Records LP sleeves, New York, 1956 to 1965, modernist jazz photography and asymmetric typographic composition.",
+      "strength": "dual",
+      "verb": "performs",
+      "modes": [
+        "persuade",
+        "read",
+        "experience"
+      ],
+      "thesis": "A cropped human presence and a typographic riff trade the lead, so the interface feels paced like a session rather than costumed with retro record props.",
+      "laws": {
+        "palette": "Use rich black #0B0B0B and warm white #F4F0E8 as the constant pair, then assign one session color such as electric blue #1675D1, acid yellow #F2D51B, scarlet #D62E2E, or mint #68B99A to carry emphasis.",
+        "type": "Set a condensed grotesque in extreme size jumps, stack artist or product names as rhythmic blocks, mix uppercase with small lowercase notes, and let numerals function as visual beats.",
+        "topology": "Use one hard-cropped monochrome image, one dominant type block, generous negative space, and a few precise rules; alignments may shift by section but must establish a visible rhythm.",
+        "controls": "Primary actions are session-color rectangles with blunt black labels, secondary controls are underlined words or outlined squares, selected states crop or invert rather than glow, and focus uses a two-pixel white ring outside black.",
+        "motion": "Crops may slide to reveal the subject and type blocks may enter on staggered beats; text must never wobble, continuously marquee, or imitate vinyl rotation. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A musician profile places a black-and-white face cropped to one eye across the left third while the booking action lands as a huge blue word broken across three lines on the right.",
+      "borrowSkeleton": "Take the duet between image crop and type block, the single accent color, and the deliberate off-beat alignment; reject album-shaped cards and decorative record icons.",
+      "rating": 3
+    },
+    {
+      "id": "ospaaal-tricontinental-posters",
+      "name": "OSPAAAL Tricontinental Foldout Poster",
+      "source": "OSPAAAL foldout poster supplements distributed with Tricontinental magazine, Havana, 1967 to 1980, Cuban revolutionary screenprint and offset poster school.",
+      "strength": "world",
+      "verb": "argues",
+      "modes": [
+        "persuade",
+        "read",
+        "experience"
+      ],
+      "thesis": "One compressed emblem carries a public position across languages, so an interface in this system treats every screen as a piece of mobilizing evidence rather than neutral promotion.",
+      "laws": {
+        "palette": "Uncoated cream #EFE2C3 grounds the system, revolutionary red #D6292F marks the call, deep black #101010 creates silhouette, cobalt #185AA7 and emerald #16845B separate constituencies, and sharp yellow #F4C62B signals urgency.",
+        "type": "Use heavy hand-cut sans lettering, compact multilingual captions, abrupt scale contrast, and short declarative lines; avoid polished corporate sentence rhythm.",
+        "topology": "Center one symbolic collision or silhouette, reserve a narrow multilingual footer, use diagonal pressure and cropped fields, and allow one hard border to behave like a printed fold.",
+        "controls": "Calls to action are poster captions with a solid red ground, choices use screenprinted symbol plus text, active states overprint black on the accent, and disabled states become a low-ink hatch rather than gray translucency.",
+        "motion": "Color plates may register into place and symbols may snap from fragments into one emblem; slogans, legal text, and selected controls must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A mutual-aid signup page centers two differently colored hands locking into the shape of a delivery route, with language choices stacked in a narrow black footer like a Tricontinental caption strip.",
+      "borrowSkeleton": "Take the emblem as the thesis, the multilingual caption rail, the overprinted color logic, and the fold as a sectional boundary; do not turn the work into a gallery of poster thumbnails.",
+      "rating": 3
+    },
+    {
+      "id": "bbc-two-1991-idents",
+      "name": "BBC Two 1991 Ident Package",
+      "source": "Lambie-Nairn, BBC Two idents and continuity graphics, United Kingdom, 1991 to 2001, object-led broadcast identity.",
+      "strength": "world",
+      "verb": "performs",
+      "modes": [
+        "experience",
+        "persuade"
+      ],
+      "thesis": "A single characterful form changes behavior without losing identity, so the interface can shift tone by context while remaining recognizably one product.",
+      "laws": {
+        "palette": "The core mark is viridian #0B8F82, with matte white #F5F5F2, charcoal #202326, signal red #C9262C, pool blue #188CC8, and warm sand #D6C4A3 assigned to distinct behavioral scenes.",
+        "type": "Use restrained British grotesque captions with medium weight, short sentence case labels, and modest scale; the object, not oversized typography, performs the headline role.",
+        "topology": "Stage one large identity object in a physical or graphic field, keep continuity information in a quiet lower rail, and treat menus as scene changes around a stable central form.",
+        "controls": "Controls are compact broadcast captions, selected states cause the central form to adopt the control's behavior, focus is a crisp white keyline with a dark outer rule, and status uses small solid color pips.",
+        "motion": "The identity object may bounce, slice, paint, dissolve, or glide once per state change; navigation labels and persistent rails must never become kinetic scenery. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "An upload drop zone contains a sculptural green numeral-like product mark that dents under a dragged file, springs upright when accepted, and leaves the filename calm in the lower continuity rail.",
+      "borrowSkeleton": "Take one stable protagonist, contextual behavioral scenes, and a quiet continuity rail; do not scatter many mascot-like objects or mimic a television frame.",
+      "rating": 3
+    },
+    {
+      "id": "the-face-neville-brody",
+      "name": "Neville Brody The Face",
+      "source": "Neville Brody's art direction for The Face magazine, issues from 1981 to 1986, British post-punk editorial typography.",
+      "strength": "dual",
+      "verb": "performs",
+      "modes": [
+        "read",
+        "experience",
+        "persuade"
+      ],
+      "thesis": "Editorial hierarchy behaves like a live voice that interrupts, quotes, and changes tempo, so the interface reads as authored culture rather than a neutral content feed.",
+      "laws": {
+        "palette": "Use newsprint white #EEECE4 and ink black #111111 as the base, with one issue color such as safety orange #F05A28, royal blue #2456A6, magenta #D42978, or sulphur yellow #E3D52E plus a muted gray #8C8C87 for metadata.",
+        "type": "Combine a severe grotesque with one custom geometric display alphabet, use rotated folios, compressed uppercase labels, oversized initials, and abrupt but intentional scale changes that signal voice.",
+        "topology": "Build spreads from an editorial grid that can be visibly broken by pull quotes, vertical sidebars, image crops, and running furniture; every disruption must attach to content.",
+        "controls": "Navigation is issue furniture along edges, tabs use rotated or boxed labels, active states enlarge or reverse one typographic token, and buttons are blunt caption blocks rather than rounded pills.",
+        "motion": "Type may cut in like a headline, images may crop between beats, and side rails may lock as reading position; paragraphs and controls must never continuously jitter or rotate. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A culture-news reader opens an interview with a full-height portrait, a vertical magenta section word on the outside edge, and a pull quote that interrupts the column in a custom geometric alphabet.",
+      "borrowSkeleton": "Take the magazine spread, running edge furniture, typographic change of voice, and content-driven grid break; reject random rotations added after a standard article template is built.",
+      "rating": 3
+    },
+    {
+      "id": "bloomberg-terminal-1990s",
+      "name": "Bloomberg Professional 1990s Function Screen",
+      "source": "Bloomberg Professional terminal function screens, New York and global financial desks, 1990 to 1999, keyboard-command market information display.",
+      "strength": "dual",
+      "verb": "argues",
+      "modes": [
+        "analyze",
+        "operate"
+      ],
+      "thesis": "Every pixel earns its place by exposing comparison, provenance, or action, so density feels like command of a live market rather than clutter.",
+      "laws": {
+        "palette": "Near-black #050505 is the field, Bloomberg amber #FF9D00 marks commands and headers, white #F2F2F2 carries primary values, cyan #25C7D9 identifies links, green #18C75A marks positive movement, red #F04444 marks negative movement, and violet #B56CFF separates analytical overlays.",
+        "type": "Use a narrow monospaced bitmap or screen face, tabular numerals, uppercase function names, compact line height, and scale primarily through color, inversion, and panel position rather than giant type.",
+        "topology": "Tile the screen into hard-edged function panes with labeled top bars, persistent command and status rails, synchronized tables and plots, and no decorative gutter beyond one character cell.",
+        "controls": "Actions expose mnemonic codes and keyboard numbers, active cells invert amber on black to black on amber, focus is a one-cell cyan bracket, and destructive commands require a red confirmation line in the same pane.",
+        "motion": "Only changed values flash briefly, ticks append, and a plot advances at a measured cadence; whole panels, headers, and the command rail must never animate. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "An incident console assigns each service a function code, flashes only the latency cells that changed, and opens the selected trace in a violet analysis pane without replacing the surrounding evidence.",
+      "borrowSkeleton": "Take synchronized panes, keyboard-addressable functions, one-cell density, persistent context, and change-local animation; do not merely put neon monospace text on a dark dashboard.",
+      "rating": 3
+    },
+    {
+      "id": "bbc-ceefax-level-one",
+      "name": "BBC Ceefax Level One",
+      "source": "BBC Ceefax Level One teletext pages, United Kingdom, 1974 to 1989, broadcast character-cell information service.",
+      "strength": "dual",
+      "verb": "records",
+      "modes": [
+        "read",
+        "operate",
+        "analyze"
+      ],
+      "thesis": "A finite character grid turns urgency into an indexable public service, making an interface feel dependable because location, category, and update state are always explicit.",
+      "laws": {
+        "palette": "Black #000000 is the field, teletext white #FFFFFF carries body text, cyan #00FFFF marks navigation, yellow #FFFF00 marks headlines, green #00FF00 marks confirmed or available states, red #FF0000 marks alerts, blue #0000FF fills category straps, and magenta #FF00FF marks secondary services.",
+        "type": "Use a blocky fixed-width character face, all-cap category straps, sentence-like headline fragments, tabular page numbers, and only the canonical normal and double-height scales.",
+        "topology": "Use a strict 40-column character grid, a persistent service and page-number header, colored topic rows, short text blocks, and bottom-key navigation mapped to stable categories.",
+        "controls": "Inputs are three-digit page codes or colored key labels, selected states reverse foreground and background, loading states show the requested page number and receipt progress, and links never hide behind unlabeled icons.",
+        "motion": "Page receipt may fill row by row and only live result cells may update; text must never smooth-scroll, fade, or animate between character positions. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A city-status page labels transport as page 201, weather as 301, and closures as 401, while the newest disruption arrives one character row at a time under a red ALERT strap.",
+      "borrowSkeleton": "Take the addressable page model, fixed header, category straps, colored key map, and explicit receipt state; do not stop at a pixel font and saturated colors.",
+      "rating": 3
+    },
+    {
+      "id": "fela-kuti-ghariokwu-sleeves",
+      "name": "Lemi Ghariokwu Fela Kuti Sleeve",
+      "source": "Lemi Ghariokwu's illustrated sleeves for Fela Kuti releases including Alagbon Close, Zombie, and Sorrow Tears and Blood, Lagos, 1974 to 1982, Nigerian Afrobeat political illustration.",
+      "strength": "world",
+      "verb": "argues",
+      "modes": [
+        "persuade",
+        "experience",
+        "read"
+      ],
+      "thesis": "Portrait, accusation, symbol, and caption collide into one public indictment, so an interface feels charged by its subject instead of coated in a borrowed pattern.",
+      "laws": {
+        "palette": "Ink black #15110E outlines every claim, bone #E8D8B5 grounds the page, blood red #BD2B25 marks conflict, palm green #2F7B45 marks collective life, ochre #D69B2D marks heat and wealth, and electric blue #2667A8 punctures the earth tones.",
+        "type": "Use hand-drawn condensed capitals, banner lettering, boxed captions, and dense small notes integrated with illustration; headings may shout, but factual text remains plainly set and readable.",
+        "topology": "Compose a central portrait or confrontation surrounded by emblematic objects, caption bursts, border incidents, and a narrow factual ledger that verifies the rhetoric.",
+        "controls": "Actions are hand-lettered placards with square corners, choices combine emblem and label, active states receive a thick black contour and red underprint, and focus uses a visible blue outer keyline.",
+        "motion": "Illustrated symbols may enter in a short call-and-response sequence and captions may stamp into place; the central face, evidence ledger, and reading text must not loop or bob. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A labor campaign page puts one worker portrait at center, surrounds it with wage receipts and factory gates as clickable evidence, and stamps the petition count into a red caption burst.",
+      "borrowSkeleton": "Take the central confrontation, evidence orbit, illustrated caption system, and factual ledger; do not reduce the source to African pattern trim around a standard hero.",
+      "rating": 3
+    },
+    {
+      "id": "british-rail-1965-manual",
+      "name": "British Rail 1965 Sign Program",
+      "source": "Design Research Unit, British Rail Corporate Identity Manual and station signing system, United Kingdom, 1965, postwar British transport modernism.",
+      "strength": "composition",
+      "verb": "instructs",
+      "modes": [
+        "operate",
+        "read"
+      ],
+      "thesis": "Names, arrows, routes, and exceptions occupy fixed signing roles, so the interface feels like a reliable journey through a real system rather than tasteful restraint for its own sake.",
+      "laws": {
+        "palette": "Rail blue #003B70 owns the system, white #FFFFFF carries sign text, black #111111 is reserved for timetable body copy, warning red #C8102E marks prohibitions, and yellow #F3C300 marks hazards or service exceptions.",
+        "type": "Use Rail Alphabet character, mixed case place names, tabular schedule numerals, generous tracking at sign scale, and no extra display family; hierarchy comes from panel role and reading distance.",
+        "topology": "Use long horizontal sign bands, modular destination panels, a stable timetable grid, clear platform-number blocks, and wide quiet margins around directional decisions.",
+        "controls": "Primary route actions are blue destination panels with white labels and arrows, selected tabs reverse to white with blue text, disruptions attach as yellow strips, and focus uses a thick black and white double keyline.",
+        "motion": "Departures may update by row and route changes may slide along one axis; arrows, destination names, and platform anchors must never move once presented. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "An onboarding flow reads like a station concourse, with a blue destination band naming the current task, white branch panels for optional routes, and a yellow disruption strip attached to the blocked step.",
+      "borrowSkeleton": "Take destination panels, decision-point spacing, route continuity, and exception strips; do not simply apply Rail Alphabet to a generic sidebar.",
+      "rating": 2
+    },
+    {
+      "id": "eidan-tokyo-subway-1970s",
+      "name": "Eidan Tokyo Subway Diagram",
+      "source": "Teito Rapid Transit Authority bilingual route diagrams and station signs, Tokyo, 1972 to 1989, Japanese metropolitan information-design modernism.",
+      "strength": "composition",
+      "verb": "instructs",
+      "modes": [
+        "operate",
+        "read",
+        "analyze"
+      ],
+      "thesis": "Dense metropolitan choice becomes manageable through colored continuity and local enlargement, so an interface can hold complexity without pretending every option is equally immediate.",
+      "laws": {
+        "palette": "White #FFFFFF is the field, Ginza orange #F39700, Marunouchi red #E60012, Hibiya silver #9CA3A8, Tozai sky blue #00A7DB, Chiyoda green #009944, Yurakucho gold #D7A100, and black #171717 each retain fixed route or text roles.",
+        "type": "Use a compact bilingual grotesque, Japanese and Latin labels aligned as one unit, circled or boxed station codes, tabular travel times, and small but consistent scale steps.",
+        "topology": "Build a network overview with straightened route geometry, enlarge transfer nodes locally, reserve a side rail for current-line stops, and keep destination direction visible at every depth.",
+        "controls": "Route choices use colored line samples plus names, transfer actions use outlined node chips, the current stop receives a black ring, focus adds a white halo outside the route color, and unavailable branches turn to neutral gray #B8B8B8 without losing labels.",
+        "motion": "A current-position marker may advance node by node and transfer paths may illuminate in sequence; the full network geometry and station labels must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A data-import wizard shows all possible transformations as colored lines, enlarges the join step as a transfer node, and keeps the source and final destination visible while a side rail lists the next three operations.",
+      "borrowSkeleton": "Take network overview plus local stop rail, route ownership by color, transfer-node enlargement, and persistent direction; do not use a subway map as a decorative background.",
+      "rating": 2
+    },
+    {
+      "id": "haeckel-kunstformen-plate",
+      "name": "Haeckel Kunstformen Plate",
+      "source": "Ernst Haeckel and lithographer Adolf Giltsch, Kunstformen der Natur plates, Leipzig and Vienna, 1899 to 1904, German scientific lithography and morphological taxonomy.",
+      "strength": "world",
+      "verb": "argues",
+      "modes": [
+        "analyze",
+        "read",
+        "experience"
+      ],
+      "thesis": "Variation is understood through a disciplined family portrait of forms, so an interface in this system makes taxonomy visible as evidence rather than decorating content with natural motifs.",
+      "laws": {
+        "palette": "Aged ivory #F1E3C5 is the plate, sepia #76543A defines fine structure, lamp black #17130F anchors labels, carmine #A43B3F highlights one morphology, marine blue #376D8D separates another family, and moss #667A48 marks shared anatomy.",
+        "type": "Use a classical serif for plate titles and taxonomic labels, small capitals for family names, italic Latin-like secondary names, and disciplined numeral keys around the specimen field.",
+        "topology": "Arrange one dominant specimen or symmetric cluster at center, place variants in a radial or bilateral family, and use a numbered caption ledger below rather than card-by-card descriptions.",
+        "controls": "Filters behave like taxonomic keys with number, name, and tiny silhouette, selected specimens gain a carmine contour, zoom controls sit in the caption ledger, and focus uses a marine-blue rule.",
+        "motion": "A specimen may magnify, rotate to a canonical view, or separate into layers on demand; fine linework, neighboring specimens, and the plate frame must remain still. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A component library presents the button family as one centered morphological plate, with twelve numbered variants radiating around a base anatomy and a caption ledger explaining each mutation.",
+      "borrowSkeleton": "Take the family plate, keyed specimens, comparative symmetry, and shared anatomy; do not apply botanical ornament to isolated product cards.",
+      "rating": 2
+    },
+    {
+      "id": "usgs-75-minute-quadrangle",
+      "name": "USGS 7.5-Minute Quadrangle",
+      "source": "United States Geological Survey 7.5-minute topographic quadrangle series, 1950 to 1979 editions, federal multicolor relief and land-survey cartography.",
+      "strength": "dual",
+      "verb": "records",
+      "modes": [
+        "analyze",
+        "operate",
+        "read"
+      ],
+      "thesis": "Every mark states both a feature and a confidence-bearing relationship to terrain, so an interface feels trustworthy because context and measurement survive at every zoom.",
+      "laws": {
+        "palette": "Paper cream #F4EEDC is the base, contour brown #8A5A34 records elevation, water blue #3C78A8 records hydrography, woodland green #6F8F58 records vegetation, road red #C84B3F marks major routes, and survey black #181818 carries names, boundaries, and structures.",
+        "type": "Use a compact map grotesque with italics for water, uppercase for major regions, mixed case for local features, tabular coordinate numerals, and scale tied to geographic importance rather than interface component type.",
+        "topology": "Use one continuous field with nested contour relationships, marginal coordinate and legend rails, inset detail only where density requires it, and no floating card layer that hides topology.",
+        "controls": "Layer switches use printed legend samples, the selected feature receives a black survey crosshair and labeled callout, range selection follows grid squares, and focus is a two-color white and blue halo visible over the field.",
+        "motion": "Position and time may advance along known paths and layers may register on or off; contour geometry, scale references, and selected coordinates must never interpolate misleadingly. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A cloud-infrastructure map draws traffic as blue drainage lines, dependency thresholds as brown contours, and the selected region as a survey crosshair tied to an exact coordinate ledger.",
+      "borrowSkeleton": "Take the continuous relational field, semantic layer colors, scale-aware labels, coordinate margin, and inset detail; reject dashboard cards floating over a decorative map texture.",
+      "rating": 2
+    },
+    {
+      "id": "admiralty-chart-5011",
+      "name": "Admiralty Chart 5011",
+      "source": "British Admiralty Chart 5011, Symbols and Abbreviations Used on Admiralty Charts, 1984 edition, International Chart hydrographic notation.",
+      "strength": "composition",
+      "verb": "instructs",
+      "modes": [
+        "analyze",
+        "operate",
+        "read"
+      ],
+      "thesis": "Safe action depends on distinguishing route, depth, obstruction, and uncertainty at a glance, so the interface becomes a navigational instrument rather than a pile of status widgets.",
+      "laws": {
+        "palette": "Chart white #F7F4E9 is the base, shallow-water cyan #B9E1E8 marks constrained depth, land buff #E7D4A2 marks fixed territory, magenta #B04691 carries route and notice overlays, black #151515 records soundings and hazards, and green #6E9B78 marks intertidal or drying areas.",
+        "type": "Use a narrow chart sans with italic feature names, tiny tabular soundings, uppercase region labels, and abbreviation keys; semantic typography remains stable even when spatial scale changes.",
+        "topology": "Build a continuous operating field, show channels and exclusion areas directly in it, keep the symbol key in a docked margin, and reserve inset panels for harbor-scale detail or procedure.",
+        "controls": "Tools appear as symbol-key entries with icon, code, and label, selected routes use a magenta pecked line, hazards demand a black symbol plus text, and focus uses a white halo bounded by magenta.",
+        "motion": "The current track may extend, tide or forecast overlays may advance, and warnings may appear at the affected coordinate; coastlines, hazard positions, and depth labels must never drift. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A deployment planner lays release stages along a magenta recommended track, plots dependency hazards as black wreck symbols, and shades shallow capacity zones cyan before the operator commits.",
+      "borrowSkeleton": "Take the operating field, route and hazard distinction, uncertainty notation, docked key, and coordinate-specific warnings; do not decorate cards with anchors or nautical stripes.",
+      "rating": 2
+    },
+    {
+      "id": "us-census-1970-questionnaire",
+      "name": "1970 United States Census Questionnaire",
+      "source": "United States Bureau of the Census mail-back household questionnaire, Form 70, 1970, federal machine-readable civic form design.",
+      "strength": "composition",
+      "verb": "records",
+      "modes": [
+        "operate",
+        "analyze",
+        "read"
+      ],
+      "thesis": "A large civic inventory becomes answerable when scope, household member, code, and exception are never visually confused, so the interface earns trust through procedural clarity.",
+      "laws": {
+        "palette": "Form white #F7F4EA is the field, federal blue #245B88 defines section bars and boxes, carbon black #171717 carries questions, pale blue #DCEAF2 marks response zones, and registration red #B8423A is reserved for machine or validation exceptions.",
+        "type": "Use a practical grotesque with bold numbered questions, condensed uppercase section labels, tabular codes, plain sentence-case instructions, and small explanatory notes directly beneath the field they qualify.",
+        "topology": "Use a strict respondent-by-question matrix, persistent identity columns, numbered horizontal bands, boxed answer zones, and attached exception instructions instead of remote help panels.",
+        "controls": "Inputs are squared cells or underlined written fields, current-row focus fills pale blue with a black edge, validation places a red code beside the exact cell, and completion states mark the question number rather than adding celebratory decoration.",
+        "motion": "Only the active respondent column may advance or reveal conditional questions; labels, numbering, and already recorded answers must not reflow unexpectedly. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A team-access setup shows members as fixed columns and permission questions as numbered bands, exposing each conditional field beside the relevant answer instead of sending users into nested modals.",
+      "borrowSkeleton": "Take the respondent matrix, numbered procedure, attached instructions, machine-readable state, and cell-specific validation; do not mimic paper grain or government seals.",
+      "rating": 1
+    },
+    {
+      "id": "iata-atb-ticket-1983",
+      "name": "IATA Automated Ticket and Boarding Pass",
+      "source": "IATA neutral Automated Ticket and Boarding Pass stock introduced in 1983, international airline coupon and impact-printer operational design.",
+      "strength": "composition",
+      "verb": "instructs",
+      "modes": [
+        "operate",
+        "read"
+      ],
+      "thesis": "One transaction is partitioned into passenger, route, payment, and handling fields that survive handoff, so the interface feels operational because every datum has a destination.",
+      "laws": {
+        "palette": "Ticket white #F7F3E8 is the field, airline blue #245A8D carries route headings, salmon #E8A092 identifies audit or agent coupons, pale green #BFD6B5 identifies passenger copies, yellow #E7D68A marks handling fields, and impact black #191919 prints variable data.",
+        "type": "Use condensed uppercase labels, monospaced impact-printer data, oversized flight and gate numerals, compact date codes, and strict separation between preprinted field names and transaction values.",
+        "topology": "Divide the surface into tear-off horizontal coupons, fixed labeled cells, a dominant itinerary spine, machine code bands, and one visually obvious handoff edge.",
+        "controls": "Editable cells resemble open ticket fields, confirmed values switch to monospaced black, the active coupon gains its stock color at the edge, and destructive cancellation perforates the row visually with a red #B83C38 strike pattern.",
+        "motion": "A transaction may progress coupon by coupon and printed values may appear in a brief impact sequence; confirmed itinerary values and machine codes must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "An order handoff screen presents payment, kitchen, courier, and customer records as attached coupons, with the courier strip turning pale yellow only when its required route fields are complete.",
+      "borrowSkeleton": "Take the transaction spine, handoff coupons, preprinted versus variable-data distinction, and irreversible cancellation mark; do not merely style a booking page like a boarding pass.",
+      "rating": 2
+    },
+    {
+      "id": "vignelli-nyc-subway-1972",
+      "name": "Vignelli New York Subway Map",
+      "source": "Massimo Vignelli and Unimark, New York City Transit Authority subway diagram, 1972, International Typographic Style applied to a metropolitan network.",
+      "strength": "dual",
+      "verb": "argues",
+      "modes": [
+        "operate",
+        "read",
+        "analyze"
+      ],
+      "thesis": "Topological truth is privileged over geographic likeness, so an interface in this system feels decisive because it redraws reality around the user's actual choices.",
+      "laws": {
+        "palette": "Warm beige #E8DFC7 is the land field, black #111111 is typography and boundary, route blue #0072BC, green #00A651, red #ED1C24, orange #F58220, yellow #FFD200, violet #7E57A4, and brown #8B5A2B each identify continuous service families.",
+        "type": "Use Helvetica-like grotesque labels in disciplined mixed case, compact station names, bold route identifiers, and no scale theatrics beyond map title, borough, station, and note.",
+        "topology": "Use a rectilinear 45 and 90 degree network, hard transfer nodes, an abstract territory field, a fixed legend, and no component containers that interrupt line continuity.",
+        "controls": "Route selectors pair color, line sample, and label, selected transfers receive a double black ring, unavailable segments use a dashed neutral gray #9C9C96, and focus uses a white halo that preserves neighboring lines.",
+        "motion": "A chosen route may trace from origin to destination and service changes may replace only the affected segment; network geometry and all unaffected labels must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A customer-journey analyzer redraws acquisition, activation, payment, and retention as straight colored services, with churn points shown as transfer stations where users leave one line for another.",
+      "borrowSkeleton": "Take topology over literal geography, continuous service lines, transfer logic, and line-preserving selection; do not place a transit illustration behind ordinary funnel cards.",
+      "rating": 2
+    },
+    {
+      "id": "hanatsubaki-nakajo-1960s",
+      "name": "Nakajo Hanatsubaki House Magazine",
+      "source": "Masayoshi Nakajo's art direction for Shiseido's Hanatsubaki house magazine, Tokyo, 1968 to 1973, Japanese fashion editorial modernism.",
+      "strength": "world",
+      "verb": "performs",
+      "modes": [
+        "read",
+        "experience",
+        "persuade"
+      ],
+      "thesis": "Product, face, letterform, and blank field meet in a deliberately unstable editorial balance, so the interface feels cultured by composition rather than styled with luxury clichés.",
+      "laws": {
+        "palette": "Clean white #FAF9F5 dominates, Shiseido red #C72532 carries identity, ink black #111111 defines type, petal pink #E9A6B6 marks intimacy, cobalt #234E9B creates graphic counterweight, and metallic gold is represented by flat ochre #B69245 only in rare identity details.",
+        "type": "Pair a precise Japanese Mincho or high-contrast serif with a compact grotesque, use isolated giant characters, tiny vertical captions, and restrained product copy with generous leading.",
+        "topology": "Use asymmetrical white fields, one cropped face or object, vertical and horizontal caption axes, occasional circular or rectangular color interruptions, and page-turn-like sectional contrasts.",
+        "controls": "Actions are small red typographic seals or black text rules, selected items gain a petal-pink field or a red corner mark, focus uses a cobalt hairline outside the control, and product choices remain image-led without floating glass cards.",
+        "motion": "A crop may change at a section threshold and isolated characters may set into position once; reading text, product labels, and the white field must remain calm. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A fragrance selector leaves most of the screen white, crops one bottle at the lower edge, places a single giant red character above it, and lets scent notes run vertically beside a tiny black choose action.",
+      "borrowSkeleton": "Take the active white field, cross-axis captions, single cropped object, and identity-scale character; avoid generic centered luxury product cards.",
+      "rating": 2
+    },
+    {
+      "id": "liangyou-young-companion",
+      "name": "Liangyou Young Companion Pictorial",
+      "source": "The Young Companion, Liangyou pictorial magazine, Shanghai, 1926 to 1937, Chinese Art Deco photo-editorial and bilingual commercial modernity.",
+      "strength": "dual",
+      "verb": "performs",
+      "modes": [
+        "read",
+        "experience",
+        "persuade"
+      ],
+      "thesis": "Modern life is staged as a bilingual sequence of portrait, product, city, and caption, so the interface feels socially situated rather than globally generic.",
+      "laws": {
+        "palette": "Warm paper #EAD9B8 forms the base, Shanghai red #A52B2F frames features, jade #39796A marks culture sections, navy #263B5D carries bilingual rules, muted gold #B48A42 marks commerce, and photo black #1B1714 anchors halftones and text.",
+        "type": "Combine vertical Chinese display titles, compact horizontal bilingual captions, geometric Art Deco Latin capitals, numbered folios, and serif body text in measured columns.",
+        "topology": "Stage a cover-like portrait or city photograph, weave vertical and horizontal reading axes, attach small commerce panels to editorial stories, and use stepped frames rather than uniform modules.",
+        "controls": "Section switches are bilingual masthead tabs, selected states gain a red stepped frame, actions use navy rule boxes, and focus adds a jade outer line while preserving both language labels.",
+        "motion": "A new section may reveal through a page-turn crop or shift from vertical to horizontal reading order; bilingual label pairs and caption relationships must never separate. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A city guide pairs a full-height portrait of a chef with a vertical Chinese district title, a horizontal English caption, and three stepped jade panels for menu, route, and reservation.",
+      "borrowSkeleton": "Take the bilingual cross-axis composition, portrait-led issue structure, stepped frames, and editorial-commerce adjacency; do not use Art Deco borders around generic tiles.",
+      "rating": 2
+    },
+    {
+      "id": "san-francisco-oracle-1966",
+      "name": "San Francisco Oracle Chromatic Broadsheet",
+      "source": "San Francisco Oracle issues 1 through 12, 1966 to 1968, Bay Area psychedelic split-fountain and overprint newspaper design.",
+      "strength": "world",
+      "verb": "performs",
+      "modes": [
+        "read",
+        "experience"
+      ],
+      "thesis": "Reading becomes immersion through controlled figure-ground instability, so an interface can make exploration feel transformative while reserving stable channels for actual decisions.",
+      "laws": {
+        "palette": "Ink violet #663A8A, hot magenta #D13A7A, vermilion #E34A2B, sun yellow #F2C62A, turquoise #1C9A9A, and newsprint cream #E8D9B9 overprint into dark brown #3A2622 rather than fading into digital neon gradients.",
+        "type": "Use hand-drawn psychedelic display lettering for section thresholds, sturdy serif body text for reading, small grotesque captions, and outlined initials that interlock with illustration without sacrificing paragraph legibility.",
+        "topology": "Treat major pages as broadsheet mandalas or mirrored image-text fields, keep a stable reading column inside the spectacle, and let marginal illustrations connect sections across folds.",
+        "controls": "Exploration links are outlined word-shapes with a plain-text duplicate, selected states overprint a second ink color, focus uses a solid cream and black double outline, and transactional actions retreat to a stable footer strip.",
+        "motion": "Overprint layers may separate and register during entry, and a reading path may slowly reveal; body text, focus, and transactional controls must never undulate or blur. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A festival schedule opens as a mirrored violet and orange broadsheet, but each day's lineup sits in one calm cream column and ticket purchase remains fixed in a black footer strip.",
+      "borrowSkeleton": "Take the immersive threshold, overprint logic, mirrored field, and stable reading channel inside it; reject generic liquid gradients and illegible warped body type.",
+      "rating": 2
+    },
+    {
+      "id": "medu-art-ensemble-posters",
+      "name": "Medu Art Ensemble Poster",
+      "source": "Medu Art Ensemble cultural and anti-apartheid posters produced in Gaborone, Botswana, 1979 to 1985, southern African liberation workshop printmaking.",
+      "strength": "dual",
+      "verb": "argues",
+      "modes": [
+        "persuade",
+        "read"
+      ],
+      "thesis": "Image, testimony, and imperative share one public surface, so the interface feels accountable to collective action rather than optimized for frictionless conversion.",
+      "laws": {
+        "palette": "Uncoated tan #D8C49D is the field, black #111111 forms woodcut-like masses, struggle red #B52E2E marks demands, ochre #C59338 marks land and labor, deep green #376B4A marks collective growth, and white #F5F1E7 opens necessary counters.",
+        "type": "Use bold hand-cut capitals for imperatives, compact grotesque details for dates and logistics, testimonial sentences in a sturdy serif, and direct labels integrated with the image.",
+        "topology": "Build around one collective figure or symbolic action, lock the imperative to it, place testimony and logistics in a lower assembly band, and use rough rectangular frames with deliberate edge pressure.",
+        "controls": "Primary actions are red imperative strips, participation options use black-and-white symbols with text, selected states receive a rough black block, and focus is a clean white inset plus black outer line.",
+        "motion": "The imperative may stamp in and participation marks may accumulate as a crowd; testimony, dates, and the central collective image must remain stable. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A tenant-organizing tool builds a crowd from black portrait blocks as neighbors join, while the red REPAIR NOW action stays physically attached to the unresolved building image and meeting details remain in the lower assembly band.",
+      "borrowSkeleton": "Take collective figure, imperative-image lockup, testimonial proof, and logistics band; do not treat rough print texture as the entire direction.",
+      "rating": 2
+    },
+    {
+      "id": "polish-cyrk-poster-series",
+      "name": "Polish Cyrk Poster Series",
+      "source": "Cyrk circus poster commissions by artists including Henryk Tomaszewski, Jan Lenica, and Waldemar Świerzy, Poland, 1962 to 1974, Polish School of Posters.",
+      "strength": "world",
+      "verb": "performs",
+      "modes": [
+        "persuade",
+        "experience"
+      ],
+      "thesis": "One witty pictorial transformation announces the event before any explanation, so the interface feels concept-led because function and metaphor arrive in the same gesture.",
+      "laws": {
+        "palette": "Poster cream #EFE2C4 is the base, circus red #D33A2C and cobalt #245AA5 form the recurring pair, with lemon #F3D334, leaf green #4F8A4B, black #151515, and one dusty pink #D88E9D available for a single visual joke.",
+        "type": "Use hand-lettered or cut-paper display words in brief bursts, plain grotesque details for logistics, irregular baseline shifts tied to the illustration, and large negative counters.",
+        "topology": "Center one transformed object or creature, let the title complete its silhouette, hold details in a small peripheral block, and preserve broad unprinted space around the joke.",
+        "controls": "Primary actions extend the central metaphor, secondary links sit in the logistics block, selected states swap one cut-paper piece or color, and focus uses a crisp black outline independent of the irregular silhouette.",
+        "motion": "The pictorial transformation may resolve in one short reveal and one cut-paper part may react to input; labels, prices, and accessibility states must remain still. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A password-reset page turns the keyhole in a red paper lion's mouth into the email field, then closes the jaw once the reset link is sent while confirmation details stay in a tiny cobalt block.",
+      "borrowSkeleton": "Take the single visual pun, title-object lockup, peripheral logistics, and preserved empty field; reject a collage of many whimsical illustrations.",
+      "rating": 2
+    },
+    {
+      "id": "zagreb-new-tendencies-catalogs",
+      "name": "Zagreb New Tendencies Catalog",
+      "source": "New Tendencies 3 and Tendencies 4 exhibition catalogs and program sheets, Zagreb, 1965 and 1969, Yugoslav concrete, kinetic, and systems-art graphics.",
+      "strength": "composition",
+      "verb": "argues",
+      "modes": [
+        "analyze",
+        "read",
+        "experience"
+      ],
+      "thesis": "A visible rule generates variation across the whole field, so the interface feels like a testable system rather than an arbitrary arrangement of minimal components.",
+      "laws": {
+        "palette": "Bright white #FFFFFF and black #111111 carry the rule, optical red #D9272E marks one changing variable, ultramarine #204FA3 marks a second, and neutral gray #A7A7A7 records inactive states.",
+        "type": "Use a neutral grotesque in compact lowercase and uppercase labels, tabular sequence numbers, sparse captions, and no expressive display face; expression comes from the generated field.",
+        "topology": "Start with a repeated modular lattice, alter one property by row or sequence, attach a narrow catalog index, and permit optical density to become the dominant composition.",
+        "controls": "Parameters are exposed as numbered rules beside the field, selected values replace black with red or blue, focus uses a doubled module outline, and reset returns the lattice to its declared base state.",
+        "motion": "Only the declared variable may phase, rotate, or propagate through the lattice; labels, index positions, and all undeclared properties must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A simulation explorer fills the page with repeated black cells whose spacing changes by latency threshold, while a red rule label states exactly which variable the user is manipulating.",
+      "borrowSkeleton": "Take the declared generative rule, repeated field, controlled variable, and catalog index; do not reskin a card grid with Op Art patterns.",
+      "rating": 1
+    },
+    {
+      "id": "cbs-election-night-1976",
+      "name": "CBS Election Night 1976 Graphic System",
+      "source": "CBS News presidential election-night map wall, tally boards, lower-thirds, and on-air result graphics, New York, 1976, live broadcast information design.",
+      "strength": "composition",
+      "verb": "argues",
+      "modes": [
+        "analyze",
+        "operate",
+        "read"
+      ],
+      "thesis": "The live result is staged as a sequence of calls, margins, and unresolved contests, so the interface tells operators what can be concluded now and what remains uncertain.",
+      "laws": {
+        "palette": "Broadcast navy #142A4A is the field, studio white #F4F2E8 carries labels, network red #C93635 and candidate blue #2F64A3 own opposing series, election gold #D9A62E marks projected calls, and neutral gray #8B929B marks unreported territory.",
+        "type": "Use bold broadcast grotesque headlines, tabular tally numerals, uppercase state or region labels, compact lower-third explanations, and scale reserved for winner, margin, and reporting percentage.",
+        "topology": "Combine one dominant result board, a side tally ladder, a bottom context strip, and an unresolved queue; maps and tables share identifiers so a called result propagates without losing source context.",
+        "controls": "Operator actions are labeled desk keys with explicit verbs, selected contests receive a gold frame, projected states gain a gold call bug without erasing raw totals, and focus uses a thick white keyline.",
+        "motion": "Numbers may roll once to new totals, a projection bug may lock into place, and unresolved items may advance in the queue; maps and declared winners must never pulse. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A sales war room centers the quarterly target board, keeps an unresolved-deals queue at right, and locks a gold CLOSED bug beside accounts only after source data and confidence cross the declared threshold.",
+      "borrowSkeleton": "Take the dominant result, tally ladder, uncertainty queue, source-preserving call state, and live context strip; do not turn the screen into patriotic broadcast nostalgia.",
+      "rating": 2
+    },
+    {
+      "id": "minitel-pages-jaunes",
+      "name": "Minitel 3615 Pages Jaunes",
+      "source": "3615 Pages Jaunes directory service screens on the French Minitel network, 1982 to 1995, videotex transactional information design.",
+      "strength": "composition",
+      "verb": "performs",
+      "modes": [
+        "operate",
+        "read"
+      ],
+      "thesis": "The interface conducts a terse question-and-response exchange inside strict network limits, so every screen feels like the next necessary move rather than a miniature website.",
+      "laws": {
+        "palette": "Minitel black #000000 is the field, phosphor white #F2F2F2 carries results, videotex cyan #00C8D7 marks fields, yellow #E8D700 marks prompts, green #00B85A confirms accepted input, red #D73A32 marks errors, and blue #2057C9 fills service headers.",
+        "type": "Use a low-resolution fixed-width videotex face, uppercase service headers, numbered result rows, short imperative prompts, and no more than two text scales.",
+        "topology": "Use one prompt or result list per screen, a service header, numbered rows, a fixed command footer, and explicit next, previous, return, and send positions.",
+        "controls": "Fields are cyan underlines with a visible cursor, choices are numbered, the active command reverses yellow on black, accepted input turns green, and errors remain attached to the rejected field.",
+        "motion": "Characters may echo as typed and a new page may paint from top to bottom; results, command labels, and accepted fields must never slide or fade. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A vendor finder asks only ACTIVITY and CITY, paints ten numbered results, and keeps RETURN, NEXT, and SEND in the same command footer through every step.",
+      "borrowSkeleton": "Take the one-question exchange, numbered result list, fixed command footer, and explicit network state; do not reduce the direction to phosphor text on black.",
+      "rating": 1
+    },
+    {
+      "id": "penguin-crime-marber-grid",
+      "name": "Penguin Crime Marber Grid",
+      "source": "Romek Marber's grid for Penguin Crime paperback covers, United Kingdom, 1961 to 1964, postwar British editorial series design.",
+      "strength": "composition",
+      "verb": "argues",
+      "modes": [
+        "read",
+        "persuade"
+      ],
+      "thesis": "Series identity, author, title, image, and price hold fixed rank while each case changes, so the interface can scale a catalog without dissolving individual character.",
+      "laws": {
+        "palette": "Penguin crime green #4A8B68 owns the series band, warm paper #F2E8D2 is the field, ink black #161616 carries type, evidence red #B93430 marks one clue, and photographic gray #77746D supports halftone imagery.",
+        "type": "Use a Swiss grotesque in compact asymmetric blocks, author names smaller than titles, short blurbs at a stable measure, and consistent baseline relationships across every item.",
+        "topology": "Reserve the upper third for publisher, series, title, and author on a strict grid, then give the lower field to one variable image or clue that may break the grid deliberately.",
+        "controls": "Catalog filters live in the fixed series band, selected items receive a green edge and red clue mark, primary actions align with the title block, and focus uses a black outer rule with a cream gap.",
+        "motion": "The variable image may crop or exchange between items and the clue mark may appear once; the series band, type grid, and catalog position must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A case-management index holds status, client, title, and owner in a fixed green upper band while each case gets one lower-field evidence image that can break the grid only where it reveals risk.",
+      "borrowSkeleton": "Take invariant series furniture above a variable evidence field, with one controlled grid break; do not make a wall of book-cover cards.",
+      "rating": 1
+    },
+    {
+      "id": "olivetti-pintori-lettera-22",
+      "name": "Pintori Olivetti Lettera 22 Campaign",
+      "source": "Giovanni Pintori's posters and magazine advertisements for the Olivetti Lettera 22 and office machines, Italy, 1950 to 1956, Italian industrial graphic modernism.",
+      "strength": "dual",
+      "verb": "performs",
+      "modes": [
+        "persuade",
+        "read",
+        "experience"
+      ],
+      "thesis": "Mechanical function becomes a compact visual metaphor, so the interface explains the product by making its operation the composition rather than surrounding it with lifestyle claims.",
+      "laws": {
+        "palette": "Olivetti red #C9362B is the brand accent, typewriter black #171717 and paper white #F5F0E3 define operation, machine gray #7E8588 marks hardware, turquoise #258D91 and mustard #D6A62F each encode one functional subsystem.",
+        "type": "Use a rational Italian grotesque, short lowercase product statements, oversized model numerals, and technical captions; letter spacing may visibly echo typed rhythm without becoming monospaced everywhere.",
+        "topology": "Center one functional metaphor made from machine parts, letters, or repeated marks, keep product identity in a small stable corner, and attach the explanation as a concise technical caption.",
+        "controls": "Primary actions are red mechanical levers or keys translated into flat rectangles, toggles expose their track and position, selected states create a visible typed imprint, and focus uses a turquoise outer rule.",
+        "motion": "Keys may depress, typed marks may advance by character, and one mechanism may demonstrate its cycle; explanatory text and completed output must remain still. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A writing assistant turns each suggested revision into a physical red key above a white page, and accepting it advances a black typed line while the model name remains small in the upper corner.",
+      "borrowSkeleton": "Take the product mechanism as hero, compact identity corner, typed output, and explanatory caption; avoid a generic mid-century poster palette on a conventional SaaS landing page.",
+      "rating": 2
+    },
+    {
+      "id": "discover-japan-jrn-campaign",
+      "name": "Discover Japan Rail Campaign",
+      "source": "Japanese National Railways and Dentsu, Discover Japan posters, timetables, and station campaign graphics, Japan, 1970 to 1976, post-Expo travel editorial advertising.",
+      "strength": "world",
+      "verb": "performs",
+      "modes": [
+        "persuade",
+        "experience",
+        "read"
+      ],
+      "thesis": "Travel is framed as a sequence of specific encounters reached by rail, so an interface feels invitational because desire and the means to act share the same itinerary.",
+      "laws": {
+        "palette": "Warm photographic white #F4EEDF and ink black #171717 ground the system, JNR vermilion #D63A2F marks the campaign, rail blue #245C8B marks itinerary, persimmon #D97932 and forest green #3E6F4D identify seasonal journeys.",
+        "type": "Pair a restrained Japanese Mincho with a plain sans, use a small campaign mark, vertical destination captions, compact timetable numerals, and poetic but specific one-line invitations.",
+        "topology": "Lead with one place-specific documentary photograph, attach a vertical encounter caption, keep route and timing in a practical lower strip, and sequence journeys as an unfolding itinerary rather than equal cards.",
+        "controls": "Destination choices use image, vertical name, and rail line together, selected journeys gain a vermilion stamp, booking uses a blue timetable block, and focus adds a black and white double rule.",
+        "motion": "The itinerary may advance like stations and a new photograph may reveal through a single crop; route, fare, dates, and booking state must remain fixed. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A regional food guide opens on one winter market photograph, runs the town name vertically beside it, and places the exact train, walk, opening time, and reserve action in a blue lower strip.",
+      "borrowSkeleton": "Take encounter photograph plus practical itinerary strip, vertical destination naming, and journey sequencing; do not build a generic tourism mosaic with vintage filters.",
+      "rating": 2
+    },
+    {
+      "id": "drum-johannesburg-1950s",
+      "name": "Drum Johannesburg Photo-Tabloid",
+      "source": "Drum magazine Johannesburg editions under editor Anthony Sampson with photographers including Jürgen Schadeberg and Bob Gosani, 1951 to 1957, South African urban photojournalist tabloid.",
+      "strength": "dual",
+      "verb": "argues",
+      "modes": [
+        "read",
+        "persuade",
+        "analyze"
+      ],
+      "thesis": "Reported life leads and editorial framing follows, so the interface feels credible because human evidence occupies the foreground while analysis remains visibly attached to its source.",
+      "laws": {
+        "palette": "Newsprint cream #E9DFC6 is the field, photo black #111111 anchors halftones, masthead red #B72D2D signals urgency, cobalt #2B5E93 separates reported sections, ochre #C99A3C highlights places or names, and gray #77736A carries captions.",
+        "type": "Use a bold condensed tabloid grotesque for headlines, sturdy serif body copy, compact photo captions, uppercase kicker lines, and large numerals only when tied to a reported fact.",
+        "topology": "Lead with one documentary photograph, lock headline and standfirst to its action, build supporting columns from captions and testimony, and reserve a narrow fact rail for dates, amounts, and sources.",
+        "controls": "Story filters are section kickers, selected evidence gains a cobalt border and expanded caption, calls to action use red headline blocks, and focus is a solid black keyline with a cream gap.",
+        "motion": "A photo sequence may advance like contact-sheet frames and the fact rail may update to match; captions, testimony, and source labels must never detach or float independently. When reduced motion is requested, replace this movement with an immediate state change that preserves the same information."
+      },
+      "spark": "A public-safety report opens on one full-width street photograph, pins three witness captions directly to visible locations, and keeps dates, response times, and source documents in an ochre fact rail.",
+      "borrowSkeleton": "Take documentary image as primary evidence, attached testimony, fact rail, and headline as claim; do not imitate distressed newsprint without reported material.",
+      "rating": 2
+    }
+  ]
+}

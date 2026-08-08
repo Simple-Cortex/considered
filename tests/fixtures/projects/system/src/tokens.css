@@ -1,0 +1,12 @@
+:root {
+  --surface: #ffffff;
+  --text-primary: #172033;
+  --accent: #2457d6;
+  --space-4: 16px;
+}
+
+.status-card {
+  font-family: Inter, sans-serif;
+  padding: 16px;
+  border-radius: 4px;
+}

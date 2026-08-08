@@ -1,0 +1,53 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Both A and B open with the same correct three-part framing (what changed / in whom / what remains unproven) and both faithfully replicate every supplied number with no invented facts. B pulls ahead on three concrete points: (1) B leads with a ranked 'Where it's worst' list that answers the analyst's first question (which cut is worst) before any tab click, while A requires opening each tab to find the driver; (2) A's country-caveat tab shows the identical 'Country breakdown failed to load / Retry' error chrome in both its normal state and its dedicated failure-state capture — it presents a permanent data-absence fact (no country data was ever supplied) as if it were a transient fetch error the user could retry away, which is misleading; B keeps those two states visually distinct, with a clean informational explanation of the sampling threshold in the normal case; (3) source inspection shows B pairs its tabs to panels with aria-controls/role=tabpanel/aria-labelledby and uses semantic <table scope=col> plus scoped role=status/role=alert regions, while A's tabs have role/aria-selected but no aria-controls/tabpanel linkage, no semantic tables, and only one blanket aria-live=polite on <main> instead of scoped alert/status regions.",
+  "suspected_unblinding": "B's source/README.md references a structured build process not present in A's README — '.assessed/dense-chart-dump-rescue/{FRAME,STRUCTURE,CONTRACT,REVIEW-PACKET,DESIGN}.md', a REVIEW.json, and 'skill/scripts/lint-contract.mjs' / 'lint-source.mjs' checks. A's README is the generic empty-starter boilerplate only. This asymmetry suggests B was produced by a named design/skill pipeline while A was not, though I did not act on this beyond noting it and scored strictly from the packet contents.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The country tab's default 'reveal the caveat' state is visually and textually identical to its dedicated 'partial data failure' state: both show a red 'Country breakdown failed to load' box with a Retry button. Country data was never supplied at all (not a transient fetch failure), so Retry can never succeed. Presenting a permanent data-availability constraint as a retryable technical error will send an analyst down a dead-end troubleshooting path instead of understanding the real limitation.",
+      "evidence": "A/evidence/interaction-03-reveal-the-country-sample-caveat.png and A/evidence/state-03-partial-data-failure.png are the same error chrome (only the disclosure toggle differs)."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Tabs are built with role=tab/tablist and aria-selected, but the tab buttons carry no aria-controls and the corresponding content region has no id/role=tabpanel/aria-labelledby, so the tab-to-panel relationship is not exposed to assistive tech.",
+      "evidence": "A/source/analytics/trials/app.js lines ~170-185 (tab construction) has no aria-controls; panel-rendering functions build plain <div> content with no matching id or role=tabpanel."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The app relies on a single blanket aria-live=\"polite\" wrapper on <main> instead of scoped live regions. This announces unrelated content on every tab switch and never escalates to assertive/alert semantics for the failure state, unlike a targeted role=\"alert\".",
+      "evidence": "A/source/analytics/trials/index.html:11 (\"<main id=\\\"app\\\" aria-live=\\\"polite\\\">\"); no role=\"alert\" or role=\"status\" anywhere in A/source/analytics/trials/app.js."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The 'Where it's worst' ranked list restates figures (e.g. -13 pts for activated trials) that also appear in the Funnel tab's KPI tiles, without any visual link tying the two together, so a fast reader may treat them as two separate facts rather than one number surfaced twice.",
+      "evidence": "B/desktop.png: ranked item 2 ('Activated trials (overall) 62% → 49%, -13 pts') vs the Funnel-tab KPI card showing the same 62%→49% figure with no cross-reference."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The Segments-tab disclosure toggle uses asymmetric copy ('Why not just show whatever's there?' when collapsed vs 'Hide why this matters' when expanded) rather than a predictable show/hide pair, a small consistency rough edge.",
+      "evidence": "B/source/analytics/trials/app.js ~lines 400-402."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 4, "D4": 3, "D5": 2, "D6": 2, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

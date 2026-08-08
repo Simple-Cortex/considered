@@ -1,0 +1,683 @@
+{
+  "$schema": "considered-deck/v1",
+  "kind": "structures",
+  "version": "1.1.0",
+  "tiers": [
+    "organizing-axis",
+    "depth-strategy",
+    "framing"
+  ],
+  "entries": [
+    {
+      "id": "urgency-triage-board",
+      "name": "Urgency Triage Board",
+      "tier": "organizing-axis",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "thesis": "The surface is organized into urgency bands that tell the user what requires action now, next, and later.",
+      "refuses": "It rejects grouping records by type, owner, or source when those groups conceal urgency.",
+      "laws": {
+        "grouping": "Form mutually exclusive bands from a declared urgency rule, such as breached, at risk, stable, and deferred. Every item belongs to one band, and band order follows response time.",
+        "hierarchy": "The most consequential item in the highest urgency band earns the single focal position. Healthy totals and aggregate counts may never outrank an actionable breach.",
+        "actions": "Put the next safe action on each urgent item and one scope-level response beside the leading band. Lower bands expose actions only on selection or drill.",
+        "empty": "An empty urgent band means no immediate intervention is required. It must read as an explicit all-clear with scope and freshness, not as missing data.",
+        "motion": "Only an item changing urgency bands may move, and the transition must preserve its identity and prior position long enough to be understood. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "incident operations console",
+        "support SLA dashboard",
+        "clinical worklist"
+      ],
+      "avoid": "Avoid when urgency cannot be derived consistently or when the primary task is historical interpretation rather than intervention.",
+      "rating": 3
+    },
+    {
+      "id": "stage-gated-pipeline",
+      "name": "Stage Gated Pipeline",
+      "tier": "organizing-axis",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "thesis": "The surface is organized by the ordered stages an object must pass through, with blocked transitions treated as the central problem.",
+      "refuses": "It rejects a flat inventory that erases sequence, handoffs, and the conditions required to advance.",
+      "laws": {
+        "grouping": "Create one zone per real lifecycle stage in process order. Place each object only in its current stage, and isolate blocked objects within that stage rather than inventing a separate object type.",
+        "hierarchy": "The stage constraining total flow earns the focal position. Total throughput may support it, but a vanity completion count may never displace the active bottleneck.",
+        "actions": "Stage transitions live on the object or selected cohort and name the resulting state. Process configuration and bulk exceptions live outside the primary flow.",
+        "empty": "An empty stage means either healthy flow, no arrivals, or a broken upstream handoff. The state must identify which interpretation applies and show the relevant interval.",
+        "motion": "Only objects advancing, returning, or becoming blocked may move between stages. Decorative movement along the pipeline is forbidden. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "sales opportunity pipeline",
+        "content approval workflow",
+        "order fulfillment console"
+      ],
+      "avoid": "Avoid when stages are optional, cyclic, or disputed enough that a linear progression would misrepresent the work.",
+      "rating": 3
+    },
+    {
+      "id": "object-dossier",
+      "name": "Object Dossier",
+      "tier": "organizing-axis",
+      "modes": [
+        "operate",
+        "read",
+        "persuade"
+      ],
+      "thesis": "The surface is organized around one named object, assembling its identity, state, relationships, evidence, and available decisions into a complete case.",
+      "refuses": "It rejects scattering one object's facts across generic metric, activity, and settings pages.",
+      "laws": {
+        "grouping": "Anchor every zone to the focal object: identity and state, current obligations, relationships, history, and evidence. Information not traceable to that object is removed or linked elsewhere.",
+        "hierarchy": "The object's current decision or unresolved state earns the focal position. The avatar, logo, image, or record identifier may never become the focal element by decoration alone.",
+        "actions": "Object-level actions live beside the state they change. Relationship actions live within the relationship zone, and irreversible actions remain in a clearly subordinate management area.",
+        "empty": "A new or sparse dossier states which facts do not yet exist and which action can create them. It must still establish identity and current state.",
+        "motion": "Only a state change or newly attached evidence may animate, and the motion must originate at the affected zone. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "customer account record",
+        "patient case page",
+        "project detail surface"
+      ],
+      "avoid": "Avoid when users must compare many peer objects at once or when no single object owns the decision context.",
+      "rating": 2
+    },
+    {
+      "id": "time-ledger",
+      "name": "Time Ledger",
+      "tier": "organizing-axis",
+      "modes": [
+        "analyze",
+        "read",
+        "experience"
+      ],
+      "thesis": "The surface is organized as an accountable chronology in which events, changes, and decisions are read in time order.",
+      "refuses": "It rejects thematic summaries that separate a change from what preceded it and what followed.",
+      "laws": {
+        "grouping": "Group events into meaningful periods such as today, this release, or this phase, then order strictly by time within each period. Concurrent events may cluster only when they share one cause or decision.",
+        "hierarchy": "The event that changed state or explains the present earns the focal position. The newest timestamp may never win solely because it is newest.",
+        "actions": "Actions attach to the event or period they affect, such as annotate, revert, or inspect. Global export and range controls remain in the orient layer.",
+        "empty": "No events means the object was unchanged during the stated interval. The empty state must name that interval and distinguish inactivity from unavailable history.",
+        "motion": "Only the arrival of a new event may move the chronology, and it must not steal reading position from an older event under inspection. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "audit history",
+        "product changelog",
+        "case activity record"
+      ],
+      "avoid": "Avoid when sequence does not affect meaning or when the task depends on comparing categories rather than reconstructing causality.",
+      "rating": 2
+    },
+    {
+      "id": "exception-feed",
+      "name": "Exception Feed",
+      "tier": "organizing-axis",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "thesis": "The surface is organized around deviations from an explicit normal state, ordered by consequence and time remaining.",
+      "refuses": "It rejects a comprehensive status wall where normal records consume the same attention as failures.",
+      "laws": {
+        "grouping": "Form zones by exception class only when each class implies a different response. Within a class, sort by consequence first, deadline second, and confidence third.",
+        "hierarchy": "The exception with the largest credible consequence earns the focal position. Normal throughput, green status counts, and decorative health scores may never hold it.",
+        "actions": "Put acknowledge, assign, resolve, and inspect actions on each exception according to scope. Rule tuning and suppression live behind a separate governance action.",
+        "empty": "Zero exceptions is the desired state and must show the monitored scope, last evaluation time, and next check. It must not invite users to create work.",
+        "motion": "Only a new exception, an escalation, or a resolution may move. Resolution motion must reduce emphasis rather than celebrate. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "fraud review queue",
+        "infrastructure alert center",
+        "data quality monitor"
+      ],
+      "avoid": "Avoid when the user needs a representative picture of the whole system or when normal variation is easily mistaken for an exception.",
+      "rating": 3
+    },
+    {
+      "id": "decision-comparison-matrix",
+      "name": "Decision Comparison Matrix",
+      "tier": "organizing-axis",
+      "modes": [
+        "analyze",
+        "persuade"
+      ],
+      "thesis": "The surface is organized by decision criteria crossed with alternatives so that tradeoffs remain visible and comparable.",
+      "refuses": "It rejects a sequence of isolated option cards that forces the reader to remember differences across sections.",
+      "laws": {
+        "grouping": "Use alternatives as one axis and user-relevant criteria as the other. Group criteria by decision question, preserve the same order for every alternative, and expose missing evidence rather than filling gaps.",
+        "hierarchy": "The criterion most decisive for the stated choice earns the focal position. A recommended option may be emphasized, but price, brand, or visual richness may never win without an explicit decision rationale.",
+        "actions": "Selection and next-step actions live with each alternative at equal structural positions. Filtering or weighting criteria lives at matrix scope and must visibly change the basis of recommendation.",
+        "empty": "No alternatives means comparison cannot begin. The state must request or explain the minimum comparable set rather than display an empty grid.",
+        "motion": "Only sorting, filtering, or a changed criterion weight may reorder alternatives, and the changed basis must remain visible. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "pricing plan comparison",
+        "vendor evaluation",
+        "product feature comparison"
+      ],
+      "avoid": "Avoid when options are not mutually comparable, when there is only one credible choice, or when the criteria cannot be stated honestly.",
+      "rating": 3
+    },
+    {
+      "id": "territory-map",
+      "name": "Territory Map",
+      "tier": "organizing-axis",
+      "modes": [
+        "analyze",
+        "experience",
+        "read"
+      ],
+      "thesis": "The surface is organized by meaningful spatial territory, making location, adjacency, reach, and concentration the basis of understanding.",
+      "refuses": "It rejects lists and totals that detach an event from where it occurs and what surrounds it.",
+      "laws": {
+        "grouping": "Form zones from real geographic, physical, or conceptual territories. Aggregate only at stable boundaries, and keep adjacent areas comparable at the same level of scale.",
+        "hierarchy": "The territory that best answers the active location question earns the focal position. A large map may never dominate merely because it is visually expansive.",
+        "actions": "Pan, zoom, select, and region-specific actions stay in the map context. Global filters remain outside the territory, and every selection exposes a reversible path back.",
+        "empty": "An empty territory means no qualifying records exist in the visible boundary and interval. It must distinguish true zero from incomplete coverage or excessive zoom.",
+        "motion": "Only changes in position, boundary, or selected scale may move. Ambient map motion and animated markers are forbidden. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "delivery coverage planner",
+        "retail location analysis",
+        "museum spatial guide"
+      ],
+      "avoid": "Avoid when location is incidental, boundaries are misleading, or precise comparison matters more than spatial pattern.",
+      "rating": 2
+    },
+    {
+      "id": "dependency-graph",
+      "name": "Dependency Graph",
+      "tier": "organizing-axis",
+      "modes": [
+        "analyze",
+        "operate"
+      ],
+      "thesis": "The surface is organized by prerequisite and consequence, revealing what each object depends on and what it can block.",
+      "refuses": "It rejects flat ownership lists that hide causal paths, shared dependencies, and blast radius.",
+      "laws": {
+        "grouping": "Group nodes into dependency layers or bounded domains, then preserve directed relationships across them. Collapse only subgraphs that share one owner and one operational meaning.",
+        "hierarchy": "The dependency with the largest current downstream consequence earns the focal position. The most connected node may never win unless degree corresponds to real impact.",
+        "actions": "Repair, isolate, inspect, and reassign actions live on the selected node or edge. Graph-wide simulation and filtering live at scope level with their effect stated.",
+        "empty": "No dependencies means the selected object is independent within the declared scope. The state must name that scope and distinguish independence from missing relationship data.",
+        "motion": "Only a relationship change, failure propagation, or selected path may animate. The graph must remain stable during ordinary inspection. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "service topology console",
+        "project dependency planner",
+        "data lineage explorer"
+      ],
+      "avoid": "Avoid when relationships are weak, unverified, or so dense that paths cannot support a concrete decision.",
+      "rating": 2
+    },
+    {
+      "id": "narrative-descent",
+      "name": "Narrative Descent",
+      "tier": "organizing-axis",
+      "modes": [
+        "persuade",
+        "read",
+        "experience"
+      ],
+      "thesis": "The surface is organized as a deliberate descent from a consequential premise through proof, mechanism, fit, and commitment.",
+      "refuses": "It rejects a feature catalog whose sections can be rearranged without changing the argument.",
+      "laws": {
+        "grouping": "Each zone performs one argumentative step: establish stakes, make the claim, show proof, explain how it works, qualify fit, and ask for commitment. Every later zone must depend on an earlier one.",
+        "hierarchy": "The central promise or thesis earns the single focal position. Product screenshots, customer logos, and ornamental statistics may never become the thesis by visual weight.",
+        "actions": "The primary commitment appears after the promise and again only after sufficient proof. Section actions must advance the same argument rather than branch into unrelated tasks.",
+        "empty": "If proof or mechanism is unavailable, the gap must read as an unresolved claim, not be replaced by generic praise or placeholder metrics.",
+        "motion": "Only evidence entering to substantiate the current claim may move. Scroll spectacle that does not advance the argument is forbidden. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "software landing page",
+        "fundraising campaign",
+        "product launch narrative"
+      ],
+      "avoid": "Avoid when visitors arrive to execute a known task, compare many equal options, or retrieve reference information out of order.",
+      "rating": 3
+    },
+    {
+      "id": "evidence-stack",
+      "name": "Evidence Stack",
+      "tier": "organizing-axis",
+      "modes": [
+        "persuade",
+        "read",
+        "analyze"
+      ],
+      "thesis": "The surface is organized by increasing evidentiary strength, moving from claim to direct proof, independent corroboration, and limits.",
+      "refuses": "It rejects undifferentiated testimonial walls and unsupported claims presented with equal authority.",
+      "laws": {
+        "grouping": "Group evidence by what it proves and its source quality, not by media type. Order each claim with its direct evidence, corroboration, counterevidence, and stated limit.",
+        "hierarchy": "The strongest decision-relevant evidence earns the focal position. A quote, logo, or large number may never outrank more direct evidence solely because it is easier to display.",
+        "actions": "Verification and source actions live beside the evidence they validate. The primary commitment follows the minimum sufficient proof and may not interrupt every evidence group.",
+        "empty": "Missing evidence means the claim remains unproven. The surface must narrow or withdraw the claim rather than fill the gap with authority signals.",
+        "motion": "Only a transition from summary evidence to its source may move, and the source relationship must remain visible. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "research summary",
+        "trust and safety report",
+        "case study page"
+      ],
+      "avoid": "Avoid when the task is immediate operation, when evidence cannot be attributed, or when readers need a chronological account instead.",
+      "rating": 2
+    },
+    {
+      "id": "single-dense-surface",
+      "name": "Single Dense Surface",
+      "tier": "depth-strategy",
+      "modes": [
+        "operate",
+        "analyze",
+        "persuade",
+        "read",
+        "experience"
+      ],
+      "thesis": "All routinely needed context and controls remain on one bounded surface so trained users can scan, compare, and act without navigation.",
+      "refuses": "It rejects hiding frequent answers behind cards, drawers, and page changes merely to make the default view look sparse.",
+      "laws": {
+        "grouping": "Keep all high-frequency questions in visible zones on one surface, with strong inter-zone separation and no duplicated facts. Rare configuration and historical detail leave the surface.",
+        "hierarchy": "The current operational decision earns the focal position despite the density. Navigation, decoration, and aggregate summaries may never compete with it.",
+        "actions": "Frequent reversible actions remain in place at object or zone scope. Rare, destructive, and administrative actions move to subordinate menus or separate destinations.",
+        "empty": "A zero state preserves the surface's zone structure and explains which zones are genuinely clear, filtered out, or unavailable.",
+        "motion": "Only live data that changes a decision may update visibly, and updates must not reorder the surface without an explicit user rule. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "network operations console",
+        "trading workstation",
+        "dispatch dashboard"
+      ],
+      "avoid": "Avoid for novice audiences, infrequent use, narrow screens, or tasks whose questions do not need to be answered in the same glance.",
+      "rating": 2
+    },
+    {
+      "id": "overview-and-drill",
+      "name": "Overview And Drill",
+      "tier": "depth-strategy",
+      "modes": [
+        "analyze",
+        "operate",
+        "read",
+        "persuade"
+      ],
+      "thesis": "The default surface answers the highest-ranked questions completely, then opens a traceable path into the records and causes behind them.",
+      "refuses": "It rejects both the shallow summary with no explanation and the all-at-once surface that treats every detail as equally urgent.",
+      "laws": {
+        "grouping": "Build the overview from complete answers to the top questions, then give each answer one direct drill path into a coherent lower-level object set. Do not mix multiple hierarchy levels in one zone.",
+        "hierarchy": "The overview's most decision-driving answer earns the focal position. Drill affordances and detail counts may never dominate before a user selects a question.",
+        "actions": "Overview actions change overview scope or begin the primary response. Record actions appear only after drill, while the parent context and return path remain visible.",
+        "empty": "An empty overview states the scoped result and still offers valid alternate scopes. An empty drill explains why the selected summary has no qualifying records or identifies a data inconsistency.",
+        "motion": "Only the transition between an overview answer and its detail set may move, and returning must restore filters, selection, and reading position. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "executive performance dashboard",
+        "analytics product home",
+        "portfolio health overview"
+      ],
+      "avoid": "Avoid when users must act across many records continuously or when the data has no stable summary-to-detail hierarchy.",
+      "rating": 3
+    },
+    {
+      "id": "parallel-lenses",
+      "name": "Parallel Lenses",
+      "tier": "depth-strategy",
+      "modes": [
+        "analyze",
+        "read",
+        "operate",
+        "persuade"
+      ],
+      "thesis": "Equal-status views expose distinct lenses on the same stable context without implying a hierarchy between them.",
+      "refuses": "It rejects one endless surface that interleaves questions requiring different analytical lenses.",
+      "laws": {
+        "grouping": "Create three to seven peer views that share the same object, scope, and time context but answer distinct questions. A fact belongs to one lens unless a shared orient layer requires it.",
+        "hierarchy": "The active lens has one focal answer. The tab row and inactive lens labels may never become the dominant visual element.",
+        "actions": "Lens-specific actions stay inside the active view. Shared scope controls remain fixed across lenses, and changing lenses must preserve their values.",
+        "empty": "An empty lens means its question has no answer under the shared scope. It must not imply the entire object or dataset is empty.",
+        "motion": "Only the active-lens transition may move, and it must not resemble forward navigation or reset shared context. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "customer analytics workspace",
+        "documentation reference area",
+        "campaign performance suite"
+      ],
+      "avoid": "Avoid when the views form a real sequence, have unequal importance, or require different scopes that would make tab switching deceptive.",
+      "rating": 2
+    },
+    {
+      "id": "master-detail-split",
+      "name": "Master Detail Split",
+      "tier": "depth-strategy",
+      "modes": [
+        "operate",
+        "read",
+        "analyze",
+        "experience"
+      ],
+      "thesis": "A persistent collection and one selected object's detail remain visible together so inspection never destroys comparison context.",
+      "refuses": "It rejects repeated list-to-page navigation that makes users lose position, filters, and neighboring records.",
+      "laws": {
+        "grouping": "The master region contains identity, state, and the minimum fields needed to choose an object. The detail region contains only facts and actions belonging to the selected object.",
+        "hierarchy": "The selected object's current decision earns the focal position, while the master preserves enough emphasis for rapid switching. An unselected row may never compete with the active detail.",
+        "actions": "Collection actions stay with the master, object actions stay with the detail, and bulk actions appear only after multi-selection changes the scope explicitly.",
+        "empty": "No collection results produces a full-scope empty state. A collection with no selection prompts selection without fabricating detail, and a sparse object explains its missing fields.",
+        "motion": "Only the detail region may transition when selection changes. The master list, scroll position, sort, and filters remain stable. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "email client",
+        "support ticket workspace",
+        "asset inspection tool"
+      ],
+      "avoid": "Avoid when detail requires the full viewport, when objects are rarely switched, or when the collection cannot be represented compactly.",
+      "rating": 3
+    },
+    {
+      "id": "progressive-reveal",
+      "name": "Progressive Reveal",
+      "tier": "depth-strategy",
+      "modes": [
+        "read",
+        "persuade",
+        "operate",
+        "analyze",
+        "experience"
+      ],
+      "thesis": "The surface exposes the minimum complete answer first, then reveals supporting complexity at the exact point a reader asks for it.",
+      "refuses": "It rejects both indiscriminate expansion and teaser summaries that withhold information required for the primary decision.",
+      "laws": {
+        "grouping": "Keep each primary answer with a labeled disclosure of its explanation, evidence, or advanced options. Disclosure depth may not exceed two levels for routinely needed content.",
+        "hierarchy": "The complete first-order answer earns the focal position. Chevrons, collapsed counts, and hidden technical detail may never compete with it.",
+        "actions": "Reveal actions state what will appear and, where useful, how much. Task-changing actions do not masquerade as disclosure and must navigate explicitly.",
+        "empty": "A disclosure with no additional content is removed. A primary empty state explains the zero condition before offering optional guidance.",
+        "motion": "Only the requested region expands or contracts, preserving the trigger and nearby reading position. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "technical documentation",
+        "onboarding explanation",
+        "complex settings guide"
+      ],
+      "avoid": "Avoid when hidden material is required for every decision, when users compare distant details, or when repeated expansion would become routine labor.",
+      "rating": 2
+    },
+    {
+      "id": "saved-perspective-switcher",
+      "name": "Saved Perspective Switcher",
+      "tier": "depth-strategy",
+      "modes": [
+        "analyze",
+        "operate",
+        "read"
+      ],
+      "thesis": "Named, restorable perspectives organize one dataset into recurring role, goal, or investigation contexts.",
+      "refuses": "It rejects making users rebuild the same filters, columns, sort, and scope at every visit.",
+      "laws": {
+        "grouping": "Each perspective stores one coherent question context, including scope, filters, visible fields, and sort. Perspectives group by user goal, not by arbitrary control combinations.",
+        "hierarchy": "The active perspective's primary answer earns the focal position. The switcher and saved-view management may never dominate the data it configures.",
+        "actions": "Switch, save, update, duplicate, and share actions live at perspective scope. Object actions remain within the configured result set and do not silently alter the saved perspective.",
+        "empty": "An empty perspective means its stored conditions currently match nothing. It must show those conditions and offer temporary clearing without overwriting the saved state.",
+        "motion": "Only the result set may transition when perspectives change, and the new perspective name and conditions must become immediately visible. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "CRM record table",
+        "issue tracking workspace",
+        "multiteam analytics console"
+      ],
+      "avoid": "Avoid when there is one canonical view, when users lack recurring contexts, or when saved states would hide critical global conditions.",
+      "rating": 2
+    },
+    {
+      "id": "status-first",
+      "name": "Status First",
+      "tier": "framing",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "thesis": "The surface opens with a direct judgment of current state against a declared target before explaining causes or offering detail.",
+      "refuses": "It rejects opening with activity totals, navigation, or background context that delays the answer to whether things are okay.",
+      "laws": {
+        "grouping": "Lead with state versus target, then group causes, consequences, and responses in that order. Orientation remains present but visually quiet.",
+        "hierarchy": "The current state judgment earns the single focal position. A raw metric may never hold it without a target, threshold, or prior basis.",
+        "actions": "The primary action addresses the state shown and sits adjacent to it when immediate. Explanatory and administrative actions descend with the supporting zones.",
+        "empty": "No measurable state means status is unknown, not healthy. The surface must identify the missing scope, freshness, or data source.",
+        "motion": "Only a material state transition may move or change emphasis, according to a declared significance threshold. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "service health dashboard",
+        "project status report",
+        "account compliance page"
+      ],
+      "avoid": "Avoid when no trustworthy target exists or when the user's first question is which specific item needs work.",
+      "rating": 3
+    },
+    {
+      "id": "exception-first",
+      "name": "Exception First",
+      "tier": "framing",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "thesis": "The surface opens with what violates expectation, then provides enough normal context to judge severity and response.",
+      "refuses": "It rejects leading with averages and healthy totals that make urgent deviations visually peripheral.",
+      "laws": {
+        "grouping": "Lead with active exceptions, then group baseline context, shared causes, and response capacity. Normal records appear only when needed to establish proportion or contrast.",
+        "hierarchy": "The highest-consequence exception earns the focal position. The overall health score and count of normal items may never outrank it.",
+        "actions": "Exception resolution and assignment actions stay with the exception. Suppression, threshold changes, and policy actions remain subordinate and visibly alter the monitoring rule.",
+        "empty": "No exceptions is an explicit monitored all-clear with scope, rule set, and freshness. It is not a blank queue or generic success message.",
+        "motion": "Only the arrival, escalation, or resolution of an exception may move. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "security findings dashboard",
+        "quality control console",
+        "billing anomaly review"
+      ],
+      "avoid": "Avoid when routine work matters more than deviation, when thresholds are unstable, or when the full population must remain visible.",
+      "rating": 2
+    },
+    {
+      "id": "queue-first",
+      "name": "Queue First",
+      "tier": "framing",
+      "modes": [
+        "operate"
+      ],
+      "thesis": "The surface opens with the ordered work waiting for the user, and every supporting fact exists to choose or complete the next item.",
+      "refuses": "It rejects starting with retrospective KPIs while actionable records wait below the fold.",
+      "laws": {
+        "grouping": "Lead with the work queue, then group context by what helps prioritize, process, and recover queued items. Reports and trends remain downstream or elsewhere.",
+        "hierarchy": "The next item selected by the declared queue rule earns the focal position. Queue size and productivity totals may never displace the actual next work.",
+        "actions": "The next safe action appears on each item, with bulk actions only after explicit selection. Queue policy and configuration live outside the item flow.",
+        "empty": "An empty queue means no work currently matches the scope. It must show scope, freshness, and the next expected source of work without inventing a task.",
+        "motion": "Only item arrival, reassignment, reprioritization, or completion may move the queue, and active work must not jump unexpectedly. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "claims processing inbox",
+        "content moderation queue",
+        "warehouse picking list"
+      ],
+      "avoid": "Avoid when the main task is pattern analysis, strategic review, or free exploration rather than sequential work completion.",
+      "rating": 2
+    },
+    {
+      "id": "trend-first",
+      "name": "Trend First",
+      "tier": "framing",
+      "modes": [
+        "analyze"
+      ],
+      "thesis": "The surface opens with the direction, magnitude, and significance of change over a declared interval before presenting current totals.",
+      "refuses": "It rejects a row of current-value cards that conceals trajectory and turns movement into footnote deltas.",
+      "laws": {
+        "grouping": "Lead with the primary trend, then group inflection points, contributors, segment differences, and current state. Every supporting zone must explain movement in the same interval.",
+        "hierarchy": "The most decision-relevant change earns the focal position. The largest absolute value may never outrank a smaller but consequential shift.",
+        "actions": "Time range and comparison basis sit with the trend. Investigation actions attach to inflection points or contributors, while export and configuration remain secondary.",
+        "empty": "Insufficient history means no trend can be claimed. The surface must state the required interval and show current state without implying direction.",
+        "motion": "Only a user-requested time transition or newly significant inflection may animate, with axes held stable for comparison. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "growth analytics report",
+        "capacity planning dashboard",
+        "public health surveillance page"
+      ],
+      "avoid": "Avoid when the present item list demands action now or when sampling, seasonality, or sparse history makes direction unreliable.",
+      "rating": 2
+    },
+    {
+      "id": "entity-first",
+      "name": "Entity First",
+      "tier": "framing",
+      "modes": [
+        "read",
+        "operate",
+        "persuade",
+        "experience"
+      ],
+      "thesis": "The surface opens by establishing the identity and current state of one entity before revealing its metrics, relationships, or history.",
+      "refuses": "It rejects generic dashboards that force users to infer whose data, permissions, and actions they are seeing.",
+      "laws": {
+        "grouping": "Lead with identity, state, ownership, and scope, then group obligations, relationships, history, and actions around that entity. Cross-entity data appears only as comparison context.",
+        "hierarchy": "The entity's current decision or state earns the focal position. Its logo, portrait, and internal identifier may never dominate the consequential fact.",
+        "actions": "Entity actions live beside the state or relationship they change. Account-wide and destructive actions remain in a subordinate management zone.",
+        "empty": "A sparse entity still shows verified identity and state, then names absent facts and how they may be created or obtained.",
+        "motion": "Only a verified state or relationship change may move, anchored to the entity field that changed. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "member profile",
+        "organization account page",
+        "asset record"
+      ],
+      "avoid": "Avoid when users must compare a population, monitor system-wide change, or process an ordered queue.",
+      "rating": 2
+    },
+    {
+      "id": "claim-first",
+      "name": "Claim First",
+      "tier": "framing",
+      "modes": [
+        "persuade",
+        "read"
+      ],
+      "thesis": "The surface opens with one falsifiable claim about the user's outcome, then makes every section prove, qualify, or operationalize it.",
+      "refuses": "It rejects opening with a category label, brand slogan, or feature list that makes no testable promise.",
+      "laws": {
+        "grouping": "Lead with the claim, then group proof, mechanism, fit, limits, and commitment. Remove any section that neither supports nor qualifies the claim.",
+        "hierarchy": "The outcome claim earns the single focal position. Brand marks, product imagery, and social proof may never outrank the proposition they serve.",
+        "actions": "The primary action asks for the next commitment implied by the claim and appears after the claim and sufficient proof. Secondary actions reduce uncertainty rather than start unrelated journeys.",
+        "empty": "If credible proof is absent, narrow the claim and state the limit. Do not substitute testimonials, invented metrics, or decorative authority.",
+        "motion": "Only evidence that directly resolves uncertainty about the claim may move into view. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "product landing page",
+        "service offering page",
+        "campaign appeal"
+      ],
+      "avoid": "Avoid when the visitor already accepts the premise and needs reference, operation, or comparison instead.",
+      "rating": 3
+    },
+    {
+      "id": "objection-first",
+      "name": "Objection First",
+      "tier": "framing",
+      "modes": [
+        "persuade",
+        "read",
+        "analyze"
+      ],
+      "thesis": "The surface opens by naming the visitor's strongest credible objection and resolves it before asking for belief or commitment.",
+      "refuses": "It rejects promotional sequencing that delays price, risk, complexity, trust, or switching cost until after the pitch.",
+      "laws": {
+        "grouping": "Lead with the primary objection, then group its evidence, mitigation, residual limits, and only then the positive proposition. Secondary objections follow in decision order.",
+        "hierarchy": "The objection that most often blocks the intended decision earns the focal position. The brand's preferred talking point may never displace it.",
+        "actions": "Verification, calculator, trial, and contact actions sit beside the objection they reduce. The purchase or signup action follows demonstrated resolution.",
+        "empty": "If an objection cannot be answered, state the limitation and redirect the audience for whom the offer is not a fit.",
+        "motion": "Only a reveal that directly answers the named objection may move, and the objection must remain visible during resolution. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "enterprise security page",
+        "migration landing page",
+        "high-consideration pricing page"
+      ],
+      "avoid": "Avoid when the audience has no dominant objection, when the concern would be amplified irresponsibly, or when the task is transactional.",
+      "rating": 2
+    },
+    {
+      "id": "before-after",
+      "name": "Before And After",
+      "tier": "framing",
+      "modes": [
+        "persuade",
+        "experience"
+      ],
+      "thesis": "The surface is framed as a verifiable transition from a specific present condition to a specific improved condition through an explained mechanism.",
+      "refuses": "It rejects aspirational transformation language with no baseline, mechanism, or comparable outcome.",
+      "laws": {
+        "grouping": "Pair each before condition with its corresponding after condition, then place the mechanism and evidence between them. Keep scope, subject, and measurement basis identical across the pair.",
+        "hierarchy": "The most meaningful verified change earns the focal position. The after image or number may never dominate if the before condition is not comparable.",
+        "actions": "The primary action begins the stated transition. Evidence, methodology, and eligibility actions live beside the pair they validate.",
+        "empty": "Without a comparable baseline or outcome, the transformation claim is withheld and the surface explains what evidence is missing.",
+        "motion": "Only the direct transition between a matched before and after state may move, with both endpoints available for inspection. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "case study page",
+        "renovation portfolio",
+        "workflow automation pitch"
+      ],
+      "avoid": "Avoid when outcomes vary too widely for honest pairing, when the baseline is unavailable, or when visual change would oversimplify the value.",
+      "rating": 2
+    },
+    {
+      "id": "cost-of-inaction",
+      "name": "Cost Of Inaction",
+      "tier": "framing",
+      "modes": [
+        "persuade",
+        "analyze"
+      ],
+      "thesis": "The surface is organized around the measurable consequence of maintaining the current state, followed by the controllable path to reduce that cost.",
+      "refuses": "It rejects generic urgency, countdown pressure, and fear claims that are not tied to the user's own scale and interval.",
+      "laws": {
+        "grouping": "Lead with the current condition, then group accumulating cost, affected outcomes, assumptions, intervention options, and residual risk. Separate observed cost from modeled cost.",
+        "hierarchy": "The largest credible and controllable consequence earns the focal position. A dramatic hypothetical may never outrank observed user-specific evidence.",
+        "actions": "Calculation and assumption controls sit beside the cost model. The primary action begins mitigation and states the expected scope, while sales contact remains secondary unless needed to proceed.",
+        "empty": "If cost cannot be estimated, show the missing inputs and decline to produce a total. Zero modeled cost must read as a valid result, not a broken calculator.",
+        "motion": "Only user-controlled assumptions or time horizon changes may move the estimate, with the changed input visibly attached. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "ROI calculator",
+        "risk reduction proposal",
+        "technical debt business case"
+      ],
+      "avoid": "Avoid when consequences cannot be measured responsibly, when fear would exploit vulnerability, or when the audience already intends to act.",
+      "rating": 2
+    },
+    {
+      "id": "single-question",
+      "name": "Single Question",
+      "tier": "framing",
+      "modes": [
+        "read",
+        "analyze",
+        "persuade",
+        "experience"
+      ],
+      "thesis": "The entire surface is organized to answer one explicit user question completely, with every fact ranked by its role in that answer.",
+      "refuses": "It rejects the broad overview page that partially answers many questions and fully answers none.",
+      "laws": {
+        "grouping": "State the question first, then group the direct answer, basis, alternatives, consequences, and next step. Delete any content that cannot complete or qualify that answer.",
+        "hierarchy": "The direct answer earns the single focal position. Navigation, metadata, and supporting evidence may never delay or visually outrank it.",
+        "actions": "Actions either apply the answer, inspect its basis, or change the question's scope. Unrelated actions leave the surface.",
+        "empty": "No answer means the surface states why the question is currently undecidable and identifies the smallest missing input or next check.",
+        "motion": "Only a scope change that produces a new answer may move, and the revised question must remain explicit. When reduced motion is requested, make the state change immediate and retain the same status information."
+      },
+      "fits": [
+        "eligibility result",
+        "diagnostic report",
+        "decision support page"
+      ],
+      "avoid": "Avoid when users genuinely need several peer questions answered together or when exploration is the primary value.",
+      "rating": 2
+    }
+  ]
+}

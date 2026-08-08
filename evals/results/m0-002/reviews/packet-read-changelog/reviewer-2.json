@@ -1,0 +1,72 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "Both outputs surface the breaking retention change and the existing-project exception in one scan, keep a readable narrative, and stay within the supplied facts, so the decision turns on the required interactions and states, which I verified by serving both packages locally with Playwright. (1) A's states are honest and robust: with the clipboard blocked, A reports 'Couldn't copy — select the retentionDays value above instead', while B still displays 'Copied \"retentionDays\"' — a false success confirmation on the packet's central follow-up action. (2) A's 'Jump to breaking' clears an active search filter and moves focus to the breaking section (verified activeElement=section#note-breaking); B's jump silently fails while a filter hides the target — focus falls to body and the filter is not cleared. (3) A is static, progressively enhanced HTML (full changelog text without JS, live regions announce both copy state and the no-results state); B renders everything client-side (empty page without JS) and its zero-results state is never announced to assistive tech because the only live region is cleared exactly when the count reaches zero. B genuinely scans better — descriptive per-note headlines and a real config-reference placeholder page are strengths A lacks — but for a release engineer whose risk is a missed breaking change or a botched follow-up, verified interaction correctness and honest state feedback outweigh B's superior headline scanning.",
+  "suspected_unblinding": "A's app.js contains a comment citing a rule code, '(HON-04)', which reads like adherence to a named internal checklist or rubric and could hint at which treatment A received. B's app.js opens with 'content sourced only from the supplied facts', which similarly echoes eval-brief language. Neither influenced the judgment.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "Copy confirmation asserts success even when the copy fails. With navigator.clipboard unavailable and execCommand returning false, the button still switches to 'Copied' and the live region announces 'Copied \"retentionDays\"' (verified in a locally served run). The fallback's return value is never checked. A release engineer could paste an empty clipboard into relay.config.json work believing the key was copied. Fix: gate the confirmation on the actual copy result and show a failure message otherwise."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "'Jump to breaking changes' silently fails while an in-page search filter hides the breaking note: focus drops to body, the page does not scroll, and the filter is not cleared (verified: activeElement=body, breakingHidden=true). The primary rescue action of the page can no-op invisibly mid-search. Fix: clear the filter before focusing the target, as packet A does."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The no-results state is never announced to assistive technology. The only aria-live region (#search-status) is set to empty text exactly when zero notes match, and the visible no-results block is not a live region (verified). Sighted users see the empty state; screen-reader users hear nothing. Fix: announce the zero-result message through the existing status region."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The changelog is rendered entirely client-side from a JS module; without JavaScript the page body contains only the title text (verified: 21 characters of visible text vs. A's 1131). For a static release-notes page this sacrifices resilience for no functional gain."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At the required 390 px viewport there is a large blank band (roughly a screen-quarter) between the toolbar and the first note, and the search placeholder is clipped mid-word. In the no-results capture the custom 'Clear' affordance overlaps the input's native clear glyph ('×Clear'). Content is otherwise complete and readable."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Footer copy overpromises: 'See the configuration reference for the full set of relay.config.json keys' links to a placeholder page that immediately states the full reference is not included. The placeholder page also glosses retentionDays as 'overriding the default used for new projects', a scoping the facts do not state (the fact is unscoped: set retentionDays to retain a different period). Both are corrected or plausibly derivable in context, so I did not mark a material unsupported fact, but the footer promise should match the destination."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "Evidence gap: interaction-01-jump-to-breaking-changes.png is byte-identical to desktop.png (matching MD5), so the packet contains no captured proof the jump interaction occurred; interaction-02 and state-01 are also the same file. I verified the unfiltered jump works by running the source, but the packet's own evidence does not demonstrate it."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Note headings are category labels only ('Breaking', 'Changed', 'Added'), not descriptive summaries. The key claim is bolded in the body, so the scan still works with five notes, but B's headline style ('Default artifact retention is now 30 days for new projects') answers the engineer's question faster. Fix: add a short descriptive headline per note under the category label."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The configuration reference is an in-page placeholder box; 'Open config reference' scrolls and focuses that box rather than leading anywhere. This is honest (it states no URL was supplied) and satisfies the required interaction, but the 'path to the related configuration reference' is shallower than B's dedicated placeholder page with a back link."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 4, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 3, "D6": 2, "D7": 3, "D8": 3, "D9": 3 }
+  }
+}

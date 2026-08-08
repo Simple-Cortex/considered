@@ -1,0 +1,100 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "B wins the five-second glance: an ACT NOW hero names Payments API with p95 2.8 s vs 750 ms SLO and lists the queue-capacity and deploy-correlation reasons, while A makes the reader combine a ranked list with a detail panel. A still wins overall because its decision path stays intact and honest for every user: I reproduced that A keeps keyboard focus through its refresh tick and moves, traps, and restores focus around the rollback dialog with Escape working, whereas B rebuilds the whole DOM every second inside a main[aria-live=polite], destroying focus and never moving it into the rollback confirm. B also contradicts the brief's own trust gate, rendering 'Data is stale — last updated 0s ago', and its time-range control changes nothing while A discloses that the range narrows the label only. A's real cost is that its capacity panel fails by default, hiding the 94% utilization and 12-minute queue headroom.",
+  "suspected_unblinding": "none — no builder identity, comment style, or tooling marker distinguished a treatment; both ship the same static HTML/CSS/ES-module scaffold and identical starter README",
+  "unsupported_claim_label": { "A": true, "B": false },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "Rollback dialog asserts the action is reversible and that a later deploy can restore the current release — a capability and outcome the brief never supplies."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D7",
+      "description": "A one-second interval re-renders the entire app, so keyboard focus is destroyed roughly every second and an on-call user cannot hold a control long enough to act.",
+      "evidence": "Reproduced locally with Playwright: focus was on the '1h' range button, then after 2600 ms of idle time activeElement had moved to the console root; focus_survives_idle=false. Source: setInterval(render, 1000) with app.innerHTML = '' at the top of render()."
+    },
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D7",
+      "description": "The rollback confirmation dialog and the runbook drawer never receive focus, are not focus-trapped, and do not close on Escape, so the destructive-action confirm is not operable by keyboard.",
+      "evidence": "Reproduced: after clicking Rollback payments-api, focus_moved_into_dialog=false, escape_closes_dialog=false, focus_trapped_in_dialog=false after eight Tab presses; the runbook drawer behaved the same (drawer_focus_inside=false, drawer_escape_closes=false)."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The whole console sits inside main[aria-live=polite] and is rebuilt every second, so a screen reader re-announces the entire 1,559-character view once per second.",
+      "evidence": "Reproduced: live-region audit returned a single MAIN with aria-live=polite containing 1559 characters; index.html declares <main id=\"app\" aria-live=\"polite\"> and render() replaces its full contents on each tick."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The stale notice contradicts its own timestamp, telling the operator data is stale while simultaneously reporting it as current.",
+      "evidence": "Reproduced: banner read 'Data is stale — last updated 0s ago. This dashboard refreshes every 60s; data older than 120s is stale.' while the header meta read 'Last updated 0s ago'. Also visible in B/evidence/state-03-stale-data-notice.png."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The time-range control is inert: pressing 24h updates aria-pressed but changes no displayed value, label, or scope, and nothing discloses that the range does not scope the data.",
+      "evidence": "Reproduced: after clicking 24h, aria-pressed moved to 24h but the full body text was byte-identical to before (range_changed_text=false)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Debug affordances ship in the primary surface: a TEST CONTROLS row with 'Force stale-data notice' and 'Reset image processing failure' sits below the console on desktop and mobile.",
+      "evidence": "B/desktop.png, B/mobile.png, and every B evidence screenshot show the row; renderTestControls() is called unconditionally in render()."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The capacity panel is in its failed state on first load, so the default view omits the 94% checkout utilization and 12 minutes of queue headroom that establish urgency.",
+      "evidence": "Reproduced: on a fresh load the body text contained neither '12 min' nor '94%' (default_text_has_12min=false, default_text_has_94=false); state initializes capacityFailed=true, and both values appear only after clicking Retry capacity."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The rollback dialog claims the action is reversible via a subsequent deploy, an outcome the brief does not supply.",
+      "evidence": "A/evidence/interaction-02-initiate-rollback-not-executed.png, bullet 'Reversible: a subsequent deploy can restore 2026.07.28.3'; renderRollbackModal() in A/source/app.js."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The partial-data-failure and stale-data-notice evidence files are byte-identical, so the two required states are not independently demonstrated, and the app opens permanently stale and permanently degraded so the healthy baseline is never shown.",
+      "evidence": "md5 of A/evidence/state-02-partial-data-failure.png equals that of A/evidence/state-03-stale-data-notice.png (2cc0ad1c0da4a7a3aaadb9bd1caac6d7); state initializes dataAsOf 125s in the past and capacityFailed=true."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The page has no h1; the console title is a paragraph and the top-level headings start at h2, weakening screen-reader document structure.",
+      "evidence": "Reproduced: h1 count 0, headings enumerated as H2 'NEEDS ATTENTION NOW', H2 'SELECTED INCIDENT', H2 'CAPACITY'."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "wireEvents() attaches a document keydown listener on every render without removing the prior one, so handlers accumulate for the life of the session.",
+      "evidence": "A/source/app.js: document.addEventListener('keydown', onKeydown) at the end of wireEvents(), which render() calls on each pass; no matching removeEventListener."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 4, "D3": 3, "D4": 4, "D5": 3, "D6": 3, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 3, "D3": 4, "D4": 3, "D5": 2, "D6": 3, "D7": 1, "D8": 2, "D9": 4 }
+  }
+}

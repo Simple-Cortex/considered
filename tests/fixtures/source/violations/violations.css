@@ -1,0 +1,30 @@
+:root {
+  --red-500: #ff0000;
+}
+
+.unfocused:focus {
+  outline: none;
+}
+
+.card {
+  padding: 13px;
+  animation: pulse 1s infinite;
+  font-size: 12px;
+  font-weight: 400;
+  color: #101010;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px #000;
+}
+
+.one { font-size: 13px; font-weight: 500; color: #202020; border-radius: 3px; }
+.two { font-size: 14px; font-weight: 600; color: #303030; border-radius: 5px; }
+.three { font-size: 15px; font-weight: 700; color: #404040; }
+.four { font-size: 16px; }
+.five { font-size: 18px; }
+
+td { text-align: center; }
+
+@keyframes pulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}

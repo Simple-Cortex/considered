@@ -1,0 +1,66 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A better enables an IT administrator to disable obsolete connections without breaking production, on three concrete grounds. First, A names the decision criterion in the interface itself: a band header reading 'NEEDS REVIEW — ACTIVE, UNUSED 180+ DAYS (17)' with a matching count tile and a per-row NEEDS REVIEW badge, so the size and membership of the candidate set is legible on arrival. B sorts stale-first and offers a 'Stale active only (no use in 180+ days)' checkbox, which is equally faithful to the definition but never states how many candidates exist, so the administrator has to count rows across five pages inside a five-minute budget. Second, A keeps the destructive action out of the scanning path: each row exposes 'View' plus an overflow menu (role=menu / menuitem, aria-haspopup, aria-expanded), while B renders a persistent red 'Delete' button on every one of the 46 rows and again on every card at 390 px, immediately adjacent to 'Disable', in a table whose primary mode is rapid checkbox triage. Neither offers bulk delete and both gate single delete behind a typed-count confirm ('Type 1 to confirm'), so the letter of the rule holds in both; but B makes the irreversible action a permanent, equal-weight fixture of the dense view next to the reversible one, which is the misclick surface the scenario's consequence statement is about. Third, and verified in source rather than inferred from images, A implements overlay accessibility and B does not: A marks the page shell inert plus aria-hidden while an overlay is open (app.js:406), moves focus into the dialog after render and installs a Tab focus trap (app.js:417-441), uses role=alertdialog with aria-modal and aria-labelledby for the delete confirm (app.js:869), and ships a skip link and a polite live region. B's dialogs are role=dialog with only an aria-label, carry no aria-modal, never receive focus — its render() restores focus by data-action to the background trigger that opened the modal (app.js:663-703) — and there is no trap and no inert or aria-hidden on the background; a grep for trap, inert, and Tab in B's app.js returns nothing. B is genuinely stronger in two places that kept this close: scopes render as inline chips on every row where A collapses them to '3 SCOPES' and requires opening the drawer, and B's bulk-disable confirm restates the brief's central uncertainty at the moment of action ('3 of these are production connections. Production-critical status is not recorded — confirm you've verified they're not backing an active workflow'), whereas A carries that caveat only in the per-record drawer and omits it from its bulk confirm. Those advantages are real but narrower than A's combined safety and accessibility margin.",
+  "suspected_unblinding": "Recorded, not acted on. Two asymmetries could correlate with treatment. (1) A's sanitized source ships a .playwright-cli directory of 60+ timestamped page-*.yml and console-*.log capture artifacts (2026-08-04 timestamps); B's source contains no such directory. (2) A's code comments cite internal rule identifiers — 'ACT-19 requires the exact objects, by name' (app.js:820) and 'A11Y-07: while a drawer or dialog is open, Tab must cycle only within it' (app.js:426) — implying a codified rule set behind the build; B's comments are ordinary implementation notes with no identifier scheme. I did not infer a condition from either signal and scored only observable behavior and markup.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Modal dialogs, including the destructive delete confirm, are never focused and are not isolated from the background. render() (app.js:663-703) restores focus by data-action to the element that was focused before the re-render — for 'Disable selected' or a row 'Delete' that is the trigger behind the overlay — so focus stays outside the dialog. The dialogs are role=\"dialog\" with aria-label only (app.js:548, 567, 588, 617): no aria-modal, no aria-labelledby to a heading, no focus trap, and no inert or aria-hidden on the page shell; grep for 'trap', 'inert', and 'Tab' across B/source/admin/connections/app.js returns no matches. A keyboard or screen-reader user activating 'Delete permanently' gets no announcement of the dialog and can Tab straight back into the 46-row table behind it. Suggested fix: move focus to the dialog heading or Cancel on open, add aria-modal=\"true\" and aria-labelledby, trap Tab within the dialog, mark the shell inert while open, and restore focus to the trigger on close."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "Delete is a permanent, always-visible affordance on every record. renderRow (app.js:400) emits a red 'Delete' button on all 46 rows beside 'Disable', it repeats on every card at 390 px (state-04 evidence), and the detail panel adds a fourth entry point (app.js:532). Bulk delete is correctly absent and single delete is gated by a typed-count confirm, so the stated rule is not broken — but in a table whose primary mode is rapid checkbox triage of stale access, the irreversible action sits at the same visual weight and within a few pixels of the reversible one, on every row the administrator scans. Suggested fix: move Delete into a per-row overflow menu (or the detail panel only), leaving View / Notify / Disable inline."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "The bulk-disable confirm omits the uncertainty the brief makes central. The scenario states production-critical is not supplied for any record and the administrator must inspect before bulk action; A surfaces that correctly in the detail drawer ('Production-critical — Not marked on this record. Confirm with the owner or the environment record before disabling or deleting', app.js:799-806) but the bulk dialog (app.js:826-840) lists each record as name, owner, environment and says only that disabling is reversible. An administrator who selects from the banded list without opening drawers reaches the point of action with no reminder that production-critical status is unknown. Suggested fix: carry the drawer's caveat into the bulk confirm and count the production records in the batch, as the per-record listing already has the data to do."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The triage tile labelled 'ACTIVE (17)' competes with the Status column, where all 17 NEEDS REVIEW rows also read 'Active'. The bands are disjoint — the tile means active-and-not-stale — but nothing on screen says so, and the state-03 evidence shows NEEDS REVIEW falling 17 to 16 and DISABLED rising 7 to 8 while ACTIVE stays at 17, which reads as a stuck counter unless the reader has already inferred the partition. Suggested fix: relabel to 'ACTIVE, RECENTLY USED' or similar so the tile states its exclusion."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Scopes are collapsed to a count ('3 SCOPES', '1 SCOPE') in the table, so the grant an administrator is about to revoke is invisible until the drawer is opened one record at a time. The brief requires the default to preserve a way to inspect usage and scope before action, which the drawer satisfies, but scope is the field that distinguishes payroll.read from contacts.read at a glance and the five-minute budget makes per-record drawer visits expensive. B shows scope chips inline. Suggested fix: render scope names inline, truncating with a '+N' affordance past two."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "With a selection held and filters matching nothing, the selection bar stays live and 'Disable selected' remains enabled while the selected record is not on screen and is never named — the state-01 evidence shows '1 selected · 1 production' above an empty table. The production count is a partial signal, but the administrator can commit a bulk disable against a record they cannot currently see or inspect. A handles the equivalent case by appending '(N outside the current filter)' to its bulk summary (app.js:523-533). Suggested fix: name the off-screen records in the bar or the confirm, or require clearing filters before acting on a selection with no visible members."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the triage tile strip is cut off at the container edge: NEEDS REVIEW, EXPIRED and EXPIRING are visible, ACTIVE and DISABLED are clipped with no visible scroll affordance (state-04 evidence). Two of the five counts that frame the whole task are unreachable-looking on mobile. Suggested fix: wrap the tiles to a grid at narrow widths, or add a visible scroll cue."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The 41 filler records needed to reach the stated total of 46 are visually indistinguishable from the five records the scenario supplies. A generates them from a synthetic name pool with a seeded RNG (SYNTHETIC_APP_NAMES / syntheticRecords, and the seed objects carry an isSeed flag that is never surfaced in the UI), so 'Southpaw Support Desk — no owner, sandbox, 630 days ago' presents with the same authority as 'Legacy Forms'. Filling to 46 is required to render the stated total and the five supplied records are reproduced exactly, so this is not a material unsupported claim, but a reviewer cannot tell supplied fact from filler. Suggested fix: mark generated rows in a demo build. Noted for symmetry: B has the identical property (GENERATED_TUPLES), disclosed in a source comment but not in the UI."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 4, "D3": 3, "D4": 4, "D5": 3, "D6": 4, "D7": 4, "D8": 3, "D9": 3 },
+    "B": { "D1": 3, "D2": 3, "D3": 3, "D4": 2, "D5": 4, "D6": 3, "D7": 2, "D8": 3, "D9": 3 }
+  }
+}

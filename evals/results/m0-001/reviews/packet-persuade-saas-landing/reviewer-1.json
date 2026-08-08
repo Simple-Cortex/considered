@@ -1,0 +1,86 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B gets the support-ops leader to a decision faster inside the 2-minute budget: the fold carries audience, promise, the 31-to-9 stat with its qualifier, and the commitment with terms, and the migration objection is answered in visible prose rather than behind a click. A's 'The Brightline case' and 'Migration effort' sections render as a heading plus a closed accordion with no visible content, so a skimming reader gets no objection answer at all. A is the more disciplined build on claim hygiene — it stays strictly inside the supplied facts and explicitly declines to quote an import duration — but B's advantage is substantive rather than decorative (enumerated trial terms, cause-specific validation messages, focus-managed success). B wins on job enablement while carrying real claim-hygiene defects, recorded below.",
+  "suspected_unblinding": "B's sanitized source/ still contains a self-captured evidence/ directory with a project-specific naming convention (relaynotes-pslc-01..07), which A's source does not, and B's app.js comments cite an external 'FRAME.md' with lettered assumption IDs (A1, A2) while its HTML carries E1-E8 / P0-P4 / Q1-Q7 element markers. That is a visible methodology fingerprint and could identify the treatment. I did not open those files or pursue the lead; the review rests on rendered output, reproduced behavior, and page markup.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    { "label": "B", "claim": "CSV import described as walking the user through mapping their columns — a capability not supplied by the brief" },
+    { "label": "B", "claim": "Trial terms assert a 'no personal accounts' policy, enforced in code by a personal-mail domain blocklist" },
+    { "label": "B", "claim": "Success state asserts an activation-link email was sent — a signup mechanism not supplied" },
+    { "label": "B", "claim": "Defines what a 'handoff omission' is (missing owner, undocumented decision, unwritten next step), supplying meaning for the case metric that the brief did not give" }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The expanded CSV import steps claim Relay Notes walks the user through mapping their columns, inventing import capability on the exact objection the buyer is trying to price.",
+      "evidence": "B/source/index.html import disclosure (ol.steps); reproduced by expanding 'See how CSV import works' in a locally served copy at 127.0.0.1:8612"
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The trial terms assert a policy of 'no personal accounts', and the form enforces it with a hardcoded personal-mail domain blocklist, presenting an invented eligibility rule as a product term.",
+      "evidence": "Reproduced: submitting me@gmail.com returns the visible error 'Use your work email address, not a personal one, to start the trial.' (B/source/app.js FREE_MAIL_DOMAINS)"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The success state tells the user an activation link was emailed to them, asserting a signup mechanism the brief does not supply.",
+      "evidence": "Reproduced: valid submit renders 'Check your inbox. We sent an activation link to ops@brightline.example to start your 14-day trial.'"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The skip link is 'Skip to start trial' targeting #trial, so the first keyboard stop routes past all of the page's evidence straight to the conversion form instead of to main content.",
+      "evidence": "B/source/index.html line 14; verified as the first Tab stop in a locally driven Playwright chromium session"
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The example handoff card carries invented specifics (an owner name, 8% of EU traffic, a deploy hash, ticket #4821); the adjacent 'illustrative, not a real incident' label mitigates but does not remove the fabricated detail.",
+      "evidence": "B/desktop.png, 'The mechanism' module"
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Two of five sections — 'The Brightline case' and 'Migration effort' — render as a heading plus a closed disclosure with no visible content, so a reader on a 2-minute budget sees no answer to the stated primary objection without clicking.",
+      "evidence": "A/desktop.png; A/source/index.html sections .proof and .objection"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The hero is sized to the viewport and centers a short block inside it, leaving roughly 250px of empty space below the CTA and pushing all supporting content below the fold.",
+      "evidence": "A/source/styles.css:113 (min-height: calc(100vh - 65px)); A/desktop.png"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The trial form shows one generic message for every failure cause, so a user who mistyped an address is told to 'enter a work email address' rather than what is actually wrong.",
+      "evidence": "Reproduced: submitting the value 'nope' yields the same 'Enter a work email address to start your trial.' as an empty submit"
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The 'What a handoff contains' section lists the five fields as bare labels with no indication of why each matters to a handoff decision.",
+      "evidence": "A/desktop.png capabilities list"
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 2, "D3": 3, "D4": 4, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 3 },
+    "B": { "D1": 3, "D2": 4, "D3": 4, "D4": 4, "D5": 2, "D6": 4, "D7": 3, "D8": 4, "D9": 4 }
+  }
+}

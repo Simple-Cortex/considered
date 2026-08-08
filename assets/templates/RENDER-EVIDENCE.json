@@ -1,0 +1,33 @@
+{
+  "kind": "render-evidence/v1",
+  "artifact": "src/path/to/surface.tsx",
+  "mode": "operate",
+  "capturedBy": "independent reviewer or renderer",
+  "screenshots": [
+    "artifacts/desktop.png",
+    "artifacts/mobile.png"
+  ],
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "focalRegions": 1,
+      "p0AboveFold": true,
+      "p1AboveFold": true,
+      "dangerAndPrimaryVisible": false,
+      "statusOutranksAccent": true,
+      "grayscaleHierarchy": true,
+      "grayscaleStatus": true,
+      "fiveSecondP0Recognized": true,
+      "priorityOrderHolds": true,
+      "whitespaceRatio": 0.25,
+      "zones": [
+        { "name": "Needs attention now", "intraGap": 8, "interGap": 24 }
+      ],
+      "metrics": [
+        { "name": "Breach count", "valueWeight": 700, "labelWeight": 500 }
+      ]
+    }
+  ]
+}

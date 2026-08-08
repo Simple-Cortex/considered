@@ -1,0 +1,401 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://considered.design/schemas/evaluation-result-1.0.0.json",
+  "title": "Considered matched evaluation result",
+  "description": "Records collection and blind review evidence. Schema validity does not imply an effectiveness result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evaluation_id",
+    "protocol_version",
+    "scenario_catalog",
+    "environment",
+    "runs",
+    "blind_packets",
+    "reviews",
+    "metrics",
+    "exclusions"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "evaluation_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$" },
+    "protocol_version": { "const": "1.0.0" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scenario_catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "scenario_ids", "sha256"],
+      "properties": {
+        "version": { "const": "1.0.0" },
+        "scenario_ids": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/scenario_id" }
+        },
+        "sha256": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 10,
+          "maxProperties": 10,
+          "patternProperties": {
+            "^(dense-sre-console|dense-support-queue|dense-settings-23-actions|dense-chart-dump-rescue|dense-admin-bulk-destructive|persuade-saas-landing|persuade-pricing-page|read-docs-home|persuade-portfolio|read-changelog)$": { "$ref": "#/$defs/sha256" }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runner",
+        "model",
+        "starter_project_revision",
+        "dependency_lock_sha256",
+        "node_version",
+        "browser_version",
+        "network_policy",
+        "time_budget_seconds",
+        "token_budget",
+        "temperature",
+        "seed",
+        "randomization_seed"
+      ],
+      "properties": {
+        "runner": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "model_revision": { "type": ["string", "null"] },
+        "starter_project_revision": { "type": "string", "minLength": 1 },
+        "dependency_lock_sha256": { "$ref": "#/$defs/sha256" },
+        "node_version": { "type": "string", "minLength": 1 },
+        "browser_version": { "type": "string", "minLength": 1 },
+        "operating_system": { "type": "string" },
+        "network_policy": { "enum": ["disabled", "allowed"] },
+        "time_budget_seconds": { "type": "integer", "minimum": 1 },
+        "token_budget": { "type": ["integer", "null"], "minimum": 1 },
+        "temperature": { "type": ["number", "null"], "minimum": 0 },
+        "seed": { "type": ["integer", "string", "null"] },
+        "randomization_seed": { "type": ["integer", "string"], "minLength": 1 },
+        "common_prompt_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 20,
+      "items": { "$ref": "#/$defs/run" }
+    },
+    "blind_packets": {
+      "type": "array",
+      "minItems": 10,
+      "items": { "$ref": "#/$defs/blind_packet" }
+    },
+    "reviews": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/review" }
+    },
+    "metrics": { "$ref": "#/$defs/metrics" },
+    "exclusions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/exclusion" }
+    },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "scenario_id": {
+      "enum": [
+        "dense-sre-console",
+        "dense-support-queue",
+        "dense-settings-23-actions",
+        "dense-chart-dump-rescue",
+        "dense-admin-bulk-destructive",
+        "persuade-saas-landing",
+        "persuade-pricing-page",
+        "read-docs-home",
+        "persuade-portfolio",
+        "read-changelog"
+      ]
+    },
+    "condition": { "enum": ["baseline", "considered"] },
+    "sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "artifact_paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "desktop_screenshot", "mobile_screenshot", "interaction_evidence", "state_evidence"],
+      "properties": {
+        "source": { "$ref": "#/$defs/relative_path" },
+        "desktop_screenshot": { "$ref": "#/$defs/relative_path" },
+        "mobile_screenshot": { "$ref": "#/$defs/relative_path" },
+        "interaction_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/relative_path" }
+        },
+        "state_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/relative_path" }
+        },
+        "contract": { "$ref": "#/$defs/relative_path" },
+        "lint_source": { "$ref": "#/$defs/relative_path" },
+        "lint_contract": { "$ref": "#/$defs/relative_path" },
+        "run_log": { "$ref": "#/$defs/relative_path" }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "scenario_id",
+        "condition",
+        "status",
+        "started_at",
+        "prompt_sha256",
+        "scenario_sha256"
+      ],
+      "properties": {
+        "run_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$" },
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "condition": { "$ref": "#/$defs/condition" },
+        "status": { "enum": ["completed", "failed", "excluded", "incomplete"] },
+        "started_at": { "type": "string", "format": "date-time" },
+        "finished_at": { "type": "string", "format": "date-time" },
+        "prompt_sha256": { "$ref": "#/$defs/sha256" },
+        "scenario_sha256": { "$ref": "#/$defs/sha256" },
+        "condition_context_sha256": { "$ref": "#/$defs/sha256" },
+        "artifact_paths": { "$ref": "#/$defs/artifact_paths" },
+        "failure_reason": { "type": "string", "minLength": 1 },
+        "retry_of": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "completed" } }, "required": ["status"] },
+          "then": { "required": ["finished_at", "artifact_paths"] }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["failed", "excluded"] } }, "required": ["status"] },
+          "then": { "required": ["failure_reason"] }
+        },
+        {
+          "if": {
+            "properties": { "condition": { "const": "considered" }, "status": { "const": "completed" } },
+            "required": ["condition", "status"]
+          },
+          "then": {
+            "properties": {
+              "artifact_paths": { "required": ["contract", "lint_source", "lint_contract"] }
+            }
+          }
+        }
+      ]
+    },
+    "blind_packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packet_id", "scenario_id", "label_a_run_id", "label_b_run_id", "label_map_revealed"],
+      "properties": {
+        "packet_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$" },
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "label_a_run_id": { "type": "string" },
+        "label_b_run_id": { "type": "string" },
+        "packet_manifest": { "$ref": "#/$defs/relative_path" },
+        "label_map_revealed": { "type": "boolean" },
+        "decoded_condition_by_label": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["A", "B"],
+          "properties": { "A": { "$ref": "#/$defs/condition" }, "B": { "$ref": "#/$defs/condition" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "label_map_revealed": { "const": true } }, "required": ["label_map_revealed"] },
+          "then": { "required": ["decoded_condition_by_label"] }
+        }
+      ]
+    },
+    "dimension_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "weighted_total"],
+      "properties": {
+        "D1": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D2": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D3": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D4": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D5": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D6": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D7": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D8": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "D9": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "weighted_total": { "type": ["integer", "null"], "minimum": 0, "maximum": 140 }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finding_id", "output_label", "severity", "description", "evidence"],
+      "properties": {
+        "finding_id": { "type": "string", "minLength": 1 },
+        "output_label": { "enum": ["A", "B"] },
+        "severity": { "enum": ["S1", "S2", "S3", "S4"] },
+        "dimension": { "enum": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9"] },
+        "rule_id": { "type": "string" },
+        "description": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "suggested_fix": { "type": "string" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_id",
+        "reviewer_id",
+        "reviewer_role",
+        "packet_id",
+        "scenario_id",
+        "conflict_declared",
+        "suspected_unblinding",
+        "evidence_viewed",
+        "pairwise_choice",
+        "choice_reason",
+        "unsupported_claim_label",
+        "scores",
+        "gate_by_label",
+        "findings"
+      ],
+      "properties": {
+        "review_id": { "type": "string", "minLength": 1 },
+        "reviewer_id": { "type": "string", "minLength": 1 },
+        "reviewer_role": { "type": "string", "minLength": 1 },
+        "packet_id": { "type": "string", "minLength": 1 },
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "conflict_declared": { "type": "boolean" },
+        "suspected_unblinding": { "type": "boolean" },
+        "unblinding_note": { "type": "string" },
+        "evidence_viewed": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["desktop", "mobile", "interactions", "states", "sanitized_source", "other"] },
+          "uniqueItems": true
+        },
+        "pairwise_choice": { "enum": ["A", "B", "tie", "not_assessable"] },
+        "choice_reason": { "type": "string", "minLength": 1 },
+        "unsupported_claim_label": { "enum": ["A", "B", "both", "neither", "cannot_assess"] },
+        "unsupported_claim_note": { "type": "string" },
+        "scores": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["A", "B"],
+          "properties": { "A": { "$ref": "#/$defs/dimension_scores" }, "B": { "$ref": "#/$defs/dimension_scores" } }
+        },
+        "gate_by_label": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["A", "B"],
+          "properties": { "A": { "enum": ["Ship", "Revise", "Redesign", "Not assessable"] }, "B": { "enum": ["Ship", "Revise", "Redesign", "Not assessable"] } }
+        },
+        "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } }
+      }
+    },
+    "metric_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "numerator", "denominator"],
+      "properties": {
+        "value": { "type": ["number", "null"] },
+        "numerator": { "type": "integer", "minimum": 0 },
+        "denominator": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "string" }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["computed_at", "blinded_preference", "baseline", "considered", "deltas"],
+      "properties": {
+        "computed_at": { "type": "string", "format": "date-time" },
+        "blinded_preference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["considered_wins", "baseline_wins", "ties", "abstentions", "preference_rate", "net_preference"],
+          "properties": {
+            "considered_wins": { "type": "integer", "minimum": 0 },
+            "baseline_wins": { "type": "integer", "minimum": 0 },
+            "ties": { "type": "integer", "minimum": 0 },
+            "abstentions": { "type": "integer", "minimum": 0 },
+            "preference_rate": { "$ref": "#/$defs/metric_value" },
+            "net_preference": { "$ref": "#/$defs/metric_value" }
+          }
+        },
+        "baseline": { "$ref": "#/$defs/condition_metrics" },
+        "considered": { "$ref": "#/$defs/condition_metrics" },
+        "deltas": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mean_weighted_score", "median_weighted_score", "severity"],
+          "properties": {
+            "mean_weighted_score": { "type": ["number", "null"] },
+            "median_weighted_score": { "type": ["number", "null"] },
+            "severity": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["S1", "S2", "S3", "S4"],
+              "properties": { "S1": { "type": ["number", "null"] }, "S2": { "type": ["number", "null"] }, "S3": { "type": ["number", "null"] }, "S4": { "type": ["number", "null"] } }
+            },
+            "by_dimension": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": { "D1": { "type": ["number", "null"] }, "D2": { "type": ["number", "null"] }, "D3": { "type": ["number", "null"] }, "D4": { "type": ["number", "null"] }, "D5": { "type": ["number", "null"] }, "D6": { "type": ["number", "null"] }, "D7": { "type": ["number", "null"] }, "D8": { "type": ["number", "null"] }, "D9": { "type": ["number", "null"] } }
+            }
+          }
+        }
+      }
+    },
+    "condition_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mean_weighted_score", "median_weighted_score", "blocker_free_rate", "unsupported_claim_rate", "evidence_complete_rate", "gate_distribution", "floor_pass_rate"],
+      "properties": {
+        "mean_weighted_score": { "$ref": "#/$defs/metric_value" },
+        "median_weighted_score": { "type": ["number", "null"] },
+        "blocker_free_rate": { "$ref": "#/$defs/metric_value" },
+        "unsupported_claim_rate": { "$ref": "#/$defs/metric_value" },
+        "evidence_complete_rate": { "$ref": "#/$defs/metric_value" },
+        "gate_distribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["Ship", "Revise", "Redesign", "Not assessable"],
+          "properties": { "Ship": { "type": "integer", "minimum": 0 }, "Revise": { "type": "integer", "minimum": 0 }, "Redesign": { "type": "integer", "minimum": 0 }, "Not assessable": { "type": "integer", "minimum": 0 } }
+        },
+        "floor_pass_rate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["D1", "D2", "D3", "D7"],
+          "properties": { "D1": { "$ref": "#/$defs/metric_value" }, "D2": { "$ref": "#/$defs/metric_value" }, "D3": { "$ref": "#/$defs/metric_value" }, "D7": { "$ref": "#/$defs/metric_value" } }
+        }
+      }
+    },
+    "exclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario_id", "condition", "run_id", "reason"],
+      "properties": {
+        "scenario_id": { "$ref": "#/$defs/scenario_id" },
+        "condition": { "$ref": "#/$defs/condition" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "replacement_run_id": { "type": "string" }
+      }
+    }
+  }
+}

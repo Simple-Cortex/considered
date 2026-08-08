@@ -1,0 +1,71 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "Both outputs present the same five notes faithfully and both let a release engineer find the breaking retention change and its existing-project exception quickly, so the decision turned on which one holds up when the engineer actually operates it. Three verified behaviours separate them. First, copy honesty: I served each source/ locally and drove it with a locally launched isolated Chromium (require('playwright') above the checkout), stubbed navigator.clipboard.writeText to reject and forced document.execCommand to return false. A's confirmation then reads \"Couldn't copy — select the retentionDays value above instead\", while B still reports \"Copied\" on the button and \"Copied 'retentionDays'\" in its live region — a false success in exactly the state where the engineer believes retentionDays is on the clipboard and pastes something else into relay.config.json. Second, the primary jump action: with a filter active that hides the breaking note (query \"dry-run\"), A clears the filter and moves focus to the breaking section (document.activeElement = SECTION#note-breaking), whereas B's jump leaves focus on BODY and the breaking note stays hidden, so the one action the scenario names most explicitly fails silently mid-search. Third, findability: searching the word \"breaking\" returns 1 note in A and 0 in B, because B's data-search index is built only from the title and body and never includes the note type. A also gives the breaking note a genuinely different weight — tinted panel, an explicitly labelled \"Existing-project exception\" callout, a legend whose markers differ in shape as well as colour, and a \"1 breaking change · 1 changed · 1 added · 1 fixed · 1 deprecated\" count line — so the applicable change and its exception land in one scan. B is better in two respects worth recording: its H2s are descriptive sentences rather than bare type words, which makes heading-based screen-reader navigation more useful, and its configuration reference is a real navigable placeholder page at the specified /changelog/3.4.0/ route rather than an in-page anchor. Those advantages do not outweigh a confirmation that lies about the clipboard, a jump that no-ops, and a 224 px empty region on mobile.",
+  "suspected_unblinding": "none — nothing in either packet named a treatment, tool, or builder. Both READMEs describe a plain static vanilla-JS build and both capture-plan.mjs scripts follow the same interaction and state list. The packets differ in file layout (B ships route directories, A a single root page) and in code-comment style (A's comments explain intent, B's are sparse), but neither pattern told me which condition produced which label, and I scored only observable behaviour.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "The page footer reads \"See the configuration reference for the full set of relay.config.json keys.\" No fact supplies a complete key reference, and the page that link actually reaches states \"This build does not include the full configuration reference\" and names only retentionDays. The footer therefore asserts a documentation capability that does not exist and that the scenario did not supply, and it sends a release engineer looking for a full key list that is not there. B's placeholder page also adds \"Check your Relay installation's own docs for the complete key list\", another unsupplied claim that such docs exist. The placeholder's gloss of retentionDays as setting retention \"in days, overriding the default used for new projects\" is a fair restatement of the supplied fact and is not counted here."
+    }
+  ],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The copy confirmation reports success unconditionally. wireCopyButtons() awaits navigator.clipboard.writeText inside a try, falls back to a textarea plus document.execCommand in the catch, and then sets the button text to \"Copied\" and unhides the aria-live confirmation regardless of whether either path worked; the execCommand return value is discarded. I confirmed this in a locally launched isolated browser by making writeText reject and execCommand return false: the button still read \"Copied\" and the live region announced \"Copied 'retentionDays'\". A release engineer in a locked-down or non-secure-context browser is told the key is on the clipboard when it is not, and the next paste into relay.config.json carries whatever was there before. Fix: capture the outcome of both paths and render a failure message that points at the visible retentionDays code element, as the clipboard write result is already available."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "\"Jump to breaking changes\" silently does nothing while a search filter is hiding the breaking note. wireJumpFocus() waits 300 ms, then calls focus() on #breaking-retention; because the filter sets note.hidden, the element is display:none and focus() is a no-op. Verified locally: with the query \"dry-run\" active, clicking the jump link left document.activeElement on BODY and the breaking note stayed hidden, with no message explaining why. Filtering and then reaching for the breaking note is a natural sequence under a five-minute budget, and the failure gives the engineer no signal that anything was suppressed. Fix: clear the active filter (or re-show the target) before moving focus, and announce that the search was cleared."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the header carries roughly 183 px of dead whitespace between the search field and the first note, pushing the breaking change further below the fold on the viewport where scanning is most expensive. Cause is verifiable in the source: .toolbar switches to flex-direction: column under the max-width: 480px query while .search keeps flex: 1 1 14rem, so the 14 rem basis is applied to height rather than width. Measured in a locally launched browser at 390 px: .search resolves to 224 px tall around a 41 px input, and the header is 471 px tall. The supplied 390 px state screenshot shows the same void. Fix: reset the search flex basis (for example flex: 0 0 auto or flex-basis: auto) inside the mobile media query."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The custom \"Clear\" control collides with the browser's native search-input clear affordance. The input is type=\"search\" and the .search__clear button is absolutely positioned inside the same relatively positioned wrapper, so once text is present both render in the same spot; the supplied no-results state screenshot shows the glyph and the word overlapping as \"✕Clear\". Two overlapping clear controls in the same few pixels is an ambiguous target and looks unfinished at the exact moment the reader is trying to recover from an empty result. Fix: suppress the native decoration with input[type=search]::-webkit-search-cancel-button { -webkit-appearance: none }, or drop the custom button and rely on the native one."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "In-page search cannot find a note by its type. The data-search attribute is composed from title, body, callout, and configHelp only, so the label words are indexed only where they happen to appear in prose. Verified locally: the query \"breaking\" returns 0 of 5 notes even though a breaking change exists and the page displays a BREAKING chip, while \"deprecated\" returns 1 only because the word appears in that note's title. An engineer who types the category word they can see on screen gets B's no-results panel and may conclude the release has no breaking change. Fix: include note.type and note.label in the indexed string."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Every note heading is a bare type word — the H2 outline reads \"Note type key, Breaking, Changed, Added, Fixed, Deprecated, Configuration reference\". A screen-reader user navigating by heading, which is the fastest way to triage a release under time pressure, learns only the category of each note and must enter each one to discover what changed. B's descriptive headings (for example \"Default artifact retention is now 30 days for new projects\") make the same list actionable on its own. The visual page does not suffer, since the claim sits immediately below each label. Fix: make the heading carry the claim and keep the type word as a labelled chip beside it."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The build does not serve the route the scenario specifies. The brief names /changelog/3.4.0 as the route; A's README instructs the reader to open the root URL and ships a single index.html at the package root, so the release is not addressable at a versioned path and a future 3.5.0 entry would have nowhere to live beside it. B places its page at /changelog/3.4.0/ with a root redirect. No content or behaviour is affected. Fix: nest the page under changelog/3.4.0/ and keep a root redirect."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D2",
+      "description": "The legend doubles as a five-link navigation block placed before any note, so keyboard users pass through Breaking, Changed, Added, Fixed, and Deprecated links before reaching the breaking note's own Copy and reference actions — verified in the tab order I collected from the live page. With only five notes on a single screen, these anchors add tab stops without shortening any real journey, and they partly duplicate the topbar's \"Jump to breaking\". Fix: keep the legend as a non-interactive key, or keep the links but move the block after the breaking note."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 4, "D3": 3, "D4": 3, "D5": 3, "D6": 2, "D7": 3, "D8": 3, "D9": 2 }
+  }
+}

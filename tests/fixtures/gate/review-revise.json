@@ -1,0 +1,8 @@
+{
+  "freshContext": true,
+  "gate": {
+    "decision": "REVISE",
+    "score": 104,
+    "dimensions": {"D1":2,"D2":3,"D3":3,"D4":3,"D5":3,"D6":3,"D7":3,"D8":3,"D9":3}
+  }
+}

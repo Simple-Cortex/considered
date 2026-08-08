@@ -1,0 +1,48 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "flow-checkout-payment",
+  "track": "flow",
+  "mode": "operate",
+  "title": "Checkout payment step",
+  "brief": {
+    "role": "A returning customer of Fernway, an outdoor-gear shop, finishing a purchase on a laptop during a work break",
+    "job": "Pay for the two items in the cart with total confidence in what it costs, what is being bought, and what happens next — in under two minutes.",
+    "time_budget": "two minutes to order placed",
+    "consequence": "An abandoned checkout is a lost sale, and surprise costs or unclear errors at the payment step are the leading cause; a customer who cannot tell whether the charge went through becomes a support incident.",
+    "facts": [
+      "Fernway is an outdoor-gear retailer. The cart holds exactly two items: Cascade 32L Pack, colour Moss, quantity 1, $148.00; and TrailMug 450ml, colour Slate, quantity 2, $24.00 each.",
+      "Order math before any promo: subtotal $196.00; shipping $8.00 flat (Standard, 3–5 business days, already chosen — no other options exist at this step); tax $16.17; total $220.17.",
+      "The customer is signed in. Their shipping address is on file: Sam Reyes, 418 Alder Street, Portland, OR 97204, and is editable from this page.",
+      "Payment methods are exactly two: credit/debit card (Visa, Mastercard, Amex) and the ShopPay wallet. Card entry needs: card number, expiry MM/YY, security code, name on card. Billing address defaults to the shipping address with an option to differ.",
+      "A promo-code field exists. The only valid code is TRAIL10, worth $10.00 off the subtotal; any other code returns: \"This code isn't valid or has expired.\"",
+      "If the card is declined, the processor returns only a generic decline. The order is not placed, nothing is charged, and everything the customer entered persists.",
+      "Placing the order charges the card immediately, shows an order number in the format FW-XXXXX, and a confirmation email follows. Returns are accepted for 30 days from delivery; that is the only returns fact available."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "required_interactions": [
+      "Fill the card fields and place the order",
+      "Apply an invalid promo code and recover, then apply TRAIL10",
+      "Trigger a card decline and recover without re-entering everything"
+    ],
+    "required_states": [
+      "default (address on file, full cart and cost summary)",
+      "promo applied with updated math",
+      "invalid promo error",
+      "card declined error",
+      "submitting",
+      "order-placed confirmation with order number"
+    ],
+    "acceptance_checks": [
+      "Order contents and every cost line are visible before and at the moment of payment; the total the primary action charges is the total on screen.",
+      "Error states say what happened and what to do next without inventing processor detail; nothing entered is lost on a decline.",
+      "Only the supplied policies and trust facts render; no invented badges, guarantees, urgency, or payment options.",
+      "The moment of commitment is unmistakable: what will be charged, to which card, right now."
+    ]
+  }
+}

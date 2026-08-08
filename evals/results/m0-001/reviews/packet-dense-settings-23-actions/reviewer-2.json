@@ -1,0 +1,79 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A gives the admin a complete, verified task loop — highlighted session-timeout card with current value, explicit 30 days to 12 hours delta, unsaved-changes bar, save confirmation toast, and the header summary updating to 12 hours — while keeping all 23 actions findable through counted categories and a separated danger zone. A's delete confirmation was reproduced as keyboard-safe (focus contained, Escape dismisses, type-to-confirm gates the button); B's delete modal lets Tab reach background controls and ignores Escape. B also depends on a 'YOUR TASK' badge and a 'Jump to session timeout' shortcut a real settings page could not have, and its API tokens section omits the token names and last-used dates the brief supplies.",
+  "suspected_unblinding": "B's 'YOUR TASK' badge suggests a builder optimizing directly for the scenario script. A's source comments carry structured rule IDs (e.g. 'A11Y-06', 'Z-DANGER (Q10, P3/danger) — A23'), which reads like a checklist- or rules-driven process and could make the treatment guessable, though I do not know which team is which.",
+  "unsupported_claim_label": { "A": true, "B": false },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "Cancel-subscription copy invents a reversibility policy not supplied by the scenario: billing ends at period end, members keep access until then, and reinstatement is possible 'by contacting support before the period ends'."
+    }
+  ],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The delete-workspace modal is not keyboard-contained: Tab moves focus to background controls (landed on the 'Jump to session timeout' button) while the destructive dialog is open, and Escape does not dismiss it (Cancel does).",
+      "evidence": "Reproduced with a local Playwright chromium run against B/source served locally; source has no focus trap, no Escape handler, and no inert on the background."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "A 'YOUR TASK' badge on the session-timeout card and a 'Jump to session timeout' header shortcut encode the evaluation task into the product UI, which a real settings page could not know; the clear task path is partly an artifact of scenario-awareness rather than information architecture.",
+      "evidence": "B/desktop.png; B/source/app.js renders a task-badge span and a jump-to-timeout header button."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "API token management shows 'No tokens to show in this preview' instead of the token names and last-used dates the scenario facts specify, and the word 'preview' leaks demo framing into product copy.",
+      "evidence": "B/desktop.png and B/mobile.png API tokens card; empty-state string in B/source/app.js."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the section nav becomes a horizontally scrollable tab row with Billing and Danger zone off-screen and no overflow indicator, hurting discoverability of high-consequence sections on mobile.",
+      "evidence": "B/mobile.png and B/evidence/state-04-390px-viewport.png show tabs cut at 'Security & access'; styles.css applies overflow-x auto to .settings-nav under the max-width 640px media query."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Configure SSO, Verify domain, and Configure SCIM buttons open info-only modals ('Configuration changes are made here') with no actionable controls, making three of the 23 actions dead ends.",
+      "evidence": "bindOpenModal calls with kind 'info' in B/source/app.js."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Cancel-subscription card and dialog assert an unsupplied policy — billing ends at period end and is 'Reversible by contacting support before the period ends' — where the brief only states the action requires confirmation.",
+      "evidence": "Card and dialog copy in A/source/app.js (card-desc 'Hard to reverse — contact support to reinstate'; dialog-cancel-subscription body)."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "At 390 px the workspace summary's SSO/SCIM chip wraps awkwardly ('SSO on ·' / 'SCIM off' broken across lines with stray separator placement).",
+      "evidence": "A/mobile.png and A/evidence/state-04-390px-viewport.png header summary block."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The unsaved-changes snackbar overlaps the top edge of the Require MFA card rather than reserving its own space, slightly obscuring adjacent content while a change is pending.",
+      "evidence": "A/evidence/interaction-01-set-session-timeout-12h.png and state-02-unsaved-changes.png."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 4, "D8": 3, "D9": 3 },
+    "B": { "D1": 2, "D2": 3, "D3": 3, "D4": 3, "D5": 2, "D6": 3, "D7": 2, "D8": 3, "D9": 3 }
+  }
+}

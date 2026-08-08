@@ -1,0 +1,25 @@
+{
+  "fixture_version": "1.0.0",
+  "cases": [
+    {
+      "id": "deterministic-operate",
+      "args": ["--mode", "operate", "--key", "cns-eval0001", "--gen", "0", "--json"],
+      "assertions": ["exit code is 0", "two invocations produce byte-identical parsed JSON", "output mode is operate", "output has one entry for every structure tier and one direction"]
+    },
+    {
+      "id": "reroll-excludes-prior-deal",
+      "args": ["--mode", "operate", "--key", "cns-eval0001", "--reroll", "--json"],
+      "assertions": ["exit code is 0 unless the mode-specific deck is exhausted", "generation is 1", "no structure or direction id repeats generation 0 for the same key"]
+    },
+    {
+      "id": "invalid-mode-rejected",
+      "args": ["--mode", "not-a-mode", "--json"],
+      "assertions": ["exit code is 2", "stderr identifies the invalid mode", "no fallback draw is emitted"]
+    },
+    {
+      "id": "reroll-without-key-rejected",
+      "args": ["--mode", "operate", "--reroll", "--json"],
+      "assertions": ["exit code is 2", "stderr requests a reproduction key", "no random key is silently created"]
+    }
+  ]
+}

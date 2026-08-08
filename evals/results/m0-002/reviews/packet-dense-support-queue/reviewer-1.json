@@ -1,0 +1,90 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Both outputs identify Login as the queue at greatest near-term risk and both keep escalation subordinate to allocation, so the decision hinges on how fast and how safely the lead can act. B resolves the 60-second job into one directed path: a 'Needs attention now' panel that leads with Login, the due-within-10-minutes count as the hero figure with the qualifier 'highest of the 4 queues', a single dominant 'Reassign to Login' button, and agent slots whose queue selects already default to 'Login (recommended)'. A presents four visually equivalent cards, each carrying an identically weighted blue 'Reassign an agent here' primary button — including General, which is inside target with zero conversations due within ten minutes — so the surface flags the risk but does not weight the action, leaving the ranking work to the reader. Second, B's comparison table puts all four queues on shared axes (open, agents, median vs. target, due ≤10 min) in one scan, where A's card grid forces a card-to-card comparison of five label/value pairs each. Third, on evidence I ran myself (local static server, locally launched isolated Chromium via require('playwright')), B preserves keyboard focus on the invoked control after a reassignment and announces the result through a polite live region ('Agent reassigned to Login. Login now has 4 agents. Undo available for 8 seconds.'), while A drops focus to BODY after the same action and exposes no live region at all in the loaded state; A also replaces the whole queue grid — the at-risk queue included — when a filter matches nothing, whereas B keeps the exception panel visible above the empty table. A is not weak: its per-queue reasoning bullets on the risk card and its persistent 'Recent reassignments' undo log are the two things it does better than B, and B's undo is the more fragile of the two. That single advantage does not outweigh B's lead on direction, comparability, and inspectable interaction quality.",
+  "suspected_unblinding": "B's source carries method-process residue that A's does not: app.js comments cite external documents not shipped in the packet (FRAME.md, craft.md, actions.md) and coded rule identifiers (HON-01..HON-06, A11Y-03, A11Y-07, E1-E7, C1, A1-A4), and B/source/ contains a leftover artifacts/ directory of six build-time JPEG screenshots. This suggests a structured design pipeline sat behind B, which could correlate with a treatment. I recorded it here and did not let it influence the pairwise choice or scores; the choice rests on the interface behavior and evidence described above, and B was penalized in D8 for exactly this leftover material.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Every state change rebuilds the page with root.innerHTML, and only the search input's focus is restored. I served A/source locally, focused 'Reassign an agent here' and pressed Enter; document.activeElement afterwards was BODY. A keyboard or screen-reader user is returned to the top of the document after each reassignment, undo, inspect toggle, and escalate step. Suggested fix: restore focus to the invoked control after render, as is already done for the search field."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "There is no live region in the loaded state, so reassignment and undo change the agent counts silently for assistive technology. role='status' appears only on the loading skeleton and role='alert' only on the error state; after invoking a reassignment at runtime, the set of [aria-live]/[role=status] nodes was empty. Suggested fix: add a polite live region and announce the queue's new agent count and the remaining pool on reassign and undo."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "A filter string that matches no queue replaces the entire grid with a 'No queues match' box (state-01 evidence), removing the at-risk Login card and the risk badge from the screen. During a 60-second allocation the lead can type a name and lose the only signal that ranks the queues. Suggested fix: keep the highest-risk queue, or a summary of it, visible above the filtered region."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "All four queue cards render the same filled primary 'Reassign an agent here' button (renderQueueCard applies btn--primary unconditionally), so General — 95m against a 120m target, zero conversations due within ten minutes — offers as prominent an allocation action as Login. The visual risk cue is not carried into the action hierarchy. Suggested fix: make the primary action primary only on the at-risk queue and demote the rest to a secondary style."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D1",
+      "description": "The 'Highest near-term risk' badge is driven by isHighestRisk(q), which returns q.medianMinutes > q.targetMinutes alone. It ignores the due-within-10-minutes and arrival-spike facts the card itself cites as reasons, and it cannot rank, so a superlative label would attach to every over-target queue. It lands on the right queue with the supplied data by coincidence of the numbers. Suggested fix: derive the badge from a rank across the supplied risk facts, or rename it to state the rule it actually applies."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The document has two nested <main> landmarks — <main id=\"app\"> in index.html plus <main class=\"page-body\"> emitted by render() — which I confirmed at runtime (2 main elements). Heading structure also jumps from the h1 to the card h3s with no h2 in the default loaded state. Suggested fix: emit a single main landmark and promote the card headings or add a section heading level."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The error state asserts a cause the brief does not supply: 'The connection to the support platform timed out.' The scenario says nothing about an upstream platform or a timeout. It does not affect the allocation decision, so I did not treat it as a material unsupported fact, but it is invented detail in otherwise fact-disciplined copy. Suggested fix: state that queue data could not be loaded without naming a cause."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "Undo exists only inside a toast on an 8000 ms timer (UNDO_WINDOW_MS; the timeout clears state.lastAction and re-renders). I verified at runtime that no Undo control remains nine seconds after a reassignment, and the assigned agent slot then shows only 'Assigned' with no unassign control. The brief states reassignment is reversible; after the window closes, the surface offers no way to reverse it. Suggested fix: keep a persistent reassignment record with its own undo, or add an unassign action to the assigned agent slot."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "B surfaces Login's '+38% arrivals' note but drops the supplied counterpart fact that Billing, API, and General are within 10% of their prior-hour arrival counts. That fact is part of why Login is the outlier, and the table has no arrivals column at all, so the lead cannot see that the comparison is against steady queues. A shows 'Steady (within 10%)' on each non-spiking queue. Suggested fix: add an arrivals column or per-row note carrying the steady-state fact."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The shipped source/README.md is an unrelated starter stub ('An empty static starter: one HTML shell ... and an empty ES module') that describes neither the built surface nor how to reach the required states, while app.js cites FRAME.md, craft.md, and actions.md, none of which are in the packet. source/ also carries a stray artifacts/ directory of six build-time JPEGs. Suggested fix: replace the README with one documenting the ?state= flags and interactions, and drop the build artifacts from source/."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The two right-hand facts in the exception panel are circular: 'Agents on queue 3' is hinted '16 open conversations' and 'Open conversations 16' is hinted '3 agents assigned', so each tile's supporting line restates the other tile's headline. Suggested fix: replace one hint with a fact that adds information, such as the conversations-per-agent relation or the target comparison."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D7",
+      "description": "The comparison table's header cells are emitted as bare <th> with no scope attribute (renderZoneB); the only 'scope' string in app.js is an unrelated CSS class. The table is simple enough that implicit column association usually holds, but the association is left to the user agent. Suggested fix: set scope=\"col\" on the header cells."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 3, "D3": 3, "D4": 2, "D5": 3, "D6": 2, "D7": 2, "D8": 3, "D9": 3 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 3, "D6": 3, "D7": 4, "D8": 3, "D9": 4 }
+  }
+}

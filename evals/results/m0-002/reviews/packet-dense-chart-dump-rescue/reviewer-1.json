@@ -1,0 +1,72 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "The stated job is to explain the decline well enough to choose the next investigation, and only B closes that loop. B ends with a 'Candidate next inquiries' panel naming three specific, supported next moves (pull the onboarding-step cut for mobile self-serve in week 28; break that cut by device to confirm isolation; hold channel, plan intent, and country until data exists). A explains the decline at least as crisply — its 'What changed / In whom / What remains unproven' trio is the single best first-read in the pair — but it stops at explanation and offers no next-step affordance beyond a Retry button, leaving the reviewer to invent the investigation. Second, B is materially more inspectable on the causal question: its 'Before you conclude why' block names the tempting causal story, states plainly that it is not established, and adds the confounder that traffic grew 23.4% in the same week, so a change in who arrived is not ruled out either; A flags the absence of a causal test but never raises the traffic-mix confounder despite both figures being supplied. Third, on evidence I could inspect rather than infer, B implements a complete ARIA tab pattern (role=tab/tabpanel, aria-controls, roving tabindex, ArrowLeft/ArrowRight handling at app.js:511-520, focus moved to the new panel heading at :536-537, visually-hidden role=status for loading, aria-busy, table captions, :focus-visible and prefers-reduced-motion in CSS), whereas A declares role=tablist/role=tab with no aria-controls, no tabpanel, no roving tabindex and no key handling, and puts aria-live=\"polite\" on the <main> element that render() wipes and rebuilds wholesale on every interaction. A wins on economy — it fits one screen and would be read faster inside the ten-minute budget — which is why this is a close call rather than a rout, but B answers the job asked and A answers only the first half of it.",
+  "suspected_unblinding": "none — nothing in either packet named a builder, tool, method, or condition. Both sources are plain HTML/CSS/JS with equivalent file layouts and both capture-plan scripts follow the same structure; the packets differ only in design and code quality.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The segment switcher declares an ARIA tabs pattern it does not implement. app.js:170-181 sets role=\"tablist\" on the container and role=\"tab\" plus aria-selected on each button, but there is no aria-controls, no element with role=\"tabpanel\", no roving tabindex, and no keydown handler anywhere in the file (grep for keydown/ArrowRight/tabindex returns nothing). A screen-reader user is told they are in a tab list, then finds arrow keys do nothing and no panel is associated with the selected tab. Fix: either add aria-controls, a role=\"tabpanel\" wrapper, roving tabindex and arrow-key handling, or drop the tab roles and expose the chips as an ordinary group of toggle buttons with aria-pressed."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "aria-live=\"polite\" is set on <main id=\"app\"> (index.html:11), and render() clears that same element with root.innerHTML = \"\" and rebuilds the entire page on every interaction (app.js:71-80). Changing a segment therefore queues the whole page — headline, three-part reading block, five KPI cards, chart, footer — for announcement instead of just the panel that changed. Fix: move the live region to a small status node scoped to the panel that updates, or replace it with focus management on the newly rendered panel."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "The stated job is to choose the next investigation, and the page offers no affordance for that decision. Across all four segment lenses and all captured states the only actionable control besides the segment chips is the country Retry button; there is no ranked list of candidate inquiries, no statement of which cuts are worth pulling next, and no guidance on which cuts should be held because no data supports them. The reader finishes with a correct diagnosis and no supported next move. Fix: add an explicit next-inquiry block that names the specific cuts to pull (onboarding-step by device for mobile self-serve, week 28) and the cuts to hold until data exists."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The Country lens opens in a hard failure state by default — state.countryFailed is initialised to true (app.js:64) — so a user selecting Country always sees 'Country breakdown failed to load' before anything else, and the required sampling caveat sits below that error behind a second 'Why is country data limited?' toggle. This also collapses two distinct required states into one screen: interaction-03 and state-03 are essentially the same view. Fix: make the country lens open in the 'no usable data above threshold' state with the sampling rule visible, and reserve the retryable failure for the injected partial-failure state."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The page names a source artifact the brief does not supply. The footer reads 'Source: weekly trial funnel export, week 27 vs week 28' and four other captions refer to 'this export' (device chart caption, onboarding-step note, country caveat). The brief describes the source material only as a legacy page of 14 unlabeled charts, six KPI cards and a seven-slice pie chart; no export, pipeline, or delivery mechanism is stated. The framing is honest in spirit — it is used to bound what was and was not supplied — but it asserts a provenance that is invented. Fix: use a neutral term such as 'this handoff' or 'the supplied figures'."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The 'Where it's worst' list ranks four items by point drop but mixes levels: rows 1, 3 and 4 are onboarding-completion rates for three device paths, while row 2 is 'Activated trials (overall)' — a different funnel stage measured across the whole population. Because the mobile completion collapse is itself part of what moved the overall activation number, the two are not independent and reading the list as four comparable drivers overstates how much distinct evidence exists. The subhead ('Ranked by how much the completion or activation rate fell') acknowledges the mix but does not resolve it. Fix: separate the segment-level completion ranking from the overall funnel-stage movements, or mark row 2 as an aggregate that partly contains row 1."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The isotype panels are labelled 'Mobile self-serve, week 27: 68 of 100 trials completed onboarding' and '...week 28: 41 of 100 trials...' (app.js:298, :303). The brief supplies 68% and 41% as rates and supplies no per-segment trial counts, so the 'of 100 trials' phrasing reads as a count for a denominator that was never given. The normalisation is defensible and the figures are correct as rates, but the wording invites a reader to quote a sample size that does not exist. Fix: label the squares as 'per 100 trials' or 'each square = 1% of mobile self-serve trials'."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The desktop layout ends with an unbalanced two-column row: 'Candidate next inquiries' occupies the left half in three stacked cards while the right half holds only the 'Show supplied numbers' link at the top, leaving a large empty block at the bottom of the page (visible in desktop.png and in every state capture). The imbalance makes the most decision-relevant block on the page look like a leftover. Fix: let the inquiry cards span the full width, or move the numbers toggle inline above them."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The header meta line reads 'Snapshot: week 28 data · not live'. The brief says nothing about whether the figures are a snapshot or a live feed, so the freshness claim is added rather than supplied. It is low-risk and arguably conservative — it discourages treating the page as real time — but it is still an assertion the facts do not carry. Fix: drop the liveness claim or restate it as 'figures as supplied for week 28'."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 3, "D3": 4, "D4": 2, "D5": 3, "D6": 3, "D7": 2, "D8": 4, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 3, "D4": 4, "D5": 3, "D6": 4, "D7": 4, "D8": 3, "D9": 4 }
+  }
+}

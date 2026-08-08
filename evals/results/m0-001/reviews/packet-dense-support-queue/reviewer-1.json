@@ -1,0 +1,74 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A answers the shift lead's question in words and in structure: a lead banner states 'Login is closest to breaching its response target' with the supporting numbers, and the queues are grouped into Breaching now / Approaching target / Within target so the 71-conversation General queue cannot be mistaken for the urgent one. B flags Login with a 'Greatest near-term breach risk' chip and red border, which is real differentiation, but renders the four queues in a fixed order with identical weight, so the reader must compare cards to reach the conclusion A hands them. A also keeps escalation nested inside the expanded near-breach detail, whereas B repeats 'Escalate a conversation…' on all four cards directly beneath the primary reassign control, contradicting the brief's requirement that escalation not be a default queue action. Reproduced locally: A announces both the reassignment and the undo through a polite status region; B announces the reassignment but the undo is silent.",
+  "suspected_unblinding": "No treatment identified, and I did not attempt to determine one. Two process asymmetries are worth recording: A's sanitized source retained build scaffolding (artifacts/ and .pw-tmp/ directories) and shows comment-stripping damage that B's clean source does not, while B's delivered surface exposes a 'Demo controls (state testing)' block. These suggest different staging pipelines but do not indicate which condition either label is.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D8",
+      "description": "The sanitized source as delivered does not execute: an unterminated JSDoc block leaves the script a syntax error and the page renders an empty shell.",
+      "evidence": "Reproduced: `node --check A/source/app.js` fails with SyntaxError at app.js:53; serving A/source in a locally launched chromium yields a PAGEERROR 'Invalid or unexpected token', zero buttons, zero headings and an empty body. Only one `*/` survives in the whole file. Restoring the two comment terminators in a scratch copy (no logic changed) makes it parse and render exactly the UI shown in A/desktop.png, so the packet screenshots reflect a working build and this is damage to the source copy rather than the design."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The queue-data error replaces the entire queue region rather than failing inline, so a single fetch failure costs the lead all queue context during a 60-second decision.",
+      "evidence": "A/evidence/state-02-error-with-retry.png — page shows only the header and a full-width 'Couldn't load queue data' banner with Retry; no queue cards remain."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "Escalation is offered on every queue card immediately beneath the reassign control, making it a standing per-queue action despite the brief stating escalation pages a specialist and should not be the default queue action.",
+      "evidence": "B/evidence/interaction-01-inspect-breach.png shows 'Escalate a conversation…' on all four cards; reproduced in DOM, buttons enumerate as Inspect / Reassign / Escalate repeated per queue."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Queues render in a fixed order with equal visual weight, so the queue at greatest near-term risk is third in the grid rather than surfaced first.",
+      "evidence": "Reproduced heading order in the loaded DOM: H2 Billing, H2 Login, H2 API, H2 General. A's equivalent probe returns risk-banded headings (Breaching now / Login, Approaching target / Billing, Within target / API, General)."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Undoing a reassignment produces no screen-reader announcement, so a keyboard or screen-reader user gets no confirmation that a reversible action was reversed.",
+      "evidence": "Reproduced: after clicking 'Reassign to Billing' the live-region query returns 'Reassigned Available agent 1 to Billing. Undo'; after clicking 'Undo' the same query returns an empty list. A returns 'Agent 1 moved to Login.' and then 'Move to Login undone. Agent 1 is available again.'"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px, seventeen interactive controls render between 32 and 38 px tall, below comfortable touch-target size for a shift lead acting under time pressure.",
+      "evidence": "Reproduced at 390x844: reassign buttons and selects measure 38 px, 'Escalate a conversation…' 32 px. The same measurement on A returns an empty list (no visible control under 40 px)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "A 'Demo controls (state testing)' disclosure with a 'Fail the next queue-data load' checkbox ships in the delivered surface.",
+      "evidence": "Visible in B/desktop.png, B/mobile.png and B/evidence/state-03-error-with-retry.png; reproduced as a persistent 'Reload queue data' button in the loaded DOM."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "Three of the four primary packet captures were taken before the skeleton resolved, so desktop, mobile and the required 390 px state have no valid evidence in the packet itself.",
+      "evidence": "B/desktop.png, B/mobile.png and B/evidence/state-04-390px-viewport.png all show only placeholder bars. I verified the real loaded desktop and 390 px states by serving B/source locally; the loaded layout is intact and does not overflow (scrollWidth 390 = innerWidth 390)."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 3, "D7": 4, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 2, "D3": 3, "D4": 2, "D5": 3, "D6": 3, "D7": 2, "D8": 2, "D9": 2 }
+  }
+}

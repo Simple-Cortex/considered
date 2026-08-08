@@ -1,0 +1,63 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B answers the operations lead's core question — what 35 members on Team actually costs — in the page headline ($420/month or $4,200/year) with zero interaction required, and the highlight tracks the billing toggle state. B also provides working controls for both sanctioned next actions (Start Team trial button and a real Contact sales button), while A renders 'Contact sales' as inert paragraph text with no affordance. At 390px, B restructures the comparison into stacked per-criterion groups that stay fully legible, whereas A's 14-row table has min-width 640px and requires horizontal scroll, appearing clipped in the capture. A is stricter on the closed fact set — its 'Not stated' discipline is exemplary and B invents two table cells (Enterprise 'Unlimited workspaces', 'Standard' support tier) — but those inventions sit in rows that do not distort the core Starter-vs-Team-vs-Enterprise decision for a 35-person team, while A's gaps directly slow the stated job. Both give a supported fit reason with no popularity claims. Evidence viewed: desktop, 390px states, interaction and state captures, sanitized source for both.",
+  "suspected_unblinding": "none — both packets share the same sanitized static-starter README scaffolding and neither source tree nor captures contain treatment-identifying markers (the only 'baseline' hits are CSS align-items: baseline). A's README describes its own build discipline ('nothing is invented') but does not identify a treatment.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "Comparison table asserts Enterprise includes 'Unlimited workspaces'. The brief's closed fact set lists Enterprise as custom-priced with SAML SSO, SCIM, audit export, and a named implementation contact; workspace limits for Enterprise are not supplied. This is an invented capability (index.html table, Workspaces row)."
+    },
+    {
+      "label": "B",
+      "claim": "Comparison table asserts a 'Standard' support contact for Starter and Team. The brief supplies no support-tier information for any plan; only Enterprise's named implementation contact is stated. 'Standard' is an invented policy/capability (index.html table, Support contact row)."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "Invented material fact: Enterprise 'Unlimited workspaces' in the comparison table is not in the scenario's closed fact set. In a persuade-mode page this could steer an Enterprise evaluation on a capability the vendor never stated. Fix: replace with 'Not stated — ask sales' as the same table already does for the Enterprise member cap."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Invented support tier: 'Support contact: Standard' for Starter and Team is unsupplied. Lower stakes than the workspaces cell because it implies a vague default rather than a specific capability, but it still asserts a policy the facts do not contain. Fix: mark as not stated or drop the row except for Enterprise's named contact."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "The Enterprise path has no actionable control: 'Contact sales' is a plain <p class=\"plan-fit-line\"> with no link or button (pricing/index.html line 113). The brief names contacting sales as one of the two appropriate next actions for an undecided visitor, and the recommendation copy itself says 'contact sales for pricing' — but there is nothing to activate. Fix: make it a button or mailto-style link, mirroring the trial CTA."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390px the Plan differences table (min-width: 640px inside .table-scroll with overflow-x: auto) requires horizontal scrolling and appears clipped mid-column in the capture, straining the acceptance check that plan differences remain legible. The 14-row table is the page's only complete feature comparison. Fix: collapse to a stacked per-criterion layout at narrow widths, as B demonstrates."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The answer to the visitor's central question — what 35 members costs — is not surfaced at the top level. The headline is generic ('Choose the right plan for your team') and the $420/month figure sits inside the Team card below the calculator; the annual figure appears only after operating the toggle. The information is present and correct, but the hierarchy makes the user assemble it rather than presenting it."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The Monthly/Annual control uses a two-sided switch with labels on both flanks, a pattern whose selected side can read ambiguously from the knob alone. Mitigated here: the aria-label updates to 'Billing: Monthly/Annual selected', the headline highlight moves with the state, and the table price cell switches cadence. Polish-level only."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 3, "D4": 2, "D5": 4, "D6": 4, "D7": 4, "D8": 3, "D9": 2 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 2, "D6": 4, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

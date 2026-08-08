@@ -1,0 +1,67 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A keeps the breaking-change note pinned visible under any search and says so on the page, while B's search filters the breaking note out of view on a non-matching query (reproduced live: with 'zzz-no-match-zzz' typed, B's #breaking section is hidden) — a direct risk to the release engineer's job. A's no-results state names the term, explains the pinned breaking note, and offers a clear-search recovery; B's is a bare generic line. A's packet evidence demonstrates every required state; B's interaction/state captures are unstyled and fail to show the copy confirmation or the no-results state, so B's behaviors could only be confirmed by reproducing them from source.",
+  "suspected_unblinding": "A's sanitized app.js contains methodology-flavored comments and markup ('Objection First framing', 'S1 secondary action', 'A11Y-08', data-el=\"E0\"..\"E9\") that read like a named design-rules system, which could make the treated build guessable to a reviewer familiar with the method. No builder or team identity was inferable.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "In-page search filters the breaking-change note out of view, so a non-matching query hides the one note that can stop a release.",
+      "evidence": "Reproduced live from B/source served locally: after typing 'zzz-no-match-zzz' into #note-search, #breaking is hidden (breaking_visible_during_no_match=false); B/source/app.js applies the filter to all [data-note] sections including the breaking one."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The packet's interaction and state evidence is defective: all four capture screenshots render unstyled (default browser fonts, raw buttons), state-01 shows no visible copy confirmation, and state-02 shows every entry still visible despite the no-match query typed in the search box, so neither required state is actually demonstrated by the packet.",
+      "evidence": "B/evidence/state-01-copy-confirmation.png, B/evidence/state-02-search-no-results.png, B/evidence/interaction-01-jump-to-breaking-changes.png, B/evidence/interaction-03-navigate-to-configuration-reference.png; behaviors confirmed only by my own local reproduction from B/source."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "No skip link, and search filtering changes are not announced to assistive technology — there is no live-region status for result counts or the no-results message.",
+      "evidence": "B/source/index.html (only aria-live element is #copy-confirm; #no-results has no role/aria-live); reproduced first Tab stop is the jump button, not a skip link."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D4",
+      "description": "The clipboard fallback path reports 'Copied!' without verifying that document.execCommand('copy') succeeded, so the confirmation can be false in restricted environments.",
+      "evidence": "B/source/app.js lines 37-53 (catch block runs execCommand, then unconditionally sets 'Copied!')."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The configuration-reference placeholder page breaks the product voice with meta commentary about 'scenario facts' that a real release engineer would find nonsensical.",
+      "evidence": "A/evidence/interaction-03-navigate-to-configuration-reference-placeholder.png and A/source/configuration-reference.html body text."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The search input's placeholder text is clipped at the 1440 px viewport ('…“deploy” or “e'), and the search-scope note is right-aligned away from the search field it describes.",
+      "evidence": "A/desktop.png header region."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D9",
+      "description": "At 390 px only three of the five jump links are visible; the rest sit behind an overflow-x scroll with no visible scroll affordance.",
+      "evidence": "A/mobile.png nav row; A/source/styles.css .utility__jump (overflow-x: auto) confirms reachability by scroll."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 4, "D8": 3, "D9": 3 },
+    "B": { "D1": 3, "D2": 3, "D3": 4, "D4": 3, "D5": 4, "D6": 2, "D7": 2, "D8": 3, "D9": 4 }
+  }
+}

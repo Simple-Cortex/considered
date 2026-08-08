@@ -1,0 +1,48 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "experience-first-run-house-style",
+  "track": "experience",
+  "mode": "experience",
+  "title": "First-run empty workspace (house style supplied)",
+  "brief": {
+    "role": "A freelance illustrator who just created a Tidemark account from a friend's referral link and is looking at their empty workspace for the first time",
+    "job": "Understand what this tool will do for them, get a first client added within a minute, and trust that exploring will not break anything.",
+    "time_budget": "one minute to first client added",
+    "consequence": "First-run abandonment is permanent for most trials; a user who cannot see the value path in the first session does not come back for a second one.",
+    "facts": [
+      "Tidemark tracks client work for freelancers: each client holds projects, and each project holds tasks and invoices. This workspace was created moments ago and holds no clients, no projects, no invoices.",
+      "The navigation sections that exist are exactly: Clients, Projects, Invoices, Reports, Settings. Invoices and Reports are functional but have nothing to show until data exists.",
+      "The one primary path: add a first client — name required, email optional — after which Tidemark offers to create that client's first project.",
+      "An \"Explore with sample data\" option exists: it fills the workspace with one clearly labelled sample client and its projects, removable with one click at any time.",
+      "The account is on a 14-day free trial that started today and includes everything. After it, the free plan keeps 1 client and makes invoices read-only. Upgrading costs $12/month.",
+      "There is no team or invite capability at this plan level. Nothing else about the product may be assumed.",
+      "House style, supplied by the client's brand system and binding like any other fact: light cool neutral ground; 1 accent hue drawn from: purple; interface type is a humanist sans set in sentence case; display and interface type share one family; corners rounded; borders hairline; shadows subtle; overall density sparse; standard chrome includes: left sidebar nav, top toolbar, search field, user avatar, tab bar; imagery register: illustration; backgrounds flat."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "required_interactions": [
+      "Add the first client and reach the first-project offer",
+      "Enter sample-data mode, look around, and remove the sample data",
+      "Visit Invoices and Reports while they are empty"
+    ],
+    "required_states": [
+      "pristine empty workspace",
+      "add-client form",
+      "first-client-added with the project offer",
+      "sample-data mode",
+      "empty Invoices and empty Reports"
+    ],
+    "acceptance_checks": [
+      "The empty workspace teaches the object model — clients hold projects, projects hold tasks and invoices — at the moment it matters, not as a tour.",
+      "Every empty section states what will appear there and the shortest path to making that happen; there are no dead ends.",
+      "Trial status is visible but proportionate; the supplied trial and plan facts render exactly, with no invented upgrade pressure.",
+      "Sample data is unmistakably distinguishable from real data everywhere it appears, and leaving sample mode is as easy as entering it.",
+      "The build stays within the supplied house style register; the assigned direction expresses itself only within it."
+    ]
+  }
+}

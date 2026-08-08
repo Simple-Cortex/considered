@@ -1,0 +1,68 @@
+{
+  "schema": "considered.review/v1",
+  "surfaceId": "<surface-id>",
+  "status": "draft",
+  "reviewPass": "initial",
+  "freshContext": true,
+  "freshContextLimitation": null,
+  "reviewScope": "render-and-source",
+  "packet": ".considered/<surface-id>/REVIEW-PACKET.md",
+  "artifact": {
+    "target": "<workspace-relative path or URL>",
+    "previewEvidence": [
+      {
+        "kind": "screenshot|render|source|manual",
+        "location": "<workspace-relative path, URL, or observation>",
+        "limitation": null
+      }
+    ],
+    "contractPlacement": "both",
+    "contract": ".considered/<surface-id>/CONTRACT.md"
+  },
+  "checks": {
+    "contractLint": "not-run|pass|findings|blocked",
+    "sourceLint": "not-run|pass|findings|blocked",
+    "renderInspection": "not-run|pass|findings|blocked",
+    "responsiveInspection": "not-run|pass|findings|blocked",
+    "accessibilityInspection": "not-run|pass|findings|blocked"
+  },
+  "priorityTiers": {
+    "P0": "<element>",
+    "P1": ["<element>", "<element>", "<element>"],
+    "P2": [],
+    "P3": [],
+    "P4": []
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "S1|S2|S3|S4",
+      "rule": "<rule id>",
+      "description": "<one-line problem>",
+      "evidence": "<observation or measurement>",
+      "fix": "<specific change>",
+      "effort": "S|M|L"
+    }
+  ],
+  "gate": {
+    "decision": "SHIP|REVISE|REDESIGN|BLOCKED",
+    "score": null,
+    "maxScore": 140,
+    "dimensions": {
+      "D1": 0,
+      "D2": 0,
+      "D3": 0,
+      "D4": 0,
+      "D5": 0,
+      "D6": 0,
+      "D7": 0,
+      "D8": 0,
+      "D9": 0
+    },
+    "reason": "<threshold result and scope limitation>"
+  },
+  "fixList": ["F1"],
+  "working": ["<element that should not regress>"],
+  "limitations": ["<missing evidence or host limitation>"],
+  "reviewedAt": "<ISO-8601 timestamp or revision>"
+}

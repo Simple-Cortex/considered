@@ -1,0 +1,75 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B answers the operations lead's actual question in the first screen: the headline reads '35 members on Team costs $420 per month, or $4,200 per year', with both totals shown simultaneously and recomputed from the seat field, so neither arithmetic nor an interaction is required to see either cadence. A reaches the same numbers but shows only the selected cadence's total inside the Team card, so the annual figure requires toggling first. Second, B degrades correctly at the edges of the fact set: when the seat count exceeds Team's 100-member cap, app.js reveals a note disqualifying Team on the claim itself and strikes the price, whereas A's Team card keeps rendering a live-looking per-month total for a seat count Team cannot serve, contradicting its own recommendation text lower on the page. Third, at 390 px B reflows the plan matrix into per-criterion stacked groups where every plan's value stays visible, while A keeps a wide table inside an overflow-x container — in A's own 390 px capture the Team and Enterprise columns are clipped off-screen, so the comparison that acceptance check 2 depends on is not legible without horizontal scrolling. B also supplies the contact-sales affordance the brief names as the appropriate next action for an Enterprise-bound visitor; A only mentions contacting sales in prose with no control. This choice is made in spite of B's factual defects, not in ignorance of them: B asserts two capabilities the brief does not supply (see unsupported_claims), and those must be fixed. They are peripheral to a 35-person Starter-vs-Team decision, whereas A's mobile clipping and over-cap price sit directly on the decision path. A's comparison table is genuinely the stronger artifact on desktop — it carries cancellation, mid-period seat changes, and per-plan trial terms, and it uses 'Not stated' rather than inventing Enterprise details.",
+  "suspected_unblinding": "B's sanitized source carries internal process markers that A's does not: HTML comments reading '<!-- Zone A: E1, E2, E3, E4, E6 -->' and '<!-- Zone B: E5, E7, E8 -->', and app.js comments referencing 'the P0 claim', 'the P2 recommendation below it', and 'A11Y-07 keyboard completeness'. These read as identifiers from some structured checklist or rubric applied during the build, which could indicate one treatment rather than the other. A's README also references a 'prompt.txt' build input not present in the packet. I did not weight any of this in the pairwise choice or the scores; every judgment above rests on rendered output, evidence captures, and shipped source behavior.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "The plan matrix asserts 'Unlimited workspaces' for Enterprise (source/index.html, Workspaces row, Enterprise cell). The brief states Enterprise includes SAML SSO, SCIM, audit export, and a named implementation contact, and says nothing about Enterprise workspace limits. This is an invented capability. A handles the same cell as 'Not stated', which the closed fact set supports."
+    },
+    {
+      "label": "B",
+      "claim": "The matrix adds a 'Support contact' row asserting 'Standard' support for Starter and 'Standard' for Team (source/index.html). The brief describes no support tier for any plan and names a support contact only for Enterprise. 'Standard' is an invented service level, and presenting it as a named tier implies a defined entitlement the scenario does not supply."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The Team card renders a live, confident total for any seat count, including counts above Team's 100-member cap. pricing/app.js renderTeamPricing() multiplies the per-member rate by the seat count with no cap check, so entering 150 in the member-count field yields '$1,800 / month for 150 members' in the primary price position while the recommendation paragraph further down says Enterprise is the appropriate plan. A visitor who reads the card and not the paragraph takes away a price for a plan that cannot serve them. Evidence: source/pricing/app.js lines 35-55 (no cap branch) versus renderRecommendation() lines 57-70 (which does branch on TEAM_MEMBER_CAP). Suggested fix: gate the Team total on the cap and mark Team as disqualified in the card itself when the seat count exceeds 100, matching what the recommendation already says."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D9",
+      "description": "At 390 px the plan-differences table is clipped rather than reflowed. pricing/styles.css wraps it in .table-scroll { overflow-x: auto }, and the responsive rules at 720 px and 420 px restack the plan cards but leave the table's column structure untouched. In A's own state-03-390-px-viewport.png only the Detail and Starter columns are readable; the Team column is cut at the right edge and Enterprise is entirely off-screen, with no visible scroll affordance indicating more columns exist. Acceptance check 2 asks that plan differences, limits, cadence, and cancellation terms stay legible, and on a phone they do not. Suggested fix: reflow the table to per-criterion stacked groups below ~640 px, or at minimum add a persistent scroll cue and freeze the Detail column."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "The brief names two appropriate next actions for an undecided visitor — start a trial, or contact sales for Enterprise — and A ships a control for only the first. The Enterprise card's action slot holds the static text 'Contact sales' as a fit line (source/pricing/index.html line 113), not a link or button, and the recommendation paragraph likewise says 'contact sales for pricing' as prose. A visitor whose organization needs SAML SSO or SCIM reaches the end of the page with no affordance to act on. Suggested fix: give the Enterprise card a real contact-sales control equivalent in weight to the Team trial button."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "Two matrix cells state capabilities the closed fact set does not supply: Enterprise 'Unlimited workspaces' and a 'Support contact' row giving Starter and Team a 'Standard' tier. Evidence: source/index.html Workspaces and Support contact rows, visible in desktop.png and state-03-390-px-viewport.png. Both read as authoritative product facts in a comparison intended to drive a purchase decision. Suggested fix: replace the Enterprise workspaces cell with 'Not stated — ask sales' as B already does in the Member cap row, and drop the Support contact row entirely, folding the named implementation contact into the Enterprise 'Included' cell where the brief actually places it."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The comparison matrix is materially thinner than the decision requires. Cancellation timing and the mid-period seat-change caveat appear only in the Zone B terms list, far below the matrix, and Slack links and admin roles are collapsed into a prose 'Included' cell rather than given comparable rows. A reader scanning the matrix to answer 'what exactly do I lose by staying on Starter' has to reconstruct the answer from a comma-separated string, and cancellation terms are not adjacent to the price they qualify. Evidence: source/index.html matrix (6 rows) versus the 14-row table in A. Suggested fix: keep the terms section but add cancellation as a matrix row so cadence and exit terms sit together."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The comparison table mixes two different epistemic conventions in the same columns without distinguishing them. Team's Handoff template and CSV export cells read 'Not stated', but Team's SAML SSO, SCIM, and Audit export cells read a definitive 'No', and Starter's Slack links and Admin roles read 'No' — all of these are the same kind of gap in the brief (a feature listed for one plan and not for another). The reader cannot tell whether 'No' means confirmed absence or the same unknown that 'Not stated' marks. Evidence: source/pricing/index.html table rows, lines 154-231. Suggested fix: pick one convention for unlisted features and apply it uniformly across all three plans."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The trial form validates only that a work email is non-empty and matches a loose pattern, and on success it disables both the field and the button. There is no seat-count carry-through from the calculator into the trial, so the seat figure the visitor just reasoned about is discarded at the moment of commitment, and the success message states the trial started with no way to correct a mistyped address. Evidence: source/app.js lines 118-138. Suggested fix: carry the calculated seat count into the trial submission and leave an edit path after the success state."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The page's most valuable sentence — the concrete total for this team's headcount — is set as small supporting text ('$420 / month for 35 members') beneath a large '$12 / member / month' that the visitor already knew. The typographic emphasis is on the unit rate rather than on the committed amount the operations lead has to defend. Evidence: desktop.png, Team card; pricing/styles.css .plan-price .amount versus .plan-total. Suggested fix: promote the headcount total to the dominant figure in the Team card and demote the per-member rate to the qualifier."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 4, "D3": 3, "D4": 2, "D5": 3, "D6": 2, "D7": 3, "D8": 3, "D9": 2 },
+    "B": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 2, "D6": 3, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

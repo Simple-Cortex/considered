@@ -1,0 +1,54 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Both outputs identify Login as the queue at greatest near-term risk and preserve the supplied facts without invention. B better enables the 60-second allocation job on three concrete observations. (1) B leads with the answer: a 'Needs attention now' hero for Login with a single primary 'Reassign to Login' action and 'Login (recommended)' preselected in both agent assign controls, so the correct action is one click away; A presents four cards with identical primary 'Reassign an agent here' buttons on every queue, so the action layer itself does not privilege the at-risk queue — only the card tint does. (2) B's comparison table (open / agents / median vs. target / due ≤10 min) lets the lead verify the recommendation across queues in one scan; A requires reading four separately formatted cards. (3) Verified in a locally served run: B announces reassignment and undo through a persistent role=status polite live region ('Agent reassigned to Login. Login now has 4 agents...', 'Reassignment to Login undone.'), while A renders its confirmation tray with no aria-live/status/alert region present after the action, so the core interaction is silent for screen-reader users. A wins one dimension that B loses — A's undo persists in a 'Recent reassignments' tray while B's undo expires with an ~8-second toast (0 undo controls found 9.5s after reassigning) — but that does not outweigh B's faster path to the correct decision and stronger verified accessibility.",
+  "suspected_unblinding": "none — no treatment, tool, or builder identifiers in either packet; both anonymize agents as 'Agent 1/2' and share the scenario copy. B's source README describes 'an empty static starter' that does not match the built app (stale scaffold text), but it indicates nothing about which treatment produced it.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Reassignment and undo results are never announced to assistive technology. The only aria-live/role=status markup in the source is on the loading skeleton, and role=alert only on the error state; a live-DOM audit immediately after clicking 'Reassign an agent here' found zero [aria-live], [role=status], or [role=alert] elements, so the 'Recent reassignments' confirmation and the availability change are visual-only. For the core interaction of the surface this is a material accessibility gap."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "All four queues carry an identical primary-styled 'Reassign an agent here' button, including Healthy-leaning General. The action hierarchy does not steer toward the at-risk queue at the point of action — distinction rests entirely on the Login card's tint and badge — and the packet's own interaction-01 capture reassigned an agent to Billing, illustrating how easily the first primary button absorbs the click."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Document structure defects: heading outline skips from H1 to H3 (no H2 level), and the source produces two <main> landmarks (live DOM audit reported main=2), which duplicates the primary landmark for assistive tech."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "Undo exists only in a toast that expires: the status text says 'Undo available for 8 seconds', and a locally served run found 0 undo controls 9.5 seconds after reassigning, with no other reverse path on the surface. The brief states reassignment is reversible; a shift lead interrupted mid-task loses the ability to reverse. A's persistent 'Recent reassignments' tray handles this better."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D7",
+      "description": "The all-queues table's seven <th> header cells have no scope attributes, and the inline error banner is not marked role=alert, so header association and error announcement rely on browser heuristics."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The error state's user-facing copy reads \"Couldn't load queue data (simulated network failure)\" — the parenthetical leaks demo framing into production copy. Also the 'Watch'/'Healthy' status taxonomy has no visible legend or threshold definition, though the adjacent raw metrics keep the labels verifiable against supplied facts."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 3, "D4": 3, "D5": 4, "D6": 4, "D7": 2, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 4 }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "persuade-portfolio-supplied-work-house-style",
+  "track": "persuade",
+  "mode": "persuade",
+  "title": "Poster designer portfolio with reproducible work (house style supplied)",
+  "brief": {
+    "role": "Cultural-sector program director deciding whether to shortlist a poster designer for a season campaign",
+    "job": "Inspect the actual work at evaluative scale, understand the judgment behind it, and decide to start a conversation.",
+    "time_budget": "3 minutes",
+    "consequence": "Shortlisting on decoration alone wastes a commissioning cycle; passing on real judgment loses the season's strongest option.",
+    "facts": [
+      "Ilse Marden is an independent poster designer. Contact is a form on this page; no response time is promised.",
+      "The work may be reproduced on this page as HTML/CSS interpretations at display scale, faithful to the specs below. No photography of the posters exists and none may be simulated.",
+      "Poster 1 — 'Winter Chamber Series' (2025), for the Fenwick Concert Hall: near-black ground #14161a, single warm accent #d98e32, a tall condensed sans wordmark set vertically along the left edge, concert dates set in a small tabular column bottom-right. The commissioning constraint: legible at 40 meters and as an A6 flyer.",
+      "Poster 2 — 'Open Archive Week' (2024), for the city records office: paper ground #efe9dc, two inks only (#1f3a5f, #c0392b), the title set as three stacked lines filling the full width, an isometric grid of thin rules occupying the lower half representing shelving. Constraint: reproducible on a risograph.",
+      "Poster 3 — 'Night Swimming' (2024), for the municipal pools' late hours: deep blue ground #0c2340, the title set in a rounded slab serif curving along a single arc, seven small white circles descending the right side. Constraint: readable from a moving tram.",
+      "Supplied outcomes: the Winter Chamber Series poster was reprinted twice due to demand; Open Archive Week attendance is not supplied; Night Swimming ran for one season. No client quotes, awards, or press exist.",
+      "Ilse's stated method, quoted with permission: 'One move per poster. If the second idea survives, the first one wasn't strong enough.'",
+      "House style, supplied by the client's brand system and binding like any other fact: light warm neutral ground; 1 accent hue drawn from: mustard; interface type is a grotesque sans set in all caps labels; display type differs from interface type; corners slightly rounded; borders none; shadows none; overall density airy; standard chrome includes: filter pills, view toggle, top nav bar, logo mark, eyebrow label, text link with arrow, tag label, clock/status readout; imagery register: photography; backgrounds flat."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "required_interactions": [
+      "Inspect a poster at evaluative scale",
+      "Move from a poster to the judgment behind it (constraint and method)",
+      "Reach and submit the contact form with validation"
+    ],
+    "required_states": [
+      "poster reproductions rendered from the supplied specs",
+      "contact form validation error",
+      "contact form success without delivery promises",
+      "390 px viewport",
+      "reduced-motion preference"
+    ],
+    "acceptance_checks": [
+      "Each reproduction follows its supplied spec (grounds, accents, composition moves) without invented imagery, photography simulation, or added award/press claims.",
+      "The work is inspectable at a scale that permits evaluation and carries its constraint beside it.",
+      "Supplied outcomes appear verbatim in weight-appropriate positions; unsupplied outcomes are not implied.",
+      "The page reads as an authored portfolio, not a template: one visual system, hierarchy that makes the strongest work primary.",
+      "The build stays within the supplied house style register; the assigned direction expresses itself only within it."
+    ]
+  }
+}

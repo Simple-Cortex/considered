@@ -1,0 +1,53 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Both keep every claim adjacent to the supplied evidence and neither invents a customer, price, or guarantee. B gives the decision-maker more usable content (a concrete 3-step CSV-import explanation, a definition of 'handoff omission,' a richer Brightline disclosure) and demonstrably stronger form resilience (distinct empty/invalid/personal-domain messages, a disabled+relabeled submit button, focus moved to the success confirmation, and JS timing that reads prefers-reduced-motion rather than using a fixed delay). B's visual hierarchy is also more distinctive and consistent (custom-property-driven motion tokens, a dedicated evidence card). This is offset by B shipping a leaked internal /source/evidence folder and process comments in its HTML, and by A keeping a persistent 'Start trial' affordance in the header that B drops in favor of a plain nav link.",
+  "suspected_unblinding": "B's index.html retains internal build annotations (e.g. '<!-- E1 [P0] -->', 'Zone: orient ... Q1, Q2, Q7', an 'A1 (recorded in FRAME.md)' code comment) and its sanitized source/ folder still contains a nested evidence/ directory of internally-named screenshots (relaynotes-pslc-*.png) plus a reference to an external FRAME.md not included in the packet. This points to a structured internal planning/tagging process behind B, which is a process fingerprint distinguishable from A's plainer markup — but I did not attempt to determine which team it belongs to.",
+  "unsupported_claim_label": {"A": false, "B": false},
+  "unsupported_claims": [],
+  "gate_by_label": {"A": "Revise", "B": "Revise"},
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The delivered sanitized source/ still contains a leftover internal evidence/ subfolder of process screenshots and in-code planning comments (component IDs, priority tags, zone/question references), indicating incomplete sanitization of the deliverable.",
+      "evidence": "B/source/evidence/relaynotes-pslc-*.png; B/source/index.html comments such as '<!-- E1 [P0] -->' and '<!-- A1 (recorded in FRAME.md) -->' in app.js"
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "Trial-form validation shows one generic message regardless of whether the field is empty or malformed, and submission gives no in-progress feedback (no disabled state, no label change), leaving the user unsure the click registered.",
+      "evidence": "A/evidence/state-01-trial-form-validation-error.png (generic 'Enter a work email address to start your trial.' shown for a malformed, non-empty value); A/source/app.js showError()/submit handler has no busy state"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "The site header carries no persistent 'Start trial' affordance (only a 'How it works' link), unlike A which repeats the CTA in the header — a small added friction to committing once the visitor has scrolled past the hero.",
+      "evidence": "B/desktop.png header; B/source/index.html header markup (nav link only, no CTA button)"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "In every scrolled evidence capture (interactions 1-3, states 1-2) a second 'Relay Notes / Start trial' bar appears mid-page, immediately adjacent to body copy — most likely a sticky-header artifact of full-page screenshot capture, but if it renders this way live it visually competes with the 'What a handoff contains' section.",
+      "evidence": "A/evidence/interaction-01-start-trial.png (duplicate header row near 'it sits alongside it.'); same row recurs in state-01/02 captures. Flagged with lower confidence since a capture artifact cannot be ruled out from images alone."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D6",
+      "description": "The work-email validator rejects common personal-mail domains (gmail.com, yahoo.com, etc.) as a proxy for 'work email.' This is a reasonable client-side heuristic and not a fabricated product claim, but it is UX scope beyond what the brief specifies ('requires a work email') and could block a legitimate user with a message implying an official policy.",
+      "evidence": "B/source/app.js FREE_MAIL_DOMAINS set and validateWorkEmail() branch"
+    }
+  ],
+  "scores": {
+    "A": {"D1": 4, "D2": 4, "D3": 3, "D4": 4, "D5": 3, "D6": 2, "D7": 3, "D8": 3, "D9": 4},
+    "B": {"D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 4, "D6": 3, "D7": 3, "D8": 2, "D9": 4}
+  }
+}

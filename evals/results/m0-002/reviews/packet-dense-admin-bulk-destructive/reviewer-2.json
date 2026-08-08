@@ -1,0 +1,54 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "Both packets are complete: all three required interactions and all four required states are evidenced, the five supplied records are preserved exactly in source (verified: SurveyShip 2d/78d, Old CRM Export 418d/12d, Payroll Archive 391d/31d, Sandbox Sync 201d/4d sandbox, Legacy Forms 502d/expired/no owner), delete requires a typed count ('Type 1 to confirm') in both, and bulk delete is absent in both. A wins on three concrete observations. (1) A's default view directly operationalizes the obsolete-candidate rule: a grouped 'NEEDS REVIEW — active, unused 180+ days (17)' section plus triage tiles put stale candidates in front of the admin with zero interaction, matching the 5-minute budget; B requires enabling a 'Stale active only' checkbox (default off), though its stale-first sort partly compensates. (2) A keeps Delete inside a per-row overflow menu while promoting Disable; B renders a red Delete button on every one of 46 rows, presenting the destructive action far more casually. (3) A's dialogs are properly built for keyboard/screen-reader use (role=alertdialog, aria-modal, focus moved in, wireFocusTrap, Escape, role=status live region), whereas B's modals have no focus management at all. B is genuinely better on row-level content (scopes inline as chips, 'Stale · Nd' day counts) and on production-aware confirmation copy ('3 selected · 3 production'; bulk dialog warns production-critical status is not recorded), but those advantages do not outweigh A's stronger default triage, safer destructive-action presentation, and materially better dialog accessibility.",
+  "suspected_unblinding": "none — packaging is asymmetric (A's source/ contains leftover .playwright-cli console/page capture logs; B ships two non-identical copies of its source at source/ root and source/admin/connections/), but nothing in either packet indicates which treatment a label received.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Modals (delete confirm, bulk-disable confirm, bulk result) have no focus management: role=\"dialog\" without aria-modal (app.js line 567), no focus moved into the dialog on open (the only .focus() call, line 694, is filter-input refocus after re-render), and no Tab trap — the only keydown handler is a document-level Escape (line 808). A keyboard or screen-reader user invoking the destructive confirm can tab into and act on background content behind the dialog."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Delete is an always-visible top-level red button on every one of 46 rows and every mobile card. The typed-count dialog guards execution, and the copy correctly says deleting is single-record-only, but the per-row prominence presents the irreversible action nearly as casually as reversible Disable and adds a wall of red affordances that competes with the disable-first workflow the brief implies."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "The sticky selection bar overlaps the table header and partially covers the first data row when scrolled (visible in state-02-selection-persists-across-pagination.png, where the 'Grace Kim' row is half-hidden behind the bar), obscuring column labels while the user is mid-selection."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Scope names are never shown in table rows — only a count ('3 SCOPES'). Inspecting scopes before action, which the brief requires, forces opening the detail drawer one record at a time; comparing scopes across the 17 stale candidates within the 5-minute budget is materially slower than B's inline scope chips."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the summary tiles clip mid-card (the 'EXPIRING' tile is truncated at the right edge in mobile.png and state-04) with no visible scroll affordance, so the disabled/active counts are not discoverable on mobile without guessing that the strip scrolls horizontally."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The dark terminal styling uses dim grey monospace text on near-black for secondary content ('No owner', section captions, footer text); several of these pairings look near or below WCAG AA contrast in the screenshots. Flagged from stills as a risk, not a measured failure; row action menus also declare role=\"menu\"/\"menuitem\" without evidence of arrow-key support."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 3, "D8": 4, "D9": 3 },
+    "B": { "D1": 4, "D2": 3, "D3": 3, "D4": 3, "D5": 4, "D6": 4, "D7": 2, "D8": 3, "D9": 3 }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "runner": "evals/runner (Claude Code executor subagents)",
+  "model": "claude-sonnet-5 (builder, both conditions, one invocation per run)",
+  "model_revision": null,
+  "starter_project_revision": "065c8fc148832fd192e11f4fff3dfae518418641",
+  "dependency_lock_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "node_version": "v25.8.1",
+  "browser_version": "145.0.7632.6",
+  "operating_system": "darwin arm64",
+  "network_policy": "instruction-level control, not mechanically disabled; both conditions identically instructed",
+  "time_budget_seconds": 3600,
+  "token_budget": null,
+  "temperature": null,
+  "seed": null,
+  "randomization_seed": 20260731,
+  "common_prompt_sha256": "97e931abaa1d0e5bedb3f8f28ae64d5b0b411d118545be6bb624d85a0c0bdd92",
+  "reviewer_models": [
+    "claude-opus (reviewer-1)",
+    "claude-fable-5 (reviewer-2)",
+    "claude-sonnet-5 (reviewer-3)"
+  ],
+  "playwright_version": "1.58.2",
+  "time_budget_policy": "per-build abort threshold, enforced by the coordinator; no build approached it",
+  "evaluation_id": "m0-001",
+  "notes": [
+    "Initial considered staging discarded before any artifact entered this collection: the installed skill copy shipped evals/ including the active scenario catalog, letting one builder infer it was being measured. stage.mjs now prunes evals/, docs/, tests/ from the install (commit 8ddc948). Baseline staging was byte-identical before and after the fix, so baseline builds were retained.",
+    "After the discard, all considered builds ran after their scenario baselines; the seeded per-scenario condition order governed the original staging only. Recorded as an ordering deviation.",
+    "Several builders in both conditions attempted in-build browser verification against a shared Chrome session and encountered cross-agent tab contention; canonical evidence in this record was captured by isolated per-run Playwright instances and is unaffected. Builder self-verification quality varied with concurrency.",
+    "First blind-review round (6 of 30 forms collected) discarded before any label decode: packet copies of evidence/capture-plan.mjs embedded absolute staging paths ending in -base/-cons, naming the condition. blind.mjs now redacts all absolute filesystem paths in packet text files; packets were rebuilt and all reviews restarted with fresh reviewers. One first-round reviewer also reported the shared MCP browser exposing other agents' pages; restarted reviewers are instructed to use only isolated locally-launched browsers. The word \"baseline\" survives in packets solely as the CSS keyword and generic testing vocabulary, present in both arms.",
+    "Canonical desktop/mobile captures for three scenarios (admin, chart-dump, changelog \u2014 the multi-segment routes) were blank or unstyled: the capture server treated dotted route segments as assets and did not retry relative assets at the root, so JS-built pages rendered blank. capture.mjs fixed; all twenty runs re-captured uniformly with the fixed server; the three affected packets had their canonical screenshots refreshed and their partially-collected round-2 review forms (6) discarded before any label decode; those three packets were re-reviewed by fresh reviewers. Evidence screenshots were never affected (evidence capture plans used per-run servers with their own fallbacks). The seven unaffected packets retain their original, verified-good captures and reviews.",
+    "Post-review artifact repair, applied after all thirty forms were recorded and before label decode: the canonical capture gained a uniform 1800 ms settle (networkidle is blind to setTimeout-driven loading skeletons) and all twenty runs were re-captured; two evidence capture plans (chart considered, changelog baseline) carried the pre-fix server and produced unstyled screenshots \u2014 patched with the same miss-handler and re-run. Chart and changelog round-3 reviewers had flagged the artifacts and verified real rendering via their own local browsers before scoring, so their recorded judgments were formed on verified behavior; the repair aligns the published record with what they verified. Packets were rebuilt wholesale from the repaired runs with the same seed and label assignment."
+  ]
+}

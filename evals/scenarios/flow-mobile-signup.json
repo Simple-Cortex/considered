@@ -1,0 +1,43 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "flow-mobile-signup",
+  "track": "flow",
+  "mode": "operate",
+  "title": "Mobile signup flow",
+  "brief": {
+    "role": "A freelancer on their phone signing up for Ledgerline after a colleague's recommendation, mid-commute",
+    "job": "Create an account in under a minute, understand what happens next, and not lose progress to a mistake or an interruption.",
+    "time_budget": "60 seconds to account created",
+    "consequence": "An abandoned signup is a lost customer; a signup completed with a mistyped email strands the account behind an unreachable verification message.",
+    "facts": [
+      "Ledgerline is an expense-tracking app for freelancers. The free plan includes 25 expenses per month and one workspace; no card is required at signup.",
+      "Signup is three steps in order: (1) email and password, (2) workspace name, (3) pick a starting expense category from exactly these six: Travel, Meals, Equipment, Software, Fees, Other.",
+      "Passwords must be at least 8 characters. There is no social or single-sign-on login of any kind.",
+      "On completing step 3 the system creates the account and sends a verification email; the account works immediately, but expenses cannot be exported until the email is verified.",
+      "Going back a step preserves everything already entered.",
+      "The workspace name can be changed later in settings; the starting category only sets the first suggestion and has no other effect."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": { "width": 390, "height": 844 },
+    "required_interactions": [
+      "Complete all three steps to account creation",
+      "Trigger and recover from a validation error on step 1",
+      "Go back from step 3 to step 1 and confirm inputs are preserved"
+    ],
+    "required_states": [
+      "each of the three steps",
+      "validation error",
+      "submitting/loading",
+      "account-created success stating the supplied verification consequence",
+      "reduced-motion preference"
+    ],
+    "acceptance_checks": [
+      "Progress and position in the flow are always visible; back navigation never loses input.",
+      "The success state renders the supplied mechanism faithfully — verification email sent, account usable now, export gated on verification — with no invented onboarding, trials, or policies.",
+      "One-handed operation at 390 px: primary action reachable, targets at least 44 px.",
+      "Free-plan facts appear where they answer a decision, not as marketing filler."
+    ]
+  }
+}

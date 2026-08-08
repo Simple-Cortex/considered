@@ -1,0 +1,15 @@
+:root {
+  --surface: #ffffff;
+  --text-primary: #172033;
+}
+
+.queue-surface {
+  color: var(--text-primary);
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.queue-surface button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}

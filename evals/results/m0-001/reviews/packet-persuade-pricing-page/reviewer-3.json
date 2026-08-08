@@ -1,0 +1,87 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A surfaces the supplied 'changing seats / no proration policy' caveat directly tied to the scenario's stated risk of avoidable spend, while B's rendered page never mentions seat changes or proration anywhere. A also implements a standards-correct ARIA radiogroup with full keyboard support (arrows plus Home/End) for the billing toggle and gives clearer editorial hierarchy for a fast skim, whereas B uses a non-standard role=\"switch\" with arrow-key overrides. B's full attribute-by-attribute comparison table, generalized member-count calculator, and aria-live price announcement are real, verifiable advantages, but they don't outweigh the missing proration caveat, which is more directly tied to the job's 'understand the cost and commitment' framing.",
+  "suspected_unblinding": "none — both packets are unlabeled static/JS builds with no builder metadata, tool signatures, or file naming that hints at authorship.",
+  "unsupported_claim_label": {"A": false, "B": false},
+  "unsupported_claims": [],
+  "gate_by_label": {"A": "Ship", "B": "Revise"},
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "B never states that seats can be changed during the billing period or that no proration policy is supplied, despite this being one of the seven facts in the brief and directly tied to the scenario's avoidable-spend risk.",
+      "evidence": "Full read of B/source/app.js (calculator, plans, comparison table, recommendation, trial sections) contains no 'seat' or 'proration' text; contrast with A's explicit 'Changing seats' terms-strip entry in A/source/index.html lines 151-154."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "The plan comparison shows only each plan's own bullet list rather than a shared attribute matrix, so a viewer can't directly confirm whether an item such as workspaces or admin roles is absent from Enterprise or Starter without inferring from omission.",
+      "evidence": "A/source/index.html lines 84-120 (plan-grid cards, no comparison-table markup) versus B/source/app.js lines 126-227 (full attribute table with explicit 'Not included' / 'Not specified' rows)."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The hero price and its per-member subtext update when the billing toggle changes, but neither element is marked as an ARIA live region, so a screen-reader user driving the radiogroup by keyboard is not told the price changed unless they separately navigate to it.",
+      "evidence": "A/source/index.html lines 29-41 (#hero-price, #hero-price-sub, no aria-live attribute) versus B/source/app.js line 104 (aria-live=\"polite\" on the equivalent calculator-result)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The billing control uses role=\"switch\" but is operated with ArrowLeft/ArrowRight in addition to click, which is non-standard for the switch pattern (switches are conventionally toggled with Space/Enter only); assistive-tech users following standard switch expectations may not discover the arrow-key behavior.",
+      "evidence": "B/source/app.js lines 349-368, role=\"switch\" markup at line 92."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "On the 390px viewport, the plan-differences table sits in a horizontally scrolling container with no visible scroll affordance and no keyboard-focusable scroll region (no tabindex on .table-scroll), so mobile users may not realize the Team/Enterprise columns are truncated and keyboard-only users can't reach them.",
+      "evidence": "B/evidence/state-03-390px-viewport.png (columns visibly cut off, e.g. '$12/member/mo', 'Not works'); B/source/styles.css .table-scroll{overflow-x:auto} with no tabindex in the corresponding markup."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The hero price is hardcoded to a fixed 35-seat calculation rather than an editable input, so while it happens to match this scenario's 35-person team, it doesn't let the visitor verify the price for a different headcount without doing arithmetic.",
+      "evidence": "A/source/app.js lines 1-4 (const SEATS = 35), contrast with B's editable #member-count input in B/source/app.js lines 73-84."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The page's only <h1> is visually hidden using position:absolute;left:-9999px inline styling rather than a standard clip-based visually-hidden technique; it works for screen readers but is a dated pattern that can misbehave in RTL contexts.",
+      "evidence": "A/source/index.html line 18."
+    }
+  ],
+  "scores": {
+    "A": {
+      "D1": 4,
+      "D2": 3,
+      "D3": 4,
+      "D4": 4,
+      "D5": 3,
+      "D6": 4,
+      "D7": 3,
+      "D8": 4,
+      "D9": 4
+    },
+    "B": {
+      "D1": 4,
+      "D2": 4,
+      "D3": 3,
+      "D4": 4,
+      "D5": 3,
+      "D6": 4,
+      "D7": 3,
+      "D8": 3,
+      "D9": 3
+    }
+  }
+}

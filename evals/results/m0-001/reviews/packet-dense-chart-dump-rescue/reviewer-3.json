@@ -1,0 +1,53 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "Both outputs fully match the brief's facts and satisfy the required interactions/states, so the decision came down to secondary dimensions. B implements real accessibility scaffolding (skip link, landmark structure, aria-live content region, role=alert/status, screen-reader table alternative for the bar chart, aria-controls/expanded/pressed wiring) while A has almost none (2 total aria-* usages in app.js, no skip link, no live region, no chart text alternative), and B's lower-friction 3-button segment toggle beats A's four cascading selects for the same job. A's single boxed 'First Reading' digest is a slightly tighter synthesis than B's distributed zone cards, but that edge doesn't offset the accessibility and interaction-cost gaps.",
+  "suspected_unblinding": "none — the two builds converge closely on structure and even reuse near-identical sentences (e.g. 'Self-serve mobile web fell 27 pts — 9x the next-largest segment drop'), which is expected since both work from the same supplied facts, not a tell for either treatment.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The dynamically-built content has no ARIA live region and no screen-reader text/table alternative for the segment bar chart, so a screen-reader user gets no announcement when filters change the KPI/chart values and no non-visual read of the chart comparison.",
+      "evidence": "A/source/app.js contains only two aria-* attribute usages total (one decorative aria-hidden icon, one aria-pressed on a diagnostics-only button); no aria-live, no sr-only chart summary, confirmed by grep across the full 430-line file."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "No skip link and no landmark elements (header/main/nav) — index.html is a bare <main id=\"app\"></main> with everything injected by JS, so keyboard/screen-reader users have no way to jump past the repeated filter/KPI region to the analysis.",
+      "evidence": "A/source/index.html (13 lines total) vs. B/source/index.html which has an explicit skip-link and <header>/<main> landmarks."
+    },
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "evidence integrity",
+      "description": "The supplied evidence images for B (desktop.png, mobile.png, and all three interaction-*.png) render as completely unstyled default-browser HTML with no CSS applied at all, which would make a reviewer relying only on the images conclude the build is broken.",
+      "evidence": "B/desktop.png, B/mobile.png, B/evidence/interaction-01/02/03.png. Independently reproduced by serving B/source with python3 -m http.server and capturing screenshots with a locally-launched Playwright chromium (per this review's sanctioned verification method, not the shared browser tools): the same source renders fully styled, functional, and polished (colored KPI cards, working segment toggle with a real 'no data' empty state, working disclosures, working loading skeleton, correct 390px stacking). This is a packet-capture defect, not a defect in B's build, and the packet should be regenerated before being used for image-only comparisons."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The 'what remains unproven' synthesis is split across two separate cards (Largest drop / What this does and doesn't show) rather than combined into one immediately-visible digest, so assembling the full first read takes slightly more scanning than A's single boxed callout.",
+      "evidence": "B/source/index.html E6 and E8 articles; compare to A's single 'FIRST READING' box containing What/In whom/Unproven together (A/evidence/interaction-01-change-a-segment.png)."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Four cascading select filters (device×motion segment, channel, plan intent, country) are a heavier control surface than the data supports — channel and plan-intent selections correctly show an honest 'no data for this filter combination' state, but only after the user has already clicked in and waited for it.",
+      "evidence": "A/evidence/state-03-no-data-for-filter-combination.png; A/source/app.js select construction at line 202."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 4, "D6": 4, "D7": 2, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 4, "D9": 4 }
+  }
+}

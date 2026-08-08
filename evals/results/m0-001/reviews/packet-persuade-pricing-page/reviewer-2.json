@@ -1,0 +1,77 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A answers the stated job directly: the 35-member Team price ($420/month, $4,200/year on toggle) leads the page with an explicit fit rationale, and every commitment fact is covered, including the seat-change caveat with an honest 'no proration policy supplied' warning. B is also arithmetic-free via its prefilled 35-seat calculator, but it omits the supplied seat-change/proration fact entirely, places its fit guidance below a long comparison table, and renders no content at all without JavaScript. Within the 3-minute budget, A gets the ops lead to a defensible decision with less scanning and more complete commitment terms.",
+  "suspected_unblinding": "No treatment identifiable. A's markup carries data-el/data-zone annotations (E1, E8, Zone A/B) and B's app.js has a guard comment about not inventing customers/metrics/policies — both suggest structured, rules-driven processes, but neither reveals which team or condition produced it.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "Omits the supplied fact that seats may change during the billing period with no proration policy supplied, leaving the commitment picture incomplete for a team deciding on monthly vs annual spend.",
+      "evidence": "B/desktop.png full page shows no seat-change or proration content; grep for 'proration'/'seats' across B/source/app.js and B/source/pricing/index.html returns nothing, while A/source/index.html:153 carries the fact."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The entire page is client-rendered into an empty <main id=\"app\"> shell, so no pricing content exists without JavaScript.",
+      "evidence": "B/source/pricing/index.html contains only the empty main element and a module script; all markup is template strings in B/source/app.js."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the plan-differences table is cut off mid-column (Team truncated, Enterprise off-screen) with no visible scroll affordance, though the wrapper does scroll horizontally.",
+      "evidence": "B/evidence/state-03-390px-viewport.png shows clipped 'Monthly, or ann…' / '14 days, no cre…' cells; B/source/styles.css:286-287 (.table-scroll { overflow-x: auto }) confirms scroll containment."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Contact sales — named by the scenario as an appropriate next action for Enterprise or undecided visitors — appears only as prose ('talk to sales to scope it') with no link or button.",
+      "evidence": "A/desktop.png: the Enterprise strip and decision block mention talking to sales but the only actionable control on the page is the Start Team trial form."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Enterprise 'Contact sales' is plain text in the card and in the fit paragraph with no actionable link or button, so the sales path dead-ends.",
+      "evidence": "B/desktop.png Enterprise card and 'Which plan fits?' section; no sales link present in B/source/app.js markup."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D3",
+      "description": "The fit recommendation — the decision-critical content — sits below a 15-row comparison table, and the 'Which plan fits?' section is a plain paragraph beside a large empty column, weakening hierarchy within the 3-minute budget.",
+      "evidence": "B/desktop.png: 'Which plan fits?' appears near the bottom, visually undifferentiated, with unused right-column whitespace."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The 'PRICING' nav label is small, low-contrast muted text on the tan background; the visible page also starts at h2 since the h1 is screen-reader-only via inline off-screen styling.",
+      "evidence": "A/desktop.png top-right nav; A/source/index.html:18 inline-styled sr-only h1."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 4, "D6": 4, "D7": 4, "D8": 4, "D9": 4 },
+    "B": { "D1": 4, "D2": 3, "D3": 3, "D4": 3, "D5": 3, "D6": 3, "D7": 4, "D8": 3, "D9": 3 }
+  },
+  "score_notes": {
+    "A_D4": "Single clear trial CTA with validated form, but no actionable contact-sales affordance despite the brief naming it a valid next action.",
+    "A_D7": "Evidence-backed: radiogroup with ArrowLeft/Right/Up/Down + Home/End and roving focus (source/app.js:54-77), visible focus ring reproduced in state-01 screenshot, skip link, :focus-visible outline, prefers-reduced-motion block (styles.css:554), labeled input with role=alert error and aria-invalid toggling.",
+    "B_D2": "Complete conventional IA, but the decision aid (fit guidance) is sequenced after the full table, and honest-but-noisy 'Not specified' rows (e.g. handoff template on Team) add uncertainty the layout never resolves.",
+    "B_D5": "All pricing arithmetic and trial/cancellation terms present and correct; the supplied seat-change/no-proration fact is missing (S2 finding).",
+    "B_D6": "Good state work (role=alert error, role=status success, live-region price updates, input clamped 1-100) but zero no-JS resilience from the empty shell.",
+    "B_D7": "Evidence-backed: role=switch with aria-checked and ArrowLeft/ArrowRight handling (app.js:355-365), focus ring reproduced in state-01 screenshot, table caption + th scope=col/row, labeled number input, aria-live calculator result; no prefers-reduced-motion rule found.",
+    "B_D9": "Layout stacks correctly at 390 px and the table scrolls in its own container, but clipped columns with no scroll hint add friction on the primary comparison content."
+  },
+  "evidence_viewed": "desktop, mobile/390px states, interaction screenshots (billing toggle annual, keyboard focus, validation error), sanitized source for both builds"
+}

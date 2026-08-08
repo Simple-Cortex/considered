@@ -1,0 +1,29 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "dense-support-queue",
+  "track": "dense",
+  "mode": "operate",
+  "title": "Support queue allocation",
+  "brief": {
+    "role": "Support shift lead",
+    "job": "Move available agents to the queue most likely to breach its response commitment.",
+    "time_budget": "60 seconds",
+    "consequence": "Misallocation breaches contracted response times and leaves customers waiting without a credible answer.",
+    "facts": [
+      "The lead is responsible for Billing, Login, API, and General queues during the next hour.",
+      "Billing has 38 open conversations, 7 agents, a median first response of 18 minutes against a 30-minute target, and 3 conversations due within 10 minutes.",
+      "Login has 16 open conversations, 3 agents, a median first response of 22 minutes against a 20-minute target, and 5 conversations due within 10 minutes.",
+      "API has 24 open conversations, 4 agents, a median first response of 44 minutes against a 60-minute target, and 1 conversation due within 10 minutes.",
+      "General has 71 open conversations, 9 agents, a median first response of 95 minutes against a 120-minute target, and no conversation due within 10 minutes.",
+      "Two agents are available to reassign. Reassignment is reversible. Escalating an individual conversation pages the specialist and should not be the default queue action.",
+      "The current hour has 38% more Login arrivals than the previous hour; the other queues are within 10% of their prior-hour arrival counts."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Reassign an available agent to a queue", "Inspect the conversations closest to breach", "Undo a reassignment"],
+    "required_states": ["empty filtered queue", "inline queue-data error with retry", "loading skeleton", "390 px viewport"],
+    "acceptance_checks": ["The queue at greatest near-term risk is visually and verbally distinguishable from high-volume but lower-risk queues.", "The action hierarchy keeps escalation secondary to allocation.", "The surface preserves the stated queue facts without invented agent performance data."]
+  }
+}

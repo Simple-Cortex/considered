@@ -1,0 +1,93 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A surfaces the decisive uncertainty in the grid itself: a Production-critical column reading 'Unconfirmed' on every initial record, so a reviewer can separate stale candidates from possibly-critical production connections before selecting anything. Both builds write good confirmation copy, but in B every dialog's primary/destructive confirm button renders white-on-white (measured contrast 1.00 for 'Disable 2 connections', 1.56 for 'Delete permanently'), so the only control that completes the required bulk action is an apparently blank box — reproduced live and visible in B's own error-state screenshot. A also keeps Delete inside a per-row overflow menu behind a disabled typed-count confirm, while B puts a red Delete link on every row, closer to a casual default. A's inspectable accessibility is stronger too: real table with scope='col' headers, two aria-live regions, and focus-visible styles, versus B's div role='table', no live regions, and no focus styles anywhere in its CSS.",
+  "suspected_unblinding": "none — the two differ in theme and stack idiom, but nothing identified a treatment or builder",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "Bulk-disable failure reason asserts a policy the scenario never supplies — that a record with no owner must have an owner assigned before it can be disabled."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D7",
+      "description": "The primary confirm button in the bulk-disable dialog is white text on a white background, so its label is invisible and the only control that completes the required bulk action reads as an empty box.",
+      "evidence": "Reproduced locally (served B/source on a local port, driven with a local Playwright chromium): computed color rgb(255,255,255) on background rgb(255,255,255), contrast ratio 1.00. Cause is `.dialog-actions button { background:#fff }` overriding `.btn-primary` background while `.btn-primary { color:#fff }` still applies (B/source/styles.css lines 117 and 350). Also visible in B/evidence/interaction-03-bulk-disable-with-confirmation.png."
+    },
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D4",
+      "description": "The same defect hits the destructive path and the result dialog: 'Delete permanently' measures 1.56 contrast and the bulk-result dismiss button renders as a blank white rectangle.",
+      "evidence": "Reproduced locally: delete dialog button computed color rgb(255,255,255) on rgb(230,200,198). Blank dismiss control shown in B/evidence/state-03-bulk-action-error-for-one-selected-record.png."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "No aria-live or status region exists anywhere, so filter counts and bulk-disable results are not announced, and Escape does not dismiss the modal.",
+      "evidence": "Reproduced locally: querySelectorAll('[aria-live],[role=status],[role=alert]') returns 0 elements; after pressing Escape with the bulk dialog open, the [role=alertdialog] node is still in the DOM. A returns two aria-live='polite' regions and closes on Escape."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Production-critical status — the field the brief says must be inspected before bulk action — is absent from the table and appears only after opening a record's detail modal.",
+      "evidence": "B/desktop.png shows columns Application, Owner, Environment, Scopes, Last used, Token expiry, Status, Actions; the 'Not specified — verify before disabling or deleting' line appears only in B/evidence/interaction-02-inspect-one-record.png."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "A red Delete link sits on every row beside View and Disable, presenting the irreversible action at the same level of casualness as the reversible one.",
+      "evidence": "B/desktop.png — Actions column repeats 'View Disable Delete' on all ten rows; A places Delete inside a per-row overflow menu (A/evidence/interaction-02-inspect-one-record.png)."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The grid is a div with role='table' whose column headers carry no scope, and the select-all header cell has no accessible name.",
+      "evidence": "Reproduced locally: 0 <table> elements, one DIV[role=table]; first [role=columnheader] has empty text content. A exposes a real <table> with ten scope='col' headers."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px, label and value collide in the card layout so metadata reads as run-together text.",
+      "evidence": "A/mobile.png — 'Last usedNever used', 'ExpiresIn 96 days', 'ExpiresIn 24 days' on successive cards."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Modal dialogs omit aria-modal and do not move focus into the dialog when opened, so a keyboard or screen-reader user stays behind the overlay.",
+      "evidence": "Reproduced locally: bulk confirm dialog has role='alertdialog' and aria-labelledby but aria-modal is null and document.activeElement is outside the dialog after it opens. (B shares the focus-placement problem but does set aria-modal='true'.)"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "Some generated rows assert a definite 'Not critical' production-critical value rather than marking the field unknown, which reads as data the scenario never supplied; B labels its generated rows 'placeholder' more honestly.",
+      "evidence": "A/desktop.png — Password Rotator and Session Logger show 'Not critical' while the initial records correctly show 'Unconfirmed'; B/desktop.png tags fabricated rows with a 'placeholder' chip."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The detail side panel overlaps the right edge of the table and clips the Production-critical column of the row being inspected.",
+      "evidence": "A/evidence/interaction-02-inspect-one-record.png — the row's badge is cut to 'Unconfir…' behind the panel."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 3, "D6": 4, "D7": 3, "D8": 3, "D9": 2 },
+    "B": { "D1": 3, "D2": 3, "D3": 3, "D4": 1, "D5": 2, "D6": 2, "D7": 1, "D8": 2, "D9": 3 }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A keeps every section, including the destructive Danger Zone, reachable at 390px via a drill-down back-link, while B's top tab bar truncates on mobile and appears to hide Danger Zone/Billing off-screen with no visible scroll cue. A also shows stronger built-in accessibility: native <dialog>.showModal() for confirmations and properly scripted role=\"switch\"/aria-checked toggles, versus B's thinner aria coverage. B's single bottom 'Save changes' bar is cleaner than A's duplicate in-card-plus-toast Save buttons, but that craft nit doesn't offset A's structural mobile-reachability and accessibility advantages.",
+  "suspected_unblinding": "none — source READMEs are identical boilerplate, no branding or naming differences observed",
+  "unsupported_claim_label": {"A": false, "B": false},
+  "unsupported_claims": [],
+  "gate_by_label": {"A": "Ship", "B": "Revise"},
+  "findings": [
+    {"label": "B", "severity": "S2", "dimension": "D9", "description": "At the 390px viewport, the top tab navigation truncates and Danger Zone/Billing are not visible or reachable without an undiscoverable horizontal scroll, risking the destructive control being lost on mobile.", "evidence": "B/evidence/state-04-390px-viewport.png and B/mobile.png show only Workspace profile / Members / Security & access tabs, with the 'Viewing as' dropdown clipped to 'Organizat...'."},
+    {"label": "A", "severity": "S3", "dimension": "D8", "description": "When the session timeout field is dirty, two identically labeled 'Save session timeout' buttons appear simultaneously (in-card and in the toast), which could confuse which control is the one to click.", "evidence": "A/evidence/state-02-unsaved-changes.png"},
+    {"label": "A", "severity": "S4", "dimension": "D7", "description": "Toggle switches use role=\"switch\" with aria-checked/aria-label, and modals (including delete-workspace) are implemented via the native <dialog>.showModal() API, giving stronger built-in accessibility semantics than a manual div-based modal.", "evidence": "A/source/app.js lines 401-411 (role=\"switch\"/aria-checked toggle) and lines 803-822 (mountDialogs using el.showModal())."},
+    {"label": "B", "severity": "S4", "dimension": "D5", "description": "The API tokens table is hardcoded to 'No tokens to show in this preview' in every screenshot, including the one meant to demonstrate finding API token management, so the described name/last-used display is never actually illustrated.", "evidence": "B/source/app.js line 436 (hardcoded empty-row markup); B/evidence/interaction-03-find-api-token-management.png."},
+    {"label": "A", "severity": "S4", "dimension": "D2", "description": "Mobile settings use a drill-down pattern with a '← Settings categories' back link, keeping Billing and Danger Zone reachable at 390px without horizontal scrolling.", "evidence": "A/evidence/state-04-390px-viewport.png"},
+    {"label": "B", "severity": "S4", "dimension": "D4", "description": "Unsaved-changes state uses a single bottom bar ('1 unsaved change: Session timeout' / Discard / Save changes) rather than duplicating the save action in two places, which is clearer than A's approach.", "evidence": "B/evidence/state-02-unsaved-changes.png"}
+  ],
+  "scores": {
+    "A": {"D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 4, "D6": 3, "D7": 4, "D8": 3, "D9": 4},
+    "B": {"D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 3, "D6": 3, "D7": 3, "D8": 4, "D9": 2}
+  }
+}

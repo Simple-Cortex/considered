@@ -1,0 +1,60 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "The job includes locating the right reference when blocked, and B represents all six documented sections with a real, navigable CLI reference and troubleshooting section, while A leaves Guides and CI as inert placeholders and its CLI reference is a dead-end summary card. B also gives the clearest treatment of the highest-consequence fact: paired green 'Safe — previews only' and red 'Publishes the release' cards for plan vs apply. A has better copy affordances and accessibility instrumentation, but those are narrower advantages than B's complete information architecture for the stated job.",
+  "suspected_unblinding": "A's source comments cite internal design-rule codes (ACT-16, ACT-18, READ-04, COMP-08, COMP-09, STATE-01, A11Y-09, 'P0 order'), indicating one build followed a structured rules checklist; this hints a treatment is distinguishable, though I do not know which team maps to which label and did not attempt to find out.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Ship" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D2",
+      "description": "Two of the six documented sections (Guides, CI) are inert aria-disabled spans titled 'Not included in this preview', so the sidebar cannot retrieve them at all.",
+      "evidence": "A/source/index.html rail-list markup (span.rail-link--inert aria-disabled=\"true\"); greyed items visible in A/desktop.png"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The 'CLI reference' destination is a summary card naming the commands rather than a reference list, so a user blocked on flags reaches a dead end that only restates that a reference exists.",
+      "evidence": "A/source/index.html #reference card; A/evidence/interaction-02-quickstart-to-cli-reference.png shows the jump landing on the card with no further content"
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Sidebar shows a visible 'Search docs' label immediately duplicated by identical placeholder text, minor redundancy in the rail.",
+      "evidence": "A/desktop.png sidebar"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Only the npm install block has a copy button; atlas login, atlas login --device, and both release commands are plain code blocks with no copy affordance.",
+      "evidence": "B/source/docs/index.html contains a single .copy-button element; confirmed in B/desktop.png"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Copy confirmation is a visual button-text swap with no live region, and the execCommand fallback calls the success path unconditionally, so it can show 'Copied' when the copy failed and screen-reader users get no reliable announcement.",
+      "evidence": "B/source/app.js initCopyButtons and fallbackCopy (confirm() runs after fallback regardless of outcome; no aria-live in B sources)"
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Scroll-spy highlight lags section boundaries — the nav marks 'CI' active while the Troubleshooting section is the reading target.",
+      "evidence": "B/evidence/interaction-03-find-node-version-remedy.png"
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 3, "D3": 4, "D4": 4, "D5": 4, "D6": 4, "D7": 4, "D8": 3, "D9": 4 },
+    "B": { "D1": 4, "D2": 4, "D3": 3, "D4": 3, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 4 }
+  }
+}

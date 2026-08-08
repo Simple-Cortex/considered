@@ -1,0 +1,27 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "dense-admin-bulk-destructive",
+  "track": "dense",
+  "mode": "operate",
+  "title": "Admin table with bulk destructive operations",
+  "brief": {
+    "role": "IT administrator",
+    "job": "Identify and disable obsolete third-party application connections while avoiding active production integrations.",
+    "time_budget": "5 minutes",
+    "consequence": "Disabling an active connection interrupts a business workflow; leaving an obsolete one active leaves unnecessary access in place.",
+    "facts": [
+      "There are 46 application connections. Each record has application, owner, environment, scopes, last successful use, token expiry, and status.",
+      "Five records are shown in the initial data: SurveyShip, Lila Chen, production, contacts.read and deals.write, last used 2 days ago, expires in 78 days, active; Old CRM Export, Arun Shah, production, contacts.read, last used 418 days ago, expires in 12 days, active; Payroll Archive, Dana Cole, production, payroll.read, last used 391 days ago, expires in 31 days, active; Sandbox Sync, Lila Chen, sandbox, contacts.read, last used 201 days ago, expires in 4 days, active; Legacy Forms, no owner, production, contacts.read and forms.write, last used 502 days ago, expired, active.",
+      "An obsolete candidate is active, has no successful use in 180 days, and is not marked production-critical. Production-critical is not supplied for any initial record, so the administrator must inspect before bulk action.",
+      "Available record actions are view details, notify owner, disable, and delete. Disable is reversible by an administrator. Delete is destructive and requires a typed count confirmation. Bulk disable is allowed; bulk delete is not.",
+      "The table default should help locate stale access, but it must preserve a way to inspect usage and scope before action."
+    ]
+  },
+  "build": {
+    "route": "/admin/connections",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Filter stale active connections", "Inspect one record", "Bulk-disable selected records with confirmation"],
+    "required_states": ["no matching records", "selection persists across pagination", "bulk-action error for one selected record", "390 px viewport"],
+    "acceptance_checks": ["A reviewer can distinguish stale candidates from active production connections before acting.", "Delete never presents as the casual bulk default.", "The initial records and their uncertainty are preserved exactly."]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "persuade-pricing-page",
+  "track": "persuade-read",
+  "mode": "persuade",
+  "title": "Pricing decision page",
+  "brief": {
+    "role": "Operations lead at a 35-person support team",
+    "job": "Determine whether Relay Notes Team is the appropriate plan and understand the cost and commitment.",
+    "time_budget": "3 minutes",
+    "consequence": "Choosing the wrong plan either leaves needed members unserved or commits the team to avoidable spend.",
+    "facts": [
+      "Starter is $0 for up to 3 members and includes one workspace, the handoff template, and CSV export.",
+      "Team is $12 per member per month, billed monthly, and includes up to 100 members, unlimited workspaces, Slack links, and admin roles.",
+      "Enterprise is custom-priced and includes SAML SSO, SCIM, audit export, and a named implementation contact.",
+      "Annual billing is available only for Team at $120 per member per year. That equals two months less than twelve monthly payments. No other discount is offered.",
+      "All paid plans include a 14-day trial with no credit card. Cancellation takes effect at the end of the current billing period.",
+      "A 35-member team on Team costs $420 per month or $4,200 per year. The user may change seats during the billing period; no proration policy is supplied.",
+      "The appropriate next action for an undecided visitor is to start a trial or contact sales for Enterprise, not to imply that one plan is universally best."
+    ]
+  },
+  "build": {
+    "route": "/pricing",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Switch Team between monthly and annual billing", "Inspect all plan differences", "Start a Team trial"],
+    "required_states": ["billing-toggle keyboard interaction", "trial-form validation error", "390 px viewport"],
+    "acceptance_checks": ["A 35-person team can verify its Team price without mental arithmetic.", "Plan differences, limits, billing cadence, and cancellation terms remain legible.", "The recommended choice, if any, states a fit reason and does not use unsupplied popularity evidence."]
+  }
+}

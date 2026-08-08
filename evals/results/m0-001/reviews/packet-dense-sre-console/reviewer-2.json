@@ -1,0 +1,93 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A is the only output a keyboard user can actually operate: its rollback confirmation traps focus, closes on Escape, and survives the freshness tick, all reproduced locally, while B rebuilds the entire DOM every second, wiping focus app-wide including inside its open confirmation dialog, whose Escape and Tab containment do not work. B has the stronger five-second priority signal (the ACT NOW hero) and shows capacity data by default where A hides it behind a retry, but A's flaw is recoverable in one labeled click while B's failures block safe completion of the job's riskiest action. A also handles state semantics more honestly (real stale-clock behavior, disclosed time-range meaning, no test scaffolding in the product UI).",
+  "suspected_unblinding": "none — the two builds use different visual languages (light utilitarian vs dark ops theme) but nothing identifies a treatment or builder",
+  "unsupported_claim_label": { "A": true, "B": false },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "Rollback dialog asserts 'Reversible: a subsequent deploy can restore 2026.07.28.3' — a capability not supplied by the brief, and it makes the destructive action read as safer than the facts support (minor but decision-adjacent)."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "Decision-driving capacity facts (checkout workers 94% utilization, 12 minutes of queue runway) are hidden by default behind the capacity-failure state and appear only after clicking Retry, so the urgency signal is absent from the initial view and from every packet capture.",
+      "evidence": "source/app.js state.capacityFailed=true at boot; reproduced locally — default zone C shows only the failure message, and after Retry it renders '94% / 12 min queue capacity left'"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Closing the rollback dialog does not return focus to the triggering button — render() replaces the node before .focus() is called on the stale reference, so focus falls to the document body.",
+      "evidence": "reproduced locally: after Escape, document.activeElement is the page body, not 'Roll back payments-api'; source/app.js closeRollbackModal() renders before focusing lastFocusedTrigger"
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "The rollback dialog gives initial focus to the destructive 'Confirm rollback' button, so Enter pressed immediately after opening executes the rollback.",
+      "evidence": "reproduced locally: document.activeElement is 'Confirm rollback' on open; source/app.js render() focuses .btn--modal-confirm"
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "Search is badged 'Elevated' (yellow) although its 0.9% error rate breaches the 0.5% SLO; the displayed values and targets mitigate but the label understates the state B correctly badges as an error-SLO breach.",
+      "evidence": "evidence/interaction-01-open-payments-runbook.png; source/app.js marks the metric breach:'watch'"
+    },
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D7",
+      "description": "A timer rebuilds the entire app via innerHTML every 1000 ms, destroying keyboard focus everywhere — including inside the open rollback confirmation dialog — so a keyboard-only operator cannot reliably complete or cancel the console's riskiest action.",
+      "evidence": "reproduced locally: focus set on a button falls to body within 2 s, and focus placed on the dialog's Cancel button is lost after one tick; source/app.js clockTimer calls render() every 1000 ms"
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The rollback dialog declares aria-modal but implements none of the modal contract: no initial focus, no focus trap (Tab moves into the background page), and Escape does not close it; the runbook drawer behaves the same.",
+      "evidence": "reproduced locally: modal remains open after Escape, and Tab from 'Confirm rollback' lands outside the dialog (closest('.modal') null); no keydown handler exists in source/app.js"
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The root container carries aria-live=\"polite\" while the whole tree is re-rendered every second, which would cause screen readers to re-announce dashboard content continuously.",
+      "evidence": "source/index.html <main id=\"app\" aria-live=\"polite\"> combined with the 1 s full render loop in source/app.js"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "Changing the time range changes nothing except the button's own pressed state — no label, window annotation, or data context updates — so the required interaction is only nominally satisfied and the control's meaning is undefined.",
+      "evidence": "reproduced locally: header text identical before and after selecting 24h; evidence/interaction-03-change-time-range.png shows no visible change beyond the pressed button"
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The Image processing card asserts a 'WITHIN SLO' badge while simultaneously stating its metrics could not be loaded, asserting a status for which the UI claims to have no data.",
+      "evidence": "reproduced locally and visible in every B capture, e.g. evidence/state-02-partial-data-failure.png"
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Demo scaffolding ('Test controls: Force stale-data notice / Reset image processing failure') is rendered inside the product UI in every capture, and the forced stale banner contradicts itself ('last updated 0s ago' while claiming staleness begins at 120s).",
+      "evidence": "desktop.png and evidence/state-03-stale-data-notice.png; source/app.js renderTestControls()"
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 3, "D3": 3, "D4": 4, "D5": 3, "D6": 3, "D7": 3, "D8": 4, "D9": 4 },
+    "B": { "D1": 3, "D2": 3, "D3": 4, "D4": 2, "D5": 3, "D6": 3, "D7": 1, "D8": 3, "D9": 4 }
+  }
+}

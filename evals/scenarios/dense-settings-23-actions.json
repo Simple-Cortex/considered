@@ -1,0 +1,27 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "dense-settings-23-actions",
+  "track": "dense",
+  "mode": "operate",
+  "title": "Enterprise workspace settings with 23 actions",
+  "brief": {
+    "role": "Organization administrator",
+    "job": "Change the session timeout policy without losing the ability to find, understand, or safely use the other workspace controls.",
+    "time_budget": "3 minutes",
+    "consequence": "A mistaken security or billing change affects every workspace member; a hidden control creates support work and policy drift.",
+    "facts": [
+      "The current workspace is Northwind Research with 84 members, Enterprise plan, SAML SSO enabled, SCIM disabled, and a 30-day session timeout.",
+      "The desired change is a 12-hour session timeout. This change is reversible and applies after a member's next sign-in.",
+      "The 23 available actions are: rename workspace, change logo, change timezone, set business hours, change language, change date format; invite member, change member role, resend invitation, remove member, transfer ownership; configure SSO, verify domain, configure SCIM, set session timeout, require MFA, manage API tokens; change plan, update payment method, download invoices, change seat count, cancel subscription; delete workspace.",
+      "Delete workspace is destructive and requires typing the workspace name. Transfer ownership and cancel subscription require confirmation. Removing a member is reversible only by reinviting them.",
+      "Billing is visible only to organization administrators. API token management shows token names and last-used dates but never token values."
+    ]
+  },
+  "build": {
+    "route": "/settings",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Set the session timeout to 12 hours", "Open the delete-workspace confirmation without executing it", "Find API token management"],
+    "required_states": ["permission-restricted billing state", "unsaved-changes state", "confirmation state", "390 px viewport"],
+    "acceptance_checks": ["The session policy task has a clear path without making the other 22 actions visually equal.", "Destructive and high-consequence controls are separated from routine settings.", "All 23 actions are represented accurately, with no extra settings invented."]
+  }
+}

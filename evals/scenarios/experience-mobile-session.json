@@ -1,0 +1,43 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "experience-mobile-session",
+  "track": "experience",
+  "mode": "experience",
+  "title": "Mobile guided-breathing session",
+  "brief": {
+    "role": "A person under acute stress opening the Stillwater app on their phone, often one-handed and possibly for the first time",
+    "job": "Start a guided breathing session within seconds, follow the phase guidance without reading instructions, and end feeling the session respected their state.",
+    "time_budget": "10 seconds to first session start",
+    "consequence": "A cluttered or demanding screen at a moment of stress defeats the product's entire purpose; a user who fumbles once does not return.",
+    "facts": [
+      "Stillwater is a guided-breathing app used at moments of acute stress. It has no accounts; nothing leaves the device.",
+      "The only session type is box breathing: four phases of equal length — inhale, hold, exhale, hold — at 4 seconds per phase.",
+      "Session length defaults to 3 minutes and is adjustable from 1 to 10 minutes before starting.",
+      "A session in progress can be paused, resumed, and ended early. A completed or early-ended session is recorded locally as a count and duration only.",
+      "Phase changes are accompanied by a gentle haptic on supported devices. Sound is optional and off by default.",
+      "The app stores session history locally: total sessions and total minutes. No streaks, scores, goals, reminders, or social features exist."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": { "width": 390, "height": 844 },
+    "required_interactions": [
+      "Start a session from the opening screen",
+      "Pause and resume a session in progress",
+      "End a session early and see it recorded"
+    ],
+    "required_states": [
+      "pre-session default with adjustable length",
+      "in-session phase indication perceivable without sound",
+      "paused",
+      "completed summary",
+      "reduced-motion preference"
+    ],
+    "acceptance_checks": [
+      "Primary action is reachable one-handed at 390 px and starts a session in one tap.",
+      "Phase guidance is perceivable without sound and without reading instructions mid-session.",
+      "Reduced-motion preference replaces animated guidance with an equivalent non-animated cue.",
+      "No invented streaks, scores, goals, reminders, social features, or wellness claims appear."
+    ]
+  }
+}

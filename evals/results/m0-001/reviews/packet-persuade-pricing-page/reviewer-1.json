@@ -1,0 +1,74 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "Both let a 35-person lead read $420/month and $4,200/year without arithmetic, so the decision turns on completeness and whether the controls work. A carries every supplied commitment fact, including the seat-change caveat that no proration policy is supplied; B omits seat changes and proration entirely, which is half of the stated job. B's headcount input, the control its whole calculator rests on, is broken for typed input: I typed 120 into #member-count on a locally served copy and the field kept only '1', after which the page confidently read '1 member on Team, billed monthly: $12 per month'. B's plan-difference matrix is the better comparison artifact and nearly closes the gap, but A ships with no broken control and no missing supplied fact.",
+  "suspected_unblinding": "none — no builder marks, comments, or naming conventions in either sanitized source suggested a treatment",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The Team members input cannot accept multi-digit typed values: each input event re-renders the page and re-selects the field, so the next keystroke replaces the previous one.",
+      "evidence": "Reproduced on a locally served copy of B/source at /pricing/ with a locally launched Playwright chromium: cleared #member-count, typed '120' with a 60ms delay, resulting inputValue was '1' and .calculator-result read '1 member on Team, billed monthly: $12 per month ($12 per member per month)'. Cause visible at B/source/app.js wireEvents(), the 'input' handler calls render() then focus() and select()."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "The supplied fact that seats may change during the billing period with no proration policy given is absent everywhere, leaving the commitment half of the job unanswered.",
+      "evidence": "No match for /prorat|change seat|seats during/i in B/source/app.js or B/source/pricing/index.html; confirmed by reading B/desktop.png and B/mobile.png end to end."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "With Annual selected the hero reads $4,200/year but the Team plan card still reads '$12/member/month, billed monthly', so the two prices on screen disagree about the active cadence.",
+      "evidence": "A/evidence/interaction-01-switch-billing-annual.png, and reproduced locally: after focusing #billing-monthly and pressing ArrowRight the hero read '$4,200/year' while the second .plan-card still read '$12/member/month, billed monthly'."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "No live region announces the recalculated total, so a screen-reader user hears the radio state change but not the new $4,200/year figure that is the point of the interaction.",
+      "evidence": "Reproduced locally: document.querySelectorAll('[aria-live]').length === 0 on A. The radiogroup itself is sound — role=radiogroup/radio, aria-checked updates, and ArrowRight moved both selection and focus to #billing-annual."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390px the plan-difference table is clipped to a horizontally scrollable wrapper with the Enterprise column offscreen, so the comparison that is B's strongest asset is only partly visible on mobile.",
+      "evidence": "B/mobile.png and B/evidence/state-03-390px-viewport.png; measured locally at 390px: table width 833px inside a 358px wrapper with overflow-x auto. Page itself does not scroll horizontally (scrollWidth 390)."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Plan cards list inclusions only, with no explicit not-included row, so a reader cannot confirm from the cards whether Team carries the handoff template or CSV export.",
+      "evidence": "A/desktop.png section '02 — Every difference' and A/evidence/interaction-02-inspect-plan-differences.png; the Team card lists five inclusions and no exclusions."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The line 'Starting a trial or talking to sales costs nothing' extends the supplied no-credit-card trial fact to a sales conversation, which the scenario does not state.",
+      "evidence": "A/desktop.png, section '03 — Decide' callout."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The aria-live='polite' result region is destroyed and recreated by the full innerHTML re-render on every state change, which makes the announcement unreliable even though the markup intent is correct.",
+      "evidence": "B/source/app.js render() assigns app.innerHTML wholesale and the aria-live paragraph is inside that template; confirmed locally that a fresh [aria-live] node exists after toggling, and that focus is only preserved because wireEvents() re-focuses #billing-toggle by id."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 4 },
+    "B": { "D1": 3, "D2": 4, "D3": 3, "D4": 4, "D5": 3, "D6": 2, "D7": 3, "D8": 3, "D9": 3 }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "reviewer_id": "reviewer-3",
+  "reviewer_model": "claude-sonnet-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "A surfaces the answer to the job ('Login is closest to breaching, move an agent here') in a persistent hero panel with the full why (buffer, due-soon count, arrival surge) and a single one-click CTA, and it survives into filtered/empty states. A also groups queues into risk tiers (Breaching now / Approaching / Within target) with counts, so the 71-conversation General queue is correctly de-emphasized despite its volume. B communicates the same underlying facts correctly but relies on a badge plus a collapsed 'Hide/Show breach detail' toggle per card, and its default loaded view has no persistent explanatory summary, adding a step to a 60-second decision.",
+  "suspected_unblinding": "none reliable — both outputs share nearly identical scenario copy (e.g., 'Login is closest to breaching' vs 'Greatest near-term breach risk', identical facts phrasing) but differ enough in layout system (tiered grouped cards with global agent panel vs. flat card grid with per-card agent selects) that no confident guess about which build used which tool can be made from evidence alone.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D1",
+      "description": "B's default loaded view (no reassignment applied) shows no persistent top-level explanation of why Login is the priority queue; the only signal is a badge/border on the Login card, and the full rationale is hidden behind a 'Hide/Show breach detail' toggle that must be opened.",
+      "evidence": "B/mobile.png and B/evidence/interaction-02-reassign-agent.png show the flat 4-card grid with only badge text ('Greatest near-term breach risk'); the explanatory sentence only appears after clicking 'Hide breach detail' toggle inside the Login card."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Agent selection is duplicated as an independent 'Available agent' dropdown in every queue card (4 copies for 2 agents) rather than a single canonical agent list, creating redundant UI surface.",
+      "evidence": "B/desktop.png (loaded state via B/evidence/interaction-02-reassign-agent.png) shows the same two-option select repeated in Billing, Login, API, and General cards."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D6",
+      "description": "The packet's own primary desktop.png and 390px-viewport evidence for B both captured the loading skeleton rather than the resting/loaded page, so the default visual record of B's loaded state is incomplete (loaded state only visible via interaction screenshots). This looks like a capture-timing artifact rather than a product defect, but it weakens the evidence available for this review.",
+      "evidence": "B/desktop.png and B/evidence/state-04-390px-viewport.png both show skeleton placeholders; contrast with A/desktop.png and A/evidence/state-04-390px-viewport.png which show loaded content."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "The arrival-surge note ('Login has 38% more arrivals this hour than the previous hour') is repeated verbatim in both the top hero banner and again inside the Login card body, a minor duplication.",
+      "evidence": "A/desktop.png — identical sentence appears in the red hero panel and in the Login card's highlighted callout box."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D4",
+      "description": "The hero's 'Move an agent to Login' button does not indicate up front which of the two available agents will be assigned; the choice is only visible after the fact in the Available Agents panel.",
+      "evidence": "A/evidence/interaction-01-reassign-agent.png shows 'Agent 1 → Login' only appears post-click in the side panel; the hero CTA itself carries no agent selector."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 4, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 3 },
+    "B": { "D1": 3, "D2": 3, "D3": 3, "D4": 3, "D5": 3, "D6": 3, "D7": 3, "D8": 3, "D9": 3 }
+  }
+}

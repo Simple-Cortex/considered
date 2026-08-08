@@ -1,0 +1,99 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "The stated job is to change the session timeout policy and know it landed, without flattening the other 22 controls. A does that end to end: Security opens first, the timeout row is the only visually promoted row, it shows both the pending selection and a separate 'Current: 30 days' readout, and the pending-change bar names the exact change ('session timeout will be set to 12 hours') with Save and Discard. B breaks the same loop in two verified ways. First, I served B's source and drove it in a locally launched isolated Chromium: its '#unsaved-bar' carries the hidden attribute but '.unsaved-bar { display: flex }' has no [hidden] guard, so 'You have unsaved changes.' with Discard and Save renders on a fresh load, before any edit, and is still rendered after clicking Save changes. An administrator therefore cannot distinguish pending from saved on the one change they came to make. Second, B's 'Your task' badge computes to rgb(90,86,71) on rgb(122,95,19), about 1.2:1, because '.row-label > span:first-child' outranks '.task-badge' on specificity and replaces the intended white text — the single wayfinding cue for the task is unreadable in every desktop and mobile capture. B is the stronger build on accessibility scaffolding (skip link, near-complete labeling, roving-tabindex tablist, role=switch, aria-live status, aria-labelledby modals, focus return) and on confirmation copy, and A has real accessibility debt I penalize below. But better labeling does not offset a false, permanent system-state claim sitting on top of the primary task. On the question asked — which output better lets this administrator complete this job with these facts — A wins.",
+  "suspected_unblinding": "none — I saw nothing identifying a treatment or builder. Both packets carry an identical generic source/README.md and near-identical capture-plan.mjs harnesses, and neither contains build logs, prompts, tool traces, or provenance metadata. B's source comments reference an internal shorthand ('Parallel Lenses', zone letters, P0-P4 priorities, rule ids like A11Y-01/A11Y-03) and A's comments are plain prose, which is a stylistic difference between the two packets, but nothing in either names a method, a tool, or a condition, so I treated it as authorial voice and did not weight it.",
+  "unsupported_claim_label": { "A": true, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "A",
+      "claim": "The business-hours row asserts a capability the brief never supplies: 'Used for status and notification scheduling.' The scenario lists 'set business hours' as an available action and says nothing about status or notifications, so this invents a downstream product behavior an administrator could act on. Evidence: A/source/app.js line 31."
+    },
+    {
+      "label": "A",
+      "claim": "A presents invented current values as the workspace's existing configuration: timezone 'UTC', business hours '9:00–17:00', language 'English', date format 'MM/DD/YYYY'. The brief specifies current state only for members, plan, SSO, SCIM, and session timeout. These read as settled facts rather than empty fields. Evidence: A/source/app.js lines 30-33; visible when the General section is opened."
+    },
+    {
+      "label": "B",
+      "claim": "The seat-count row states 'Currently 84 members use 84 seats.' The brief supplies 84 members and lists 'change seat count' as an action, but never says the seat count equals the member count. This is an invented billing metric on a page where a mistaken billing change affects everyone. Evidence: B/source/index.html line 305."
+    },
+    {
+      "label": "B",
+      "claim": "The transfer-ownership modal asserts an unsupplied policy: 'You will keep administrator access, but you will no longer be the owner.' The brief says only that transfer ownership requires confirmation. An administrator could reasonably rely on this retained-access guarantee before confirming an irreversible-looking action. Evidence: B/source/index.html line 348."
+    },
+    {
+      "label": "B",
+      "claim": "The cancel-subscription modal asserts an unsupplied outcome: 'This will end billing for Northwind Research's Enterprise plan and change access for all 84 members.' The brief states only that cancel subscription requires confirmation; the effect on member access is invented. Evidence: B/source/index.html line 390."
+    }
+  ],
+  "gate_by_label": { "A": "Revise", "B": "Rework" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S1",
+      "dimension": "D6",
+      "description": "The unsaved-changes bar is permanently visible and never clears. '#unsaved-bar' carries the hidden attribute, but '.unsaved-bar' sets 'position: fixed; display: flex' with no '.unsaved-bar[hidden] { display: none }' rule, unlike the sibling '.modal-overlay[hidden]' and '.toast[hidden]' rules that are present at styles.css lines 703 and 752. I served B/source and drove it in a locally launched isolated Chromium: on a fresh load with no edit the bar renders at 1440x63 reading 'You have unsaved changes. Discard Save changes'; after selecting 12 hours it is unchanged; after clicking Save changes it is still unchanged, because app.js only sets the hidden property that CSS is overriding. The administrator gets no signal that the session-timeout change is pending and no signal that it saved — only a toast that self-dismisses after four seconds. On the exact task the scenario names, the system state is unreadable, and a persistent live Discard button sits next to it. Fix: add '.unsaved-bar[hidden] { display: none; }'."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D3",
+      "description": "The 'Your task' badge — the only cue distinguishing the session-timeout row from the other 22 actions — is illegible. '.task-badge' declares 'background: var(--yellow-edge); color: #fff', but '.row-label > label, .row-label > span:first-child' (styles.css lines 298-307) has higher specificity and overrides both color and display, so the badge computes to color rgb(90,86,71) on background rgb(122,95,19), roughly 1.2:1, and stretches to a full-width block bar. Confirmed by computed style in a browser I ran, and reproduced in B/desktop.png, B/mobile.png and every evidence capture, where the badge reads as a solid dark bar. Fix: scope the badge rule tighter or move '.task-badge' out of the '> span:first-child' match, and re-check the 4.5:1 floor the palette comment already sets as the standard."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Form controls outside the Security section have no accessible name. buildSelect() and buildTextField() (A/source/app.js lines 399-417) emit bare <select> and <input> elements whose visible label is a sibling <div>, not a <label>, and buildToggle() (lines 389-397) wraps the MFA checkbox in a <label> containing only the visual track. I opened the General section in a browser I ran and computed accessible names: all five of its controls (rename workspace, change timezone, set business hours, change language, change date format) resolve to an empty name, as does the Require MFA checkbox. Only the task control itself carries an explicit aria-label. A screen-reader administrator cannot identify five of the 23 actions. Fix: emit real <label for> pairs, or aria-label, from the shared row builder rather than only on the primary control."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "The delete-workspace confirmation is not keyboard-contained and is not named. openModal() (A/source/app.js lines 438-449) adds an Escape handler and autofocuses the input but implements no focus trap and does not inert the background; pressing Tab six times from the open modal moved focus out of the overlay onto page content behind it, verified in a browser I ran. The modal declares role='alertdialog' and aria-modal='true' but has no aria-labelledby or aria-label, so it is announced without its 'Delete Northwind Research?' heading. Fix: add aria-labelledby pointing at the modal h2, trap Tab within the overlay, and restore focus to the trigger on close."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "B's focus trap silently fails on the delete-workspace modal specifically. openModal() (B/source/app.js lines 158-187) snapshots focusables at open time and wraps only when document.activeElement equals the first or last of them; for this modal the last focusable is '#delete-confirm', which is disabled and therefore never receives focus, so the wrap condition never fires. Eight Tab presses from the open modal put focus on '#panel-danger' behind the overlay, and a subsequent Escape did not close the dialog because the keydown listener is bound to the overlay that no longer contains focus. Verified in a browser I ran. This is better machinery than A has elsewhere, but it does not hold on the one destructive dialog. Fix: recompute focusables on each Tab and filter disabled elements, or bind the trap at document level while the overlay is open."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "The API-token creation form is stuck open in the default state and presents two identically labelled buttons. '#token-form' carries the hidden attribute but '.token-form { display: flex }' (styles.css line 606) has no [hidden] guard, so on a fresh load the name field renders alongside a submit 'Create token', a 'Cancel', and the separate outline 'Create token' that is supposed to reveal it — computed display flex at 870x38 with hiddenAttr true, verified in a browser I ran and visible in B/desktop.png and B/mobile.png. An administrator scanning for token management sees a half-open form and two same-named buttons with different effects. Fix: add '.token-form[hidden] { display: none; }'."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The session-timeout row shows no current-value readout. The control is a select whose 30-day option is preselected, but nothing states that 30 days is the policy in force today, so at a glance mid-edit the row cannot answer 'what is it now versus what will it become'. A's equivalent row carries a separate 'Current: 30 days' readout beside the select, which is what makes its pending state legible. Combined with the always-on unsaved bar this leaves the administrator without either half of the before/after pair. Evidence: B/source/index.html lines 191-207; B/evidence/interaction-01-set-session-timeout-12-hours.png. Fix: render the saved value next to the control and mark the row as changed while it differs."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "In the delete-workspace confirmation the destructive button is disabled until the workspace name is typed, but is styled exactly like its armed state: computed background rgb(179,38,30), white text, opacity 1, cursor pointer, with disabled true — verified in a browser I ran and visible in A/evidence/state-03-confirmation-state.png. The safety gate works but is invisible, so the control reads as armed before the typed confirmation and gives no feedback when clicked. Fix: add a disabled treatment (reduced contrast or outline style) and cursor: not-allowed, and pair it with the help text B uses."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "At 390 px the Billing and Danger zone tabs sit off-screen with no affordance. The tab strip measures scrollWidth 565 against clientWidth 363 with overflow-x auto, and the Danger zone tab's right edge lands at 578 px, verified in a browser I ran and visible in B/mobile.png, which shows the strip clipped after 'Security & access'. The controls are reachable by horizontal swipe but nothing indicates more tabs exist, so on mobile two of five sections — including every billing control and the destructive one — are effectively hidden. A's wrapping nav keeps all five entries visible at the same width. Fix: allow the strip to wrap at narrow widths, or add a scroll-edge fade and overflow indicator."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Non-primary sections give every row equal visual weight, so within General, Members & access, and Billing there is no ordering between routine and high-consequence actions. Transfer ownership and cancel subscription do get a warn treatment and a confirmation, but remove member — which the brief marks reversible only by reinviting — sits at the same weight as resend invitation. Evidence: A/source/app.js lines 40-46 and 74-80, and the shared .action-row treatment in styles.css. The acceptance check about not making the other 22 actions visually equal is met across sections but not inside them. Fix: promote the consequence-bearing row within each section the way the timeout row is promoted within Security."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 3, "D6": 3, "D7": 2, "D8": 3, "D9": 4 },
+    "B": { "D1": 2, "D2": 3, "D3": 1, "D4": 2, "D5": 3, "D6": 1, "D7": 3, "D8": 2, "D9": 2 }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "persuade-saas-landing",
+  "track": "persuade-read",
+  "mode": "persuade",
+  "title": "SaaS landing page",
+  "brief": {
+    "role": "Support operations leader evaluating a new incident-handoff tool",
+    "job": "Decide whether to start a 14-day trial of Relay Notes.",
+    "time_budget": "2 minutes",
+    "consequence": "Adopting a poor-fit tool creates training and migration cost; staying with the current handoff process leaves recurring context loss unresolved.",
+    "facts": [
+      "Relay Notes turns an active support incident into a structured handoff containing owner, customer impact, latest decision, next step, and linked evidence.",
+      "The trial lasts 14 days, requires a work email, and does not require a credit card. Trial workspaces can be deleted by an administrator.",
+      "The supplied case is Brightline Support: after using the handoff template for six weeks, its documented handoff omissions fell from 31 in the preceding six weeks to 9. This is one customer case, not a universal claim.",
+      "The primary objection is migration effort. Relay Notes imports CSV incident logs and offers a guided template setup; no import duration is supplied.",
+      "The product supports Slack links and CSV export. It does not replace the incident-management system.",
+      "Approved testimonial: “The next shift could see the decision, not just the ticket history.” Priya Nair, Support Operations Manager, Brightline Support."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Start trial", "Inspect the Brightline case", "See how CSV import works"],
+    "required_states": ["trial-form validation error", "reduced-motion preference", "390 px viewport"],
+    "acceptance_checks": ["The opening makes audience, promise, proof, and next step legible without scrolling.", "Meaningful claims are adjacent to supplied evidence or explicitly qualified.", "There is one consistent primary commitment and no fabricated logos, metrics, customers, or guarantees."]
+  }
+}

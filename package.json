@@ -1,0 +1,63 @@
+{
+  "name": "considered",
+  "version": "0.6.0",
+  "description": "A design-reasoning skill for AI coding agents. Information architecture, priority hierarchy, and action semantics, enforced as a checkable artifact chain.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Mohsin Amjed",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Simple-Cortex/considered.git"
+  },
+  "homepage": "https://github.com/Simple-Cortex/considered#readme",
+  "bugs": {
+    "url": "https://github.com/Simple-Cortex/considered/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "considered": "bin/considered.mjs"
+  },
+  "files": [
+    "SKILL.md",
+    "skills/",
+    "references/",
+    "assets/",
+    "scripts/",
+    "bin/",
+    "evals/README.md",
+    "evals/metrics.md",
+    "evals/protocol.md",
+    "evals/result.schema.json",
+    "evals/runner/",
+    "evals/scenarios/",
+    "evals/starter/",
+    "docs/",
+    "tests/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "agent-skill",
+    "claude",
+    "design",
+    "ui",
+    "information-architecture",
+    "design-system",
+    "design-lint"
+  ],
+  "scripts": {
+    "test": "node scripts/test.mjs",
+    "eval": "node scripts/eval.mjs",
+    "check": "node scripts/check.mjs",
+    "prepack": "node scripts/prepack.mjs",
+    "validate": "node scripts/validate-assets.mjs",
+    "roll": "node scripts/roll.mjs",
+    "inventory": "node scripts/inventory.mjs",
+    "lint": "node scripts/lint-source.mjs",
+    "contract": "node scripts/lint-contract.mjs",
+    "render": "node scripts/lint-render.mjs",
+    "gate": "node scripts/gate.mjs"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "scenario_version": "1.0.0",
+  "id": "dense-sre-console",
+  "track": "dense",
+  "mode": "operate",
+  "title": "SRE incident console",
+  "brief": {
+    "role": "On-call SRE",
+    "job": "Choose the incident that needs intervention now and take the next safe response.",
+    "time_budget": "60 seconds",
+    "consequence": "A wrong priority delays revenue-impacting recovery while an actual breach grows.",
+    "facts": [
+      "The dashboard refreshes every 60 seconds. Data older than 120 seconds is stale.",
+      "Payments API has been above its 750 ms p95 SLO for 143 minutes: p95 2.8 s, error rate 8.4% versus a 1.0% SLO, and 842 failed checkouts in the last hour.",
+      "Search has p95 1.2 s against a 1.5 s SLO, error rate 0.9% against a 0.5% SLO, and has been elevated for 18 minutes.",
+      "Image processing has p95 4.1 s against a 5.0 s SLO, error rate 0.2% against a 0.5% SLO, and has no active customer impact report.",
+      "Checkout workers are at 94% utilization and have 12 minutes of queue capacity remaining. Search workers are at 63% utilization.",
+      "The last deploy was payments-api 2026.07.28.3, 151 minutes ago. The first payment errors appeared 148 minutes ago.",
+      "Permitted actions are acknowledge incident, open runbook, page checkout owner, rollback payments-api, and adjust worker capacity. Rollback requires a confirmation step."
+    ]
+  },
+  "build": {
+    "route": "/",
+    "viewport": { "width": 1440, "height": 900 },
+    "required_interactions": ["Open the payments runbook", "Initiate but do not silently execute rollback", "Change the visible time range"],
+    "required_states": ["loading skeleton", "partial data failure for one noncritical region", "stale-data notice", "narrow viewport at 390 px"],
+    "acceptance_checks": ["A reviewer can identify the first incident to act on within five seconds.", "Every decision-driving value includes an explicit comparison, target, or time context.", "No customer, metric, incident, or capability beyond this brief is asserted."]
+  }
+}

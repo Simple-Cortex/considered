@@ -1,0 +1,66 @@
+{
+  "reviewer_id": "reviewer-2",
+  "reviewer_model": "claude-fable-5",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "A",
+  "choice_reason": "The question is which output better enables the organization administrator to change the session timeout in ~3 minutes without losing the ability to find, understand, or safely use the other 22 controls. (1) A's unsaved-changes banner names the exact pending change ('Unsaved change: session timeout will be set to 12 hours.') with adjacent Discard/Save and role=status announcement; B's bar is generic ('You have unsaved changes.'), is not a live region, and persists across tabs and even the member preview, so the admin cannot verify what will be saved from the bar itself. (2) B's primary wayfinding element for the task — the 'YOUR TASK' marker on the session-timeout row — is illegible: measured text contrast 1.22:1 (rgb(90,86,71) on rgb(122,95,19)); A's equivalent marker measures 5.24:1. (3) B's default render ships a visible state bug adjacent to security-sensitive controls: the API-token create form carries the hidden attribute but CSS overrides it, so the page loads with the form open and two visible 'Create token' buttons, and B's own baseline desktop capture shows this contradictory state plus the unsaved bar on first load. B is genuinely deeper — working search with announced results, validated invite flow, real token management area, labeled dialog with focus restore, skip link, tablist semantics — and A has inert secondary controls (Invite does nothing; 'Manage API tokens' yields only a status message despite promising token names and last-used dates; search shows no visible results). But for the stated job under the stated consequence, A executes the primary change more legibly and coherently, keeps destructive actions cleanly separated, and has no defects on the task path; B's defects sit directly on the task path (illegible task marker, ambiguous save state, visible bug in the security section). Both fail to trap focus in the delete dialog, so that does not separate them.",
+  "suspected_unblinding": "none — the 'YOUR TASK' marker appears in both outputs, so it reads as a harness affordance rather than a treatment tell; nothing else in either packet suggests which treatment produced which label.",
+  "unsupported_claim_label": { "A": false, "B": false },
+  "unsupported_claims": [],
+  "gate_by_label": { "A": "Revise", "B": "Revise" },
+  "findings": [
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Delete-workspace dialog does not trap focus: with the dialog open (role=alertdialog, aria-modal=true), repeated Tab moves focus out of the dialog into background content (verified in a live keyboard run); on Escape-close, focus returns to BODY rather than the triggering button. The dialog also has no accessible name (no aria-label/aria-labelledby). Name-gating itself works correctly: confirm is disabled until the exact workspace name is typed."
+    },
+    {
+      "label": "A",
+      "severity": "S2",
+      "dimension": "D4",
+      "description": "Several represented actions are inert or hollow when operated: clicking Invite produces no response (no dialog, no page change); 'Manage API tokens' produces only a status message ('Manage API tokens opened.') with no management surface, even though the row copy promises token names and last-used dates; the 'Find a setting…' search produced no visible results for a valid query ('seat'). The 23 actions are all represented, but a user probing beyond the primary task hits dead ends, which is what the brief's 'hidden control creates support work' consequence warns about."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "Page-level accessibility scaffolding is thin: no h1 (only h2s), no skip link, no explicit aria-live regions (the unsaved banner's role=status does announce, which mitigates for that one element), and section headings are sparse. Confirmation dialogs for transfer ownership and cancel subscription exist but carry only the generic body 'Requires confirmation.' with no consequence-specific copy."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D3",
+      "description": "The 'YOUR TASK' marker on the session-timeout row — the single most important wayfinding element for the stated job — is illegible: measured contrast 1.22:1 (text rgb(90,86,71) on band rgb(122,95,19)) at 11.2px, far below the 4.5:1 WCAG AA threshold. It reads as an empty dark bar in every desktop, mobile, and evidence capture."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The API-token create form has the hidden attribute set but a CSS display rule on .token-form overrides it, so the page loads with the form expanded and two visible 'Create token' buttons (one tonal in the form, one outline below it). B's own baseline desktop.png shows this broken default state — open token form plus unsaved-changes bar on what is presented as first load — directly inside the security section where the brief's consequence is highest."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D5",
+      "description": "The unsaved-changes bar is generic: 'You have unsaved changes.' never names the setting or the pending value (contrast A's 'session timeout will be set to 12 hours'), has role=region with no aria-live so the state change is not announced, and persists across tab switches and the view-as-Member preview, making it hard to verify what exactly will be saved before committing a change that affects all 84 members."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "Delete-workspace dialog does not trap focus: after tabbing past Cancel, focus leaves the open modal to the page (verified in a live keyboard run). Everything else about the dialog is strong — labeled via aria-labelledby, aria-modal, initial focus on the confirm input, confirm disabled until the exact name is typed with helper text, Escape closes, and focus is restored to the triggering button."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D8",
+      "description": "Search live-status copy has a grammar slip: '1 setting match \"seat\".' (should be 'matches'). Minor, but it appears in an aria-live region so screen-reader users hear it on every single-result search."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 4, "D2": 4, "D3": 4, "D4": 3, "D5": 4, "D6": 4, "D7": 2, "D8": 4, "D9": 4 },
+    "B": { "D1": 3, "D2": 4, "D3": 2, "D4": 4, "D5": 4, "D6": 3, "D7": 3, "D8": 2, "D9": 4 }
+  }
+}

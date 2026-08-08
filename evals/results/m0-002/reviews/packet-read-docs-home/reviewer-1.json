@@ -1,0 +1,95 @@
+{
+  "reviewer_id": "reviewer-1",
+  "reviewer_model": "claude-opus",
+  "reviewer_role": "independent blind reviewer",
+  "conflict": "none — did not build, stage, or assemble",
+  "pairwise_choice": "B",
+  "choice_reason": "B better enables the stated job, with real reservations. The highest-consequence fact in this brief is that `atlas release plan` is safe and `atlas release apply` publishes; B makes that distinction structural — two side-by-side cards under step 3, one labelled 'Preview only', one 'Publishes — makes the release live', each colour-coded and each carrying its own command — whereas A carries the same distinction in small inline badges and a prose sentence inside a single stacked step, where a developer skimming under a five-minute budget can slide past it. B also puts the Node-22 remedy immediately after the three steps (callout plus a Troubleshooting section adjacent in document order), so the 'if blocked' half of the job is one glance away; in A, Troubleshooting is the last of six sections, roughly 2,600px down the page. B gives every command its own copy button, verified in source and by clicking through a locally served copy; A ships exactly one (install), so a developer must hand-select `atlas login`, `atlas login --device`, `atlas release plan`, and `node --version`. The reservations are material and cost B on the dimension scores rather than the choice: B's copy button reports success even when the Clipboard API rejects (confirmed by stubbing navigator.clipboard in a locally launched browser — button reads 'Copied', aria-label 'Command copied to clipboard', live region announces the same, while the fallback text selection is what actually ran), B keeps six sidebar links focusable off-screen at 390px, and B asserts a capability the brief does not supply. A is the more disciplined document — exact fact match, honest routing from its empty sections, correct copy-failure handling, section order matching the brief — but it is a flatter read that does less to protect the one decision that can fail destructively.",
+  "suspected_unblinding": "none — the two packets are structurally symmetric (identical file inventory, identical boilerplate source/README.md text, same capture-plan.mjs entry contract) and nothing in either source, comment, or screenshot indicated a builder, tool, or treatment.",
+  "unsupported_claim_label": { "A": false, "B": true },
+  "unsupported_claims": [
+    {
+      "label": "B",
+      "claim": "The safe-preview card is titled 'Preview only — nothing leaves your machine' (source/index.html, .distinction__item--safe label; visible in desktop.png and state-04). The brief supports only that `atlas release plan` 'previews files, version, and destination without publishing'. Whether the command contacts a remote to compute version or destination is not a supplied fact, so the claim invents a capability guarantee about network behaviour. It is the kind of assurance a developer would rely on before running a command against a real registry. The related 'Publishes — makes the release live' is a milder extrapolation of 'publishes the planned release' and I did not count it separately."
+    }
+  ],
+  "gate_by_label": { "A": "Ship", "B": "Revise" },
+  "findings": [
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D6",
+      "description": "The copy-confirmation state reports success unconditionally. In source/app.js the catch branch performs a text-selection fallback and then falls through to the same code that sets data-state='copied', relabels the button 'Copied', sets aria-label='Command copied to clipboard', and announces 'Command copied to clipboard.' in the live region. I confirmed this by serving B/source locally and clicking the install copy button with navigator.clipboard.writeText stubbed to reject: button text 'Copied', aria-label 'Command copied to clipboard', live region 'Command copied to clipboard.' The supplied state-01-copy-confirmation.png shows the same condition — the command text is visibly range-selected (only the fallback path creates that selection) while the button reads 'Copied'. A developer whose clipboard is blocked pastes whatever was there before into a terminal, in a workflow whose stated consequence is failed releases. Fix: track whether writeText resolved and branch the label, aria-label, and announcement on it, as the paired output does."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D7",
+      "description": "At 390px with the menu closed, the sidebar is moved off-screen with transform: translateX(-312px) while remaining display:block and visibility:visible. Measured on a locally served copy at 390x844: the first nav link sits at x=-296 with width 279, and tabbing from the search input walks through all six invisible section links before reaching page content. Keyboard and screen-magnifier users lose the focus indicator for six stops (WCAG 2.4.3 / 2.4.7). Fix: add visibility:hidden (or display:none) to the closed state and remove it on open, or mark the links inert while collapsed."
+    },
+    {
+      "label": "B",
+      "severity": "S2",
+      "dimension": "D5",
+      "description": "'Preview only — nothing leaves your machine' states a network-behaviour guarantee the brief does not supply; see unsupported_claims. Fix: use the supplied wording — previews files, version, and destination without publishing."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "Sidebar order and document order disagree. The nav lists Get started, Guides, CLI reference, Configuration, CI, Troubleshooting (matching the brief's enumeration), but the sections render in the order get-started, troubleshooting, cli-reference, configuration, guides, ci. Clicking the second nav item jumps near the bottom of the page, and because an IntersectionObserver drives aria-current, the highlight moves non-monotonically while scrolling — it reads as a broken indicator rather than a reading position. Fix: either reorder the nav to match document flow or keep document order aligned with the listed sections."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D2",
+      "description": "The Guides and CI sections are dead ends: 'Task-based guides live here.' and 'Continuous-integration setup lives here.' Both promise content that is not present and offer no onward route, so a developer who follows either nav item under a five-minute budget spends a click and gets nothing. Fix: state what is not covered and point to Get started and the CLI reference, which is where the answers actually are."
+    },
+    {
+      "label": "B",
+      "severity": "S3",
+      "dimension": "D8",
+      "description": "Inside the two step-3 distinction cards, the copy button overflows its .code-block container — measured 2.5px on the plan card and 10.3px on the apply card at 1440px. The clipping is visible in desktop.png and state-01/state-02, where the apply card's 'Copy command' button is cut off at the card edge. It lands on the most safety-critical control on the page. Fix: allow the code block to wrap the button below the command at constrained widths, as it already does at 390px."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D7",
+      "description": "The page contains six h1 elements — one per section (Get started, Guides, CLI reference, Configuration, CI, Troubleshooting) — with step titles as h2 beneath the first. A screen-reader user navigating by heading level gets six co-equal page titles and no signal that Get started is the primary content. Fix: keep one h1 for the page and demote section titles to h2, with step titles as h3."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D4",
+      "description": "Only the install command has a copy affordance. `atlas login`, `atlas login --device`, `atlas release plan`, `atlas release apply`, and the two `node --version` blocks are plain <pre> with no button, so four of the five commands in the documented path must be selected by hand. This satisfies the required interaction but leaves the rest of the job slower than it needs to be. Fix: apply the existing copy-button component to every code block; the handler already resolves its target by id."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D6",
+      "description": "The search no-results state is not announced. Verified on a locally served copy: typing a non-matching query renders <p class=\"search-empty\">No results for \"zzzq\"…</p> into #search-results, which carries no role=status or aria-live (the page's only live region is #copy-status, bound to the copy button). A screen-reader user gets silence and cannot tell whether the search ran. Fix: give the results container role=status, or move the empty message into the existing live region."
+    },
+    {
+      "label": "A",
+      "severity": "S3",
+      "dimension": "D9",
+      "description": "Resizing from desktop to a narrow viewport leaves the sidebar expanded. initMobileNav collapses only on initial load and its resize handler expands when wide but never re-collapses when narrow, so after a rotation or window resize the section list renders inline over the content. A's own state-04-390-px-viewport.png shows this: the header and the full nav list sit mid-page across the CLI reference section, obscuring the first table rows. Fix: have the resize handler call setCollapsed(isNarrow()) in both directions."
+    },
+    {
+      "label": "A",
+      "severity": "S4",
+      "dimension": "D5",
+      "description": "The Guides and CI sections assert publication status the brief does not supply — 'Task-based guides aren't published yet' and 'This documentation set doesn't yet cover CI-specific setup.' I did not count these as material unsupported claims: they neither invent nor overstate a product capability, and both immediately route the reader to Get started and the CLI reference, which is the useful behaviour. Noting them so the asymmetry with B's inverse phrasing is on the record. Fix, if wanted: describe the scope of this page rather than the state of the wider doc set."
+    },
+    {
+      "label": "B",
+      "severity": "S4",
+      "dimension": "D7",
+      "description": "The search input declares role=combobox with aria-autocomplete=list and aria-controls pointing at a role=listbox panel whose children are anchors with role=option, but there is no aria-activedescendant and no Up/Down handling — Escape is the only key wired. Screen readers announce a listbox the user cannot drive with arrow keys. The paired output has the inverse problem (aria-expanded on a plain search input with no combobox role, which is equally invalid). Fix: add aria-activedescendant and arrow-key navigation, or drop the combobox roles and present results as a plain list of links."
+    }
+  ],
+  "scores": {
+    "A": { "D1": 3, "D2": 4, "D3": 3, "D4": 3, "D5": 4, "D6": 3, "D7": 3, "D8": 3, "D9": 3 },
+    "B": { "D1": 4, "D2": 3, "D3": 4, "D4": 4, "D5": 2, "D6": 2, "D7": 2, "D8": 3, "D9": 4 }
+  }
+}
