@@ -97,6 +97,14 @@ export function evaluateGate({ findings = [], review = null, requireReview = tru
   }
 
   if (review) {
+    if (review.stale === true) {
+      return {
+        outcome: 'REVISE',
+        counts,
+        heuristicCounts,
+        reasons: ['Independent review is stale; rerun it against the current source and contract.']
+      };
+    }
     // A review without an interpretable verdict is not a review. Never infer one:
     // an absent verdict previously passed the gate, which let a build self-certify.
     const verdict = typeof review.outcome === 'string' ? review.outcome.trim().toUpperCase() : null;

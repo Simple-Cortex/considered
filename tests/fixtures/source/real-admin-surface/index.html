@@ -1,0 +1,42 @@
+<!--
+CONSIDERED-CONTRACT v1
+THESIS:     Rows are triaged into urgency bands so the admin sees what needs review before what is merely present, and it refuses a flat, unsorted dump of 46 identical-looking rows
+DECISION:   IT administrator decides which application connections to disable within 5 minutes, using application, owner, environment, scopes, last-successful-use, token expiry, and status; being wrong costs an interrupted production workflow or standing unnecessary access
+MODE:       operate
+QUESTIONS:
+  Q1 [P0] Which active connections haven't been used in a long time and aren't known to be production-critical? -> M
+  Q2 [P1] For this candidate, what would break if I disabled it? -> M
+  Q3 [P1] Which connections are already expired or expiring soon? -> M
+  Q4 [P1] How do I disable a confirmed-obsolete batch at once, with the effect shown before it happens? -> M
+  Q5 [P4] How do I narrow 46 records to the ones relevant right now? -> O
+ZONES:
+  O "Command strip" :: Q5 :: C1,C2,C3,C4
+  M "Connections workspace" :: Q1,Q2,Q3,Q4 :: E1,E2,E3,E4,E5
+HIERARCHY:
+  P0 E1 - the banded table is the only element that shows every record and answers the admin's triage question
+  P1 E2, E3, E4
+  P2 E5
+  P4 chrome: C1, C2, C3, C4
+ACTIONS:
+  S2 primary "Disable selected" reversible
+  S2 secondary "Clear selection" safe
+  S4 tertiary "View details" safe
+  S4 overflow "Disable connection" reversible
+  S4 overflow "Delete connection" destructive
+  S4 overflow "Notify owner" reversible
+DELETED:    Aggregate health score - no baseline/threshold supplied; Trend chart - no time-series supplied; Bulk delete - brief forbids it; Export CSV - not in brief's action list; Live refresh - no freshness cadence supplied
+ROLL:       urgency-triage-board, saved-perspective-switcher, exception-first, bloomberg-terminal-1990s, cns-se383mns/0
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connections — Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="app"></main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

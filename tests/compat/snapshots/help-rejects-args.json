@@ -1,0 +1,13 @@
+{
+  "id": "help-rejects-args",
+  "category": "bin",
+  "command": [
+    "--help",
+    "extra"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered: --help does not accept arguments\nRun \"considered --help\" for usage.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "bf92572c3efa309e7c11f00c5b550db7aa7788b93558d4c309c751ec1fcd0b7c"
+}

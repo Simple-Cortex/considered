@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": "considered-engine-envelope/v1",
+  "type": "object",
+  "required": ["schemaVersion", "engine", "protocolVersion", "fallback", "result"],
+  "properties": {
+    "schemaVersion": {"const": "considered-engine-envelope/v1"},
+    "engine": {"enum": ["native-rust", "node-fallback", "manual-unavailable"]},
+    "protocolVersion": {"const": "1.0.0"},
+    "fallback": {"enum": [null, "native_missing", "native_protocol_incompatible", "native_probe_failed", "native_child_failed", "native_not_selected", "manual_unavailable"]},
+    "result": {}
+  }
+}

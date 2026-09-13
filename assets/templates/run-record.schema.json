@@ -1,0 +1,104 @@
+{
+  "$schema": "considered-run-record/v1",
+  "version": "1.0.0",
+  "description": "Versioned run-record schema for .considered/<surface-id>/runs/<run-id>.json. Records input revision, stage, artifact links and hashes, decisions, assumptions, blockers, checks, review validity, errors, and resumeFrom. Links to facts rather than duplicating them.",
+  "type": "object",
+  "required": ["schemaVersion", "runId", "surfaceId", "stage", "createdAt"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "runId": {
+      "type": "string",
+      "description": "Unique identifier for this run"
+    },
+    "surfaceId": {
+      "type": "string",
+      "description": "The surface this run belongs to"
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["init", "structure", "contract", "source", "review", "gate", "complete"],
+      "description": "Current stage of the workflow"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "inputRevision": {
+      "type": "string",
+      "description": "Git revision or content hash of the input at run start"
+    },
+    "resumeFrom": {
+      "type": "string",
+      "description": "Run ID to resume from, if this is a continuation"
+    },
+    "artifacts": {
+      "type": "object",
+      "description": "Links and hashes for generated artifacts",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "hash": { "type": "string" },
+          "link": { "type": "string" }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "summary": { "type": "string" },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "checks": {
+      "type": "object",
+      "description": "Results from lint/contract/gate checks",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["pass", "fail", "skip"] },
+          "findingsCount": { "type": "integer" },
+          "reportPath": { "type": "string" }
+        }
+      }
+    },
+    "reviewValidity": {
+      "type": "object",
+      "properties": {
+        "reviewId": { "type": "string" },
+        "sourceHash": { "type": "string" },
+        "contractHash": { "type": "string" },
+        "stale": { "type": "boolean" }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  }
+}

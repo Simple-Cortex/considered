@@ -1,0 +1,13 @@
+/* Fixture for lint COMP-03 regression coverage: off-scale px values appear
+ * here in deliberately non-lexicographic document order, plus decimal
+ * values that must not be truncated before the modulo check. */
+.a { margin: 18px; }
+.b { padding: 6px; }
+.c { gap: 22px; }
+.d { margin: 10px; }
+.e { padding: 1px; }
+.f { gap: 30px; }
+.g { margin: 5px; }
+.h { padding: 9px; }
+.i { padding: 4.5px; }
+.j { margin: 8.25px; }

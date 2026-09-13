@@ -1,0 +1,12 @@
+{
+  "id": "check-no-args",
+  "category": "check",
+  "command": [
+    "check"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "Usage: node check.mjs <evaluation-result-directory> [--json]\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "338a5c1a7face3e4ab3f2f69cbf52abc9b70bd65776f19c85ae345cbd7954ea4"
+}

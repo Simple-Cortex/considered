@@ -1,0 +1,14 @@
+{
+  "id": "contract-missing",
+  "category": "contract",
+  "command": [
+    "contract",
+    "tests/fixtures/contracts/missing-contract.tsx",
+    "--json"
+  ],
+  "exit_code": 1,
+  "stdout": "{\n  \"file\": \"tests/fixtures/contracts/missing-contract.tsx\",\n  \"checker\": \"contract\",\n  \"scope\": \"contract-internal\",\n  \"details\": {\n    \"mode\": null,\n    \"questions\": 0,\n    \"zones\": 0\n  },\n  \"counts\": {\n    \"S1\": 1\n  },\n  \"findings\": [\n    {\n      \"rule\": \"CONTRACT-01\",\n      \"severity\": \"S1\",\n      \"confidence\": \"high\",\n      \"message\": \"No CONSIDERED-CONTRACT v1 block found.\",\n      \"hint\": \"Run the structure phase and add a contract comment or use .considered/STRUCTURE.md.\",\n      \"evidence\": null\n    }\n  ]\n}\n",
+  "stderr": "",
+  "stdout_sha256": "9c56ec9faf90a1523624dc008739af1ac3f501aedd45498046bb4ac11a30b395",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

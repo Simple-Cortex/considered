@@ -1,0 +1,17 @@
+{
+  "id": "gate-ship",
+  "category": "gate",
+  "command": [
+    "gate",
+    "tests/fixtures/gate/contract.json",
+    "tests/fixtures/gate/source.json",
+    "--review",
+    "tests/fixtures/gate/review-ship.json",
+    "--json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"reports\": [\n    \"tests/fixtures/gate/contract.json\",\n    \"tests/fixtures/gate/source.json\"\n  ],\n  \"review\": \"tests/fixtures/gate/review-ship.json\",\n  \"findings\": [\n    {\n      \"rule\": \"A11Y-04\",\n      \"severity\": \"S1\",\n      \"confidence\": \"heuristic\"\n    }\n  ],\n  \"outcome\": \"SHIP\",\n  \"counts\": {},\n  \"heuristicCounts\": {\n    \"S1\": 1\n  },\n  \"reasons\": []\n}\n",
+  "stderr": "",
+  "stdout_sha256": "deeacdfec66eccf76e2674935c93afde87eed34f290a25b4a1b5bc3352ddf79c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

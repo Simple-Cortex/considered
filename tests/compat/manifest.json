@@ -1,0 +1,310 @@
+{
+  "manifest_version": "1.0.0",
+  "description": "Compatibility cases for every public command. Each case captures exit code, stdout, stderr, and named file effects. The runner normalizes only temporary absolute paths, platform line endings, timestamps, and intentionally random keys.",
+  "cases": [
+    {
+      "id": "help-long",
+      "category": "bin",
+      "description": "--help prints usage and exits 0",
+      "command": ["--help"],
+      "expect_exit": 0,
+      "stdout_contains": ["Usage:", "considered"],
+      "stderr_empty": true
+    },
+    {
+      "id": "help-short",
+      "category": "bin",
+      "description": "-h is an alias for --help",
+      "command": ["-h"],
+      "expect_exit": 0,
+      "stdout_contains": ["Usage:"],
+      "stderr_empty": true
+    },
+    {
+      "id": "help-rejects-args",
+      "category": "bin",
+      "description": "--help with extra arguments is a usage error",
+      "command": ["--help", "extra"],
+      "expect_exit": 2,
+      "stderr_contains": ["does not accept arguments"]
+    },
+    {
+      "id": "version-long",
+      "category": "bin",
+      "description": "--version prints the package version and exits 0",
+      "command": ["--version"],
+      "expect_exit": 0,
+      "stdout_matches": "^\\d+\\.\\d+\\.\\d+\\s*$",
+      "stderr_empty": true
+    },
+    {
+      "id": "version-short",
+      "category": "bin",
+      "description": "-v is an alias for --version",
+      "command": ["-v"],
+      "expect_exit": 0,
+      "stdout_matches": "^\\d+\\.\\d+\\.\\d+\\s*$",
+      "stderr_empty": true
+    },
+    {
+      "id": "version-rejects-args",
+      "category": "bin",
+      "description": "--version with extra arguments is a usage error",
+      "command": ["--version", "extra"],
+      "expect_exit": 2,
+      "stderr_contains": ["does not accept arguments"]
+    },
+    {
+      "id": "unknown-utility",
+      "category": "bin",
+      "description": "Unknown utility name exits 2",
+      "command": ["nonexistent"],
+      "expect_exit": 2,
+      "stderr_contains": ["unknown utility"]
+    },
+    {
+      "id": "unknown-global-option",
+      "category": "bin",
+      "description": "Unknown global option exits 2",
+      "command": ["--bogus"],
+      "expect_exit": 2,
+      "stderr_contains": ["unknown global option"]
+    },
+    {
+      "id": "json-without-utility",
+      "category": "bin",
+      "description": "--json followed by nothing exits 2",
+      "command": ["--json"],
+      "expect_exit": 2,
+      "stderr_contains": ["missing utility"]
+    },
+    {
+      "id": "non-tty-bare",
+      "category": "bin",
+      "description": "Bare invocation without TTY exits 2 with usage, never the wizard",
+      "command": [],
+      "stdin": "closed",
+      "expect_exit": 2,
+      "stderr_contains": ["no interactive terminal"]
+    },
+    {
+      "id": "roll-success-json",
+      "category": "roll",
+      "description": "roll with valid mode and key produces deterministic JSON",
+      "command": ["roll", "--mode", "operate", "--key", "compat-test-001", "--gen", "0", "--json"],
+      "expect_exit": 0,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "mode", "equals": "operate" },
+        { "path": "direction", "present": true },
+        { "path": "structure", "present": true }
+      ]
+    },
+    {
+      "id": "roll-invalid-mode",
+      "category": "roll",
+      "description": "roll with invalid mode exits 2",
+      "command": ["roll", "--mode", "not-a-mode", "--json"],
+      "expect_exit": 2,
+      "stderr_contains": ["not-a-mode"]
+    },
+    {
+      "id": "roll-reroll-without-key",
+      "category": "roll",
+      "description": "roll --reroll without --key exits 2",
+      "command": ["roll", "--mode", "operate", "--reroll", "--json"],
+      "expect_exit": 2,
+      "stderr_contains": ["key"]
+    },
+    {
+      "id": "inventory-clean-json",
+      "category": "inventory",
+      "description": "inventory on empty project exits 0 with expected JSON shape",
+      "command": ["inventory", "--json", "tests/fixtures/projects/empty"],
+      "expect_exit": 0,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "files", "present": true },
+        { "path": "tokens", "present": true },
+        { "path": "components", "present": true }
+      ]
+    },
+    {
+      "id": "inventory-system-json",
+      "category": "inventory",
+      "description": "inventory on system project detects tokens and components",
+      "command": ["inventory", "--json", "tests/fixtures/projects/system"],
+      "expect_exit": 0,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "tokens.--surface", "present": true },
+        { "path": "components.StatusCard", "present": true }
+      ]
+    },
+    {
+      "id": "lint-clean-source",
+      "category": "lint",
+      "description": "lint on clean source exits 0 with no findings",
+      "command": ["lint", "tests/fixtures/source/clean", "--json"],
+      "expect_exit": 0,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "findings", "equals": [] }
+      ]
+    },
+    {
+      "id": "lint-violations",
+      "category": "lint",
+      "description": "lint on violation source finds expected rules",
+      "command": ["lint", "tests/fixtures/source/violations", "--json"],
+      "expect_exit": 0,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "findings", "present": true },
+        { "path": "findings", "array_contains_rule": "A11Y-04" }
+      ]
+    },
+    {
+      "id": "contract-valid",
+      "category": "contract",
+      "description": "contract on valid fixture exits 0",
+      "command": ["contract", "tests/fixtures/contracts/valid-operate.tsx", "--json"],
+      "expect_exit": 0,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "findings", "equals": [] }
+      ]
+    },
+    {
+      "id": "contract-missing",
+      "category": "contract",
+      "description": "contract on missing-contract fixture exits 1 with CONTRACT-01",
+      "command": ["contract", "tests/fixtures/contracts/missing-contract.tsx", "--json"],
+      "expect_exit": 1,
+      "stdout_is_json": true,
+      "json_assertions": [
+        { "path": "findings", "array_contains_rule": "CONTRACT-01" }
+      ]
+    },
+    {
+      "id": "contract-no-args",
+      "category": "contract",
+      "description": "contract without file argument exits 2",
+      "command": ["contract"],
+      "expect_exit": 2,
+      "stderr_contains": ["Usage"]
+    },
+    {
+      "id": "render-valid",
+      "category": "render",
+      "description": "render on template evidence exits 0",
+      "command": ["render", "assets/templates/RENDER-EVIDENCE.json", "--json"],
+      "expect_exit": 0,
+      "stdout_is_json": true
+    },
+    {
+      "id": "render-no-args",
+      "category": "render",
+      "description": "render without evidence file exits 2",
+      "command": ["render"],
+      "expect_exit": 2,
+      "stderr_contains": ["Usage"]
+    },
+    {
+      "id": "gate-ship",
+      "category": "gate",
+      "description": "gate with ship review exits 0",
+      "command": ["gate", "tests/fixtures/gate/contract.json", "tests/fixtures/gate/source.json", "--review", "tests/fixtures/gate/review-ship.json", "--json"],
+      "expect_exit": 0,
+      "stdout_is_json": true
+    },
+    {
+      "id": "gate-revise",
+      "category": "gate",
+      "description": "gate with revise review exits 1",
+      "command": ["gate", "tests/fixtures/gate/contract.json", "--review", "tests/fixtures/gate/review-revise.json", "--json"],
+      "expect_exit": 1,
+      "stdout_is_json": true
+    },
+    {
+      "id": "gate-no-review",
+      "category": "gate",
+      "description": "gate without --review exits 2",
+      "command": ["gate", "tests/fixtures/gate/contract.json"],
+      "expect_exit": 2,
+      "stderr_contains": ["Usage"]
+    },
+    {
+      "id": "gate-no-args",
+      "category": "gate",
+      "description": "gate with no arguments exits 2",
+      "command": ["gate"],
+      "expect_exit": 2,
+      "stderr_contains": ["Usage"]
+    },
+    {
+      "id": "validate-success",
+      "category": "validate",
+      "description": "validate exits 0 on the repository's own assets",
+      "command": ["validate"],
+      "expect_exit": 0,
+      "stdout_contains": ["passed"]
+    },
+    {
+      "id": "test-success",
+      "category": "test",
+      "description": "test exits 0 on the maintained fixture suite",
+      "command": ["test"],
+      "expect_exit": 0,
+      "stdout_contains": ["All fixture tests passed"]
+    },
+    {
+      "id": "eval-help",
+      "category": "eval",
+      "description": "eval --help exits 0",
+      "command": ["eval", "--help"],
+      "expect_exit": 0,
+      "stdout_contains": ["Usage"]
+    },
+    {
+      "id": "eval-no-args",
+      "category": "eval",
+      "description": "eval without required options exits 2",
+      "command": ["eval"],
+      "expect_exit": 2,
+      "stderr_contains": ["Usage"]
+    },
+    {
+      "id": "eval-bad-condition",
+      "category": "eval",
+      "description": "eval with invalid condition exits 2",
+      "command": ["eval", "--condition", "invalid", "--evaluation-id", "m0-001", "--out", "/tmp/compat-eval"],
+      "expect_exit": 2,
+      "stderr_contains": ["condition"]
+    },
+    {
+      "id": "check-no-args",
+      "category": "check",
+      "description": "check without result directory exits 2",
+      "command": ["check"],
+      "expect_exit": 2,
+      "stderr_contains": ["Usage"]
+    },
+    {
+      "id": "install-no-dest",
+      "category": "install",
+      "description": "install without --dest in non-TTY exits 2",
+      "command": ["install"],
+      "stdin": "closed",
+      "expect_exit": 2,
+      "stderr_contains": ["--dest"]
+    },
+    {
+      "id": "global-json-flag",
+      "category": "bin",
+      "description": "--json before utility is forwarded",
+      "command": ["--json", "validate"],
+      "expect_exit": 0
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "version-long",
+  "category": "bin",
+  "command": [
+    "--version"
+  ],
+  "exit_code": 0,
+  "stdout": "0.7.0\n",
+  "stderr": "",
+  "stdout_sha256": "967d9afb101346667166f2e76e81910bc190488d7d41d50ca0072e9d92f00e32",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

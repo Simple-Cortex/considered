@@ -1,20 +1,41 @@
 #!/usr/bin/env node
 /** Copy this portable skill package to an explicit harness skill directory. */
-import { cp, lstat, rm } from 'node:fs/promises';
+import { cp, lstat, readFile, rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve, relative, sep } from 'node:path';
+import { dirname, join, resolve, relative, sep } from 'node:path';
 import { resolveYesPlan } from './wizard-plan.mjs';
-
-// The installed skill must match the published package surface exactly. This mirrors
-// the "files" array in package.json; keep the two in step. Anything outside this set
-// (repo tooling, CI config, editor and OS noise) never reaches a user's skill directory.
-const SHIPPED = new Set([
-  'SKILL.md', 'README.md', 'LICENSE',
-  'skills', 'references', 'assets', 'scripts', 'bin', 'evals', 'docs', 'tests'
-]);
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
+const runtimeManifest = JSON.parse(await readFile(join(ROOT, 'runtime-manifest.json'), 'utf8'));
+if (!Array.isArray(runtimeManifest.include) || runtimeManifest.include.some(entry => typeof entry !== 'string')) {
+  throw new Error('runtime-manifest.json must contain an include array of paths');
+}
+
+function matchesRuntimeFile(relativePath) {
+  return runtimeManifest.include.some(pattern => {
+    const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replaceAll('*', '[^/]*');
+    return new RegExp(`^${escaped}$`).test(relativePath);
+  });
+}
+
+// A directory is worth descending into when some include pattern has more
+// segments than the directory and each directory segment matches the
+// corresponding pattern segment. Wildcard segments (`skills/*/SKILL.md`)
+// must match here too — a plain string prefix test skips every `skills/<x>/`
+// directory and silently installs a skill with no subcommands.
+function mayContainRuntimeFile(relativePath) {
+  if (!relativePath) return true;
+  const dirSegments = relativePath.split('/');
+  return runtimeManifest.include.some(pattern => {
+    const patternSegments = pattern.split('/');
+    if (patternSegments.length <= dirSegments.length) return false;
+    return dirSegments.every((segment, index) => {
+      const escaped = patternSegments[index].replace(/[.+^${}()|[\]\\]/g, '\\$&').replaceAll('*', '[^/]*');
+      return new RegExp(`^${escaped}$`).test(segment);
+    });
+  });
+}
 const args = process.argv.slice(2);
 const value = flag => { const index = args.indexOf(flag); return index === -1 ? null : args[index + 1] || null; };
 const help = args.includes('--help') || args.includes('-h');
@@ -48,11 +69,9 @@ await cp(ROOT, target, {
   filter: source => {
     const rel = relative(ROOT, source);
     if (rel === '') return true;
-    const segments = rel.split(sep);
-    if (!SHIPPED.has(segments[0])) return false;
-    if (segments.includes('node_modules') || segments.includes('.DS_Store')) return false;
-    // Recorded evaluation runs are per-user output, not part of the skill.
-    return !(segments[0] === 'evals' && segments[1] === 'results');
+    const normalized = rel.split(sep).join('/');
+    if (normalized.split('/').includes('node_modules') || normalized.split('/').includes('.DS_Store')) return false;
+    return matchesRuntimeFile(normalized) || mayContainRuntimeFile(normalized);
   }
 });
 console.log(`Installed Considered at ${target}`);

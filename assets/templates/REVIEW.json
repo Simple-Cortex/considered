@@ -64,5 +64,10 @@
   "fixList": ["F1"],
   "working": ["<element that should not regress>"],
   "limitations": ["<missing evidence or host limitation>"],
+  "reviewValidity": {
+    "sourceHash": "<sha256 of reviewed source set>",
+    "contractHash": "<sha256 of reviewed contract>",
+    "stale": false
+  },
   "reviewedAt": "<ISO-8601 timestamp or revision>"
 }

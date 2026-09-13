@@ -43,7 +43,8 @@ const findings = reports.flatMap(report => Array.isArray(report.findings) ? repo
 const normalizedReview = review ? {
   weightedScore: review.weightedScore ?? review.gate?.score,
   dimensions: review.dimensions ?? review.gate?.dimensions,
-  outcome: review.outcome ?? review.gate?.decision
+  outcome: review.outcome ?? review.gate?.decision,
+  stale: review.reviewValidity?.stale === true || review.freshContext === false
 } : null;
 const result = evaluateGate({ findings, review: normalizedReview, requireReview: true });
 const output = { reports: reportPaths, review: reviewPath, findings, ...result };

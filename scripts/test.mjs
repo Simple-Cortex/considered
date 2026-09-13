@@ -119,6 +119,14 @@ for (const [fixture, label] of [
   if (result.code === 1 && parsed?.outcome === 'REVIEW-REQUIRED') pass(label);
   else fail(`${label}: expected exit 1 and REVIEW-REQUIRED, received ${result.code} and ${parsed?.outcome ?? 'unparseable output'}`);
 }
+const gateStale = await run('gate.mjs', [join(gateDir, 'contract.json'), '--review', join(gateDir, 'review-stale.json'), '--json']);
+let staleOutput = null;
+try { staleOutput = JSON.parse(gateStale.stdout); } catch { /* reported below */ }
+if (gateStale.code === 1 && staleOutput?.outcome === 'REVISE' && staleOutput.reasons?.some(reason => reason.includes('stale'))) {
+  pass('gate rejects a stale independent review');
+} else {
+  fail(`gate stale fixture: expected exit 1 and a stale reason, received ${gateStale.code}`);
+}
 
 // --- install wizard: detection, planning, non-TTY behavior, --dest/--yes regression ---
 async function withTempDir(run) {

@@ -1,0 +1,12 @@
+{
+  "id": "install-no-dest",
+  "category": "install",
+  "command": [
+    "install"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "install requires --dest <skill-directory> (or --yes to accept a detected default).\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "ccd042973e2a23f037ba9c4806b8d6412e673fee58dbff222a0732dddfe4ad3a"
+}

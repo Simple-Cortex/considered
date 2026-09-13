@@ -1,0 +1,10 @@
+{
+  "id": "non-tty-bare",
+  "category": "bin",
+  "command": [],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered: no arguments, and no interactive terminal detected.\n\nUsage:\n  considered install --dest <skill-directory> [--force]\n  considered install --yes [--force]   (accepts a detected default; CI-safe)\n\nRun \"considered --help\" for the full command list.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "55125ac936eb44a28a5a1838957eb95931cdeabbd5739b7330a27bf7179b1596"
+}

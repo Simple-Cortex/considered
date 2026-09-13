@@ -1,0 +1,12 @@
+{
+  "id": "help-short",
+  "category": "bin",
+  "command": [
+    "-h"
+  ],
+  "exit_code": 0,
+  "stdout": "considered - design reasoning for coding agents\n\nUsage:\n  considered                   interactive install wizard (TTY only)\n  considered [--json] <utility> [arguments]\n  considered --help\n  considered --version\n\nAgent skill phases (not CLI utilities):\n  init, frame, structure, compose, critique, subtract, harden, document\n\nCLI utilities:\n  roll [options]               assign a structure and direction\n  inventory [path] [--json]   report an existing design system\n  lint <path>                  run static source checks\n  contract <file>              validate a contract block\n  render <evidence.json>       validate attested screenshot evidence\n  gate <report...> --review <file>\n                               combine high-confidence checks with independent review\n  validate                      validate packaged manifests and decks\n  validate skill                validate runtime skill drift (native companion)\n  status [surface]              report current surface state (native companion)\n  verify [surface]              verify artifact integrity (native companion)\n  context --experimental        emit the bounded route manifest (native companion)\n  test                          run deterministic fixture tests\n  eval [options]                initialize one matched evaluation condition\n  check <result-dir>            validate a completed evaluation record\n  install --dest <skill-dir>    copy this skill to an explicit destination\n                                 [--force]\n  install --yes [--force]       copy to a detected default destination (CI)\n\nGlobal options:\n  --json       request machine-readable output where supported\n  --format engine-json  versioned engine/result envelope; preserves --json compatibility\n  -h, --help   show this help\n  -v, --version\n               show the package version\n\nModes: persuade, operate, analyze, read, experience\n\nExit codes: 0 clean, 1 blocking findings, 2 usage error, 3 deck exhausted.\nDocs: https://github.com/considered-design/considered\n",
+  "stderr": "",
+  "stdout_sha256": "9db04628af80fb33a07746f7839499d3fe3f5c7c3c775a6f857779e964510711",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

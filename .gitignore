@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Rust build artifacts
+target/
+
 # npm pack / publish output
 *.tgz
 
@@ -62,4 +65,3 @@ evals/results/m0-002/*
 !evals/results/m0-002/reviews/**
 !evals/results/m0-002/scenarios
 !evals/results/m0-002/scenarios/**
-

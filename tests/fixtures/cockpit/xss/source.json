@@ -1,0 +1,1 @@
+{"checker":"source","findings":[{"rule":"XSS-TEST","severity":"S1","confidence":"heuristic","file":"<script>alert('xss')</script>","line":1,"message":"Finding with <script>tag</script> in message & \"quotes\""}]}

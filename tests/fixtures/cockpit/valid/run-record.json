@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "test-run-001",
+  "surfaceId": "test-surface",
+  "stage": "review",
+  "createdAt": "2026-09-10T10:00:00Z",
+  "updatedAt": "2026-09-10T12:00:00Z",
+  "decisions": [
+    {
+      "id": "primary-decision",
+      "summary": "Prioritize clarity over density",
+      "evidence": "User testing showed 40% faster task completion"
+    }
+  ],
+  "roll": {
+    "direction": "persuade",
+    "structure": {
+      "primary": "hero",
+      "secondary": "features",
+      "tertiary": "cta"
+    }
+  },
+  "questions": [
+    {
+      "question": "Does the hierarchy guide the eye?",
+      "elements": ["hero", "features"]
+    },
+    {
+      "question": "Are actions discoverable?",
+      "elements": ["cta", "nav"]
+    }
+  ],
+  "artifacts": {
+    "source": {
+      "path": "src/components/Hero.tsx",
+      "hash": "abc123",
+      "link": "file:///src/components/Hero.tsx"
+    },
+    "contract": {
+      "path": "docs/contract.md",
+      "hash": "def456",
+      "link": "file:///docs/contract.md"
+    }
+  },
+  "reviewValidity": {
+    "reviewId": "review-001",
+    "sourceHash": "abc123",
+    "contractHash": "def456",
+    "stale": false
+  }
+}

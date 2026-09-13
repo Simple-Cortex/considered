@@ -1,0 +1,14 @@
+{
+  "id": "inventory-system-json",
+  "category": "inventory",
+  "command": [
+    "inventory",
+    "--json",
+    "tests/fixtures/projects/system"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"target\": \"tests/fixtures/projects/system\",\n  \"targetKind\": \"directory\",\n  \"files\": 2,\n  \"tokens\": {\n    \"--surface\": \"#ffffff\",\n    \"--text-primary\": \"#172033\",\n    \"--accent\": \"#2457d6\",\n    \"--space-4\": \"16px\"\n  },\n  \"fonts\": [\n    \"Inter, sans-serif\"\n  ],\n  \"spacing\": [\n    \"16px\"\n  ],\n  \"radii\": [\n    \"4px\"\n  ],\n  \"components\": {\n    \"StatusCard\": []\n  },\n  \"configs\": [],\n  \"docs\": [],\n  \"warnings\": []\n}\n",
+  "stderr": "",
+  "stdout_sha256": "dc4ce817ec4a227d684abf3e76fc1d212d1f5affacbefaf8437fd22096c735de",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

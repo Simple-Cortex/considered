@@ -1,0 +1,14 @@
+{
+  "id": "inventory-clean-json",
+  "category": "inventory",
+  "command": [
+    "inventory",
+    "--json",
+    "tests/fixtures/projects/empty"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"target\": \"tests/fixtures/projects/empty\",\n  \"targetKind\": \"directory\",\n  \"files\": 0,\n  \"tokens\": {},\n  \"fonts\": [],\n  \"spacing\": [],\n  \"radii\": [],\n  \"components\": {},\n  \"configs\": [],\n  \"docs\": [],\n  \"warnings\": []\n}\n",
+  "stderr": "",
+  "stdout_sha256": "cb5db0ad22969fd2ddfe6a6f451799d6e697c54a77099e778622fae61acabdf7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "eval-no-args",
+  "category": "eval",
+  "command": [
+    "eval"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered eval: each required option must appear exactly once\nUsage: node eval.mjs --condition baseline|considered --evaluation-id <id> --out <directory>\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "2112f9076c4052990bdbec55f77f5dbb254ff93f70e326bc9faae1d9337540a3"
+}

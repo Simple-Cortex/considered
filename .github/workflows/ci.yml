@@ -30,6 +30,15 @@ jobs:
       - name: Run fixture tests
         run: npm test
 
+      - name: Run Node/Rust CLI compatibility contract
+        run: node tests/compat/run.mjs
+
+      - name: Verify packed artifact installs and runs
+        run: npm run test:packed-artifact
+
+      - name: Run cockpit report tests
+        run: node tests/cockpit.test.mjs
+
   package:
     name: package
     runs-on: ubuntu-latest
@@ -88,3 +97,46 @@ jobs:
           test -f /tmp/skills/considered/references/workflow.md
           test -f /tmp/skills/considered/skills/frame/SKILL.md
           echo "install smoke test passed"
+
+  rust:
+    name: rust (fmt + clippy + test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@1.85.0
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Tests
+        run: cargo test --workspace
+
+      - name: Release tests
+        run: cargo test --workspace --release
+
+      - name: Build native binary for shadow compatibility
+        run: cargo build -p considered-cli
+
+      - name: Validate skill drift fixtures (needs native binary)
+        run: npm run test:validate-skill
+
+      - name: Run Node/Rust shadow compatibility
+        run: npm run test:compat-shadow
+
+      - name: Run CLI compatibility contract with the native binary present
+        run: CONSIDERED_RS_BIN=target/debug/considered-rs node tests/compat/run.mjs
+
+      - name: Build release binary and enforce scan performance target
+        run: |
+          cargo build --release -p considered-cli
+          npm run bench:compare -- --iterations 20

@@ -1,0 +1,128 @@
+{
+  "schema_version": "considered-benchmark-comparison/v1",
+  "measured_at": "2026-09-11T06:33:53.062Z",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "node_version": "v25.8.1",
+  "rust_version": "rustc 1.85.0 (4d91de4e4 2025-02-17)",
+  "repository_revision": "4ab9480808fb50110641ad7fe3fccb07710a578e",
+  "source_state": "measured from the current worktree; preserve the accompanying revision and diff when publishing results",
+  "iterations": 10,
+  "binary_profile": "release",
+  "comparisons": [
+    {
+      "command": "lint",
+      "fixture": "small",
+      "iterations": 10,
+      "node": {
+        "cold_ms": 52.33,
+        "median_ms": 51.73,
+        "p95_ms": 53.35
+      },
+      "rust": {
+        "cold_ms": 223.28,
+        "median_ms": 17.18,
+        "p95_ms": 17.53
+      },
+      "median_speedup": 3.01,
+      "p95_speedup": 3.04,
+      "output_bytes": 130,
+      "output_sha256": "ded4326cedff528c579daec981aabda7e44e9e513e0177b66e61c4bd7c5d9d58"
+    },
+    {
+      "command": "lint",
+      "fixture": "medium",
+      "iterations": 10,
+      "node": {
+        "cold_ms": 65.23,
+        "median_ms": 64.94,
+        "p95_ms": 66.54
+      },
+      "rust": {
+        "cold_ms": 19.51,
+        "median_ms": 20.02,
+        "p95_ms": 21.39
+      },
+      "median_speedup": 3.24,
+      "p95_speedup": 3.11,
+      "output_bytes": 7940,
+      "output_sha256": "5920a45c1fd79b54eff4732e8f69422cbbb23f5c3edde2b4acd0d1199275fe92"
+    },
+    {
+      "command": "lint",
+      "fixture": "large",
+      "iterations": 10,
+      "node": {
+        "cold_ms": 90.11,
+        "median_ms": 89.27,
+        "p95_ms": 95.98
+      },
+      "rust": {
+        "cold_ms": 29.1,
+        "median_ms": 30.63,
+        "p95_ms": 32.75
+      },
+      "median_speedup": 2.91,
+      "p95_speedup": 2.93,
+      "output_bytes": 39041,
+      "output_sha256": "c289d2ceb71c5ebd082f52d55448d7c553b433e9f00f663aeac836bbf3ad5321"
+    },
+    {
+      "command": "inventory",
+      "fixture": "small",
+      "iterations": 10,
+      "node": {
+        "cold_ms": 50.82,
+        "median_ms": 49.7,
+        "p95_ms": 51.85
+      },
+      "rust": {
+        "cold_ms": 3.74,
+        "median_ms": 3.64,
+        "p95_ms": 5.49
+      },
+      "median_speedup": 13.65,
+      "p95_speedup": 9.44,
+      "output_bytes": 594,
+      "output_sha256": "e7f34f708fca1e41b512848e848f54699295a02644d101858d035fc3f3895a95"
+    },
+    {
+      "command": "inventory",
+      "fixture": "medium",
+      "iterations": 10,
+      "node": {
+        "cold_ms": 59.53,
+        "median_ms": 57.74,
+        "p95_ms": 60.29
+      },
+      "rust": {
+        "cold_ms": 6,
+        "median_ms": 5.51,
+        "p95_ms": 6.74
+      },
+      "median_speedup": 10.48,
+      "p95_speedup": 8.95,
+      "output_bytes": 807,
+      "output_sha256": "cf82e0787141979af7cf74056d5b51c54e109e1f8f95117728b727060c70b520"
+    },
+    {
+      "command": "inventory",
+      "fixture": "large",
+      "iterations": 10,
+      "node": {
+        "cold_ms": 80.7,
+        "median_ms": 82.22,
+        "p95_ms": 85.13
+      },
+      "rust": {
+        "cold_ms": 13.12,
+        "median_ms": 13.16,
+        "p95_ms": 14.05
+      },
+      "median_speedup": 6.25,
+      "p95_speedup": 6.06,
+      "output_bytes": 2646,
+      "output_sha256": "cf0c34728243d43f050bdcab6646d8945130e676e19ccf2f7e9811c541f908f5"
+    }
+  ]
+}

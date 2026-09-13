@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "test-run-stale",
+  "surfaceId": "test-surface-stale",
+  "stage": "review",
+  "createdAt": "2026-09-01T10:00:00Z",
+  "updatedAt": "2026-09-01T12:00:00Z",
+  "decisions": [],
+  "reviewValidity": {
+    "reviewId": "review-stale",
+    "sourceHash": "old-hash-abc",
+    "contractHash": "old-hash-def",
+    "stale": true
+  }
+}

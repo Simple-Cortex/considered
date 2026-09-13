@@ -1,0 +1,12 @@
+{
+  "id": "contract-no-args",
+  "category": "contract",
+  "command": [
+    "contract"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "Usage: node lint-contract.mjs <file> [--json] [--gate]\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "3b8afd9941706ab0dd763f37206785e27c9a3f0687f784727da0018439e5472a"
+}

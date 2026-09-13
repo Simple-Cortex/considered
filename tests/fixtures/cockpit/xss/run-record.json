@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "test-run-xss",
+  "surfaceId": "<img src=x onerror=alert(1)>",
+  "stage": "review",
+  "createdAt": "2026-09-10T10:00:00Z",
+  "decisions": [{"id": "xss-test", "summary": "<b>bold attack</b> & more", "evidence": "<script>document.cookie</script>"}]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "eval-bad-condition",
+  "category": "eval",
+  "command": [
+    "eval",
+    "--condition",
+    "invalid",
+    "--evaluation-id",
+    "m0-001",
+    "--out",
+    "/tmp/compat-eval"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered eval: --condition must be baseline or considered\nUsage: node eval.mjs --condition baseline|considered --evaluation-id <id> --out <directory>\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "b68e9eb294aea4f1e01d3a518485229362fc610d84a7da11573659c98d90fb1e"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "lint-clean-source",
+  "category": "lint",
+  "command": [
+    "lint",
+    "tests/fixtures/source/clean",
+    "--json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"checker\": \"source\",\n  \"scope\": \"heuristic-source-leads\",\n  \"scanned\": 2,\n  \"skipped\": [],\n  \"counts\": {},\n  \"findings\": []\n}\n",
+  "stderr": "",
+  "stdout_sha256": "01928b6ba80c36cae96ea4fc97dc1caeb49a1d22da9952f98eb8ed5c0aef3c18",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "json-without-utility",
+  "category": "bin",
+  "command": [
+    "--json"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered: missing utility after --json\nRun \"considered --help\" for usage.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "1bd0e7d3eaf3b89512115e6787d3c36b283c859622c34bdb451944ace97fca71"
+}

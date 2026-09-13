@@ -1,0 +1,14 @@
+{
+  "id": "contract-valid",
+  "category": "contract",
+  "command": [
+    "contract",
+    "tests/fixtures/contracts/valid-operate.tsx",
+    "--json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"file\": \"tests/fixtures/contracts/valid-operate.tsx\",\n  \"checker\": \"contract\",\n  \"scope\": \"contract-internal\",\n  \"details\": {\n    \"mode\": \"operate\",\n    \"questions\": 5,\n    \"zones\": 3\n  },\n  \"counts\": {},\n  \"findings\": []\n}\n",
+  "stderr": "",
+  "stdout_sha256": "1c0ce6d1c5c4b8344374b9d72f8fb4194b035f2ed04dc483ea045525a86c8e44",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "unknown-global-option",
+  "category": "bin",
+  "command": [
+    "--bogus"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered: unknown global option \"--bogus\"\nRun \"considered --help\" for usage.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "29f2ab1f4e9783899090789efb02620ae74deeccf15e833dcced83c0b6887399"
+}

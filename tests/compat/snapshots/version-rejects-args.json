@@ -1,0 +1,13 @@
+{
+  "id": "version-rejects-args",
+  "category": "bin",
+  "command": [
+    "--version",
+    "extra"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered: --version does not accept arguments\nRun \"considered --help\" for usage.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "860dc62c3e6e72d3d23a1633fe3f80bc7693ee86f57a830e71991d5f8905f658"
+}

@@ -1,0 +1,1 @@
+{"checker":"contract","findings":[{"rule":"IA-03","severity":"S2","confidence":"high","message":"Missing question-zone mapping for element hero","hint":"Add hero to QUESTIONS zone list"}]}

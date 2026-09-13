@@ -1,0 +1,12 @@
+{
+  "id": "unknown-utility",
+  "category": "bin",
+  "command": [
+    "nonexistent"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered: unknown utility \"nonexistent\"\nRun \"considered --help\" for usage.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e30e3cc0144edb023543702615e82c04035e9850bf8724bfa1b9707896e1b2b4"
+}

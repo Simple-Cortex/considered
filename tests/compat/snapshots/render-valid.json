@@ -1,0 +1,14 @@
+{
+  "id": "render-valid",
+  "category": "render",
+  "command": [
+    "render",
+    "assets/templates/RENDER-EVIDENCE.json",
+    "--json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"checker\": \"render-evidence\",\n  \"evidence\": \"assets/templates/RENDER-EVIDENCE.json\",\n  \"counts\": {},\n  \"findings\": []\n}\n",
+  "stderr": "",
+  "stdout_sha256": "c1d971a979e035885f439980b2fe1c3c4656f5ab91898f6f1d174acbd4e95c27",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

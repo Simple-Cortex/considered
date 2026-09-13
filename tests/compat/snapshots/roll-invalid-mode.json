@@ -1,0 +1,15 @@
+{
+  "id": "roll-invalid-mode",
+  "category": "roll",
+  "command": [
+    "roll",
+    "--mode",
+    "not-a-mode",
+    "--json"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "considered roll: unknown mode \"not-a-mode\"; expected one of: persuade, operate, analyze, read, experience\nRun \"considered roll --help\" for usage.\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e8da228be6f1e3296a45a51d9b638e68a4f8a5dd01cfc472bb2389ccc1ce68b4"
+}

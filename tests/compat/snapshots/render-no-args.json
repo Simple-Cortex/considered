@@ -1,0 +1,12 @@
+{
+  "id": "render-no-args",
+  "category": "render",
+  "command": [
+    "render"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "Usage: node lint-render.mjs <render-evidence.json> [--json]\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "2f8c97fabbb0e11f2fe6ea14d0ba4b11bc9a9aad3c32f924d038b28b395331de"
+}

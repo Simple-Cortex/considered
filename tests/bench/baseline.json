@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "timestamp": "2026-09-10T00:21:50.469Z",
+  "os": "darwin",
+  "architecture": "arm64",
+  "node_version": "v25.8.1",
+  "rust_version": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "repository_revision": "988ed16",
+  "iterations": 5,
+  "benchmarks": {
+    "lint": [
+      {
+        "fixture": "small",
+        "iterations": 5,
+        "cold_ms": 101.252166,
+        "median_ms": 98.46,
+        "p95_ms": 101.25,
+        "min_ms": 96.79,
+        "max_ms": 101.25,
+        "output_bytes": 130,
+        "estimated_output_tokens": 33
+      },
+      {
+        "fixture": "medium",
+        "iterations": 5,
+        "cold_ms": 118.77487499999995,
+        "median_ms": 112.33,
+        "p95_ms": 118.77,
+        "min_ms": 111.57,
+        "max_ms": 118.77,
+        "output_bytes": 7780,
+        "estimated_output_tokens": 1945
+      },
+      {
+        "fixture": "large",
+        "iterations": 5,
+        "cold_ms": 145.95379100000014,
+        "median_ms": 141.27,
+        "p95_ms": 145.95,
+        "min_ms": 133.92,
+        "max_ms": 145.95,
+        "output_bytes": 38241,
+        "estimated_output_tokens": 9561
+      }
+    ],
+    "inventory": [
+      {
+        "fixture": "small-inventory",
+        "iterations": 5,
+        "cold_ms": 94.27150000000006,
+        "median_ms": 96.17,
+        "p95_ms": 96.52,
+        "min_ms": 93.56,
+        "max_ms": 96.52,
+        "output_bytes": 594,
+        "estimated_output_tokens": 149
+      },
+      {
+        "fixture": "medium-inventory",
+        "iterations": 5,
+        "cold_ms": 102.56320899999992,
+        "median_ms": 101.9,
+        "p95_ms": 104.57,
+        "min_ms": 101.62,
+        "max_ms": 104.57,
+        "output_bytes": 799,
+        "estimated_output_tokens": 200
+      },
+      {
+        "fixture": "large-inventory",
+        "iterations": 5,
+        "cold_ms": 124.0316670000002,
+        "median_ms": 125.14,
+        "p95_ms": 125.72,
+        "min_ms": 124.03,
+        "max_ms": 125.72,
+        "output_bytes": 2638,
+        "estimated_output_tokens": 660
+      }
+    ]
+  }
+}

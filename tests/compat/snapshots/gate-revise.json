@@ -1,0 +1,16 @@
+{
+  "id": "gate-revise",
+  "category": "gate",
+  "command": [
+    "gate",
+    "tests/fixtures/gate/contract.json",
+    "--review",
+    "tests/fixtures/gate/review-revise.json",
+    "--json"
+  ],
+  "exit_code": 1,
+  "stdout": "{\n  \"reports\": [\n    \"tests/fixtures/gate/contract.json\"\n  ],\n  \"review\": \"tests/fixtures/gate/review-revise.json\",\n  \"findings\": [],\n  \"outcome\": \"REVISE\",\n  \"counts\": {},\n  \"heuristicCounts\": {},\n  \"reasons\": [\n    \"Reviewer score 104/140 is below 120.\",\n    \"D1 is below the floor of 3.\",\n    \"Reviewer outcome is REVISE.\"\n  ]\n}\n",
+  "stderr": "",
+  "stdout_sha256": "69ff5a3c462f06370cf5babce204094e635440493b7bd37ea5a8ae20f57f9673",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

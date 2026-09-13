@@ -1,0 +1,12 @@
+{
+  "id": "gate-no-args",
+  "category": "gate",
+  "command": [
+    "gate"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "Usage: node gate.mjs <report.json> [...report.json] --review <REVIEW.json> [--json]\n",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "ae310b07d0b11d52bfbf8033aa2e08f16fa4ecf8baa917aace740518f08e936f"
+}

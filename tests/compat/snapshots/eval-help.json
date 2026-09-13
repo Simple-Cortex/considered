@@ -1,0 +1,13 @@
+{
+  "id": "eval-help",
+  "category": "eval",
+  "command": [
+    "eval",
+    "--help"
+  ],
+  "exit_code": 0,
+  "stdout": "Usage: node eval.mjs --condition baseline|considered --evaluation-id <id> --out <directory>\n",
+  "stderr": "",
+  "stdout_sha256": "5489add5cf6577f6b1b5cbc53983453cbb7f8694122f65eadf721256e17f8073",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

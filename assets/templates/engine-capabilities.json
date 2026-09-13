@@ -1,0 +1,21 @@
+{
+  "$schema": "considered-engine-capabilities/v1",
+  "protocolVersion": "1.0.0",
+  "commands": {
+    "contract": {"node": true, "rust": true, "nativeDelegation": true, "nodeFallback": true, "manualFallback": false, "shadowParity": "conditional-exact", "exception": "Valid compatibility shapes and versioned compact/filter formats select Rust; malformed option grammar stays on Node to preserve frozen diagnostics."},
+    "gate": {"node": true, "rust": true, "nativeDelegation": true, "nodeFallback": true, "manualFallback": false, "shadowParity": "conditional-exact", "exception": "Valid reviewed gate shapes and compact output select Rust; missing or malformed argument grammar stays on Node to preserve frozen diagnostics."},
+    "inventory": {"node": true, "rust": true, "nativeDelegation": true, "nodeFallback": true, "manualFallback": false, "shadowParity": "conditional-exact", "exception": "Valid zero-or-one-target shapes and compact output select Rust; help and malformed argument grammar stay on Node to preserve frozen diagnostics."},
+    "lint": {"node": true, "rust": true, "nativeDelegation": true, "nodeFallback": true, "manualFallback": false, "shadowParity": "conditional-exact", "exception": "Valid single-target compatibility shapes and versioned compact/filter formats select Rust; malformed option grammar stays on Node to preserve frozen diagnostics."},
+    "validate": {"node": true, "rust": true, "nativeDelegation": true, "nodeFallback": true, "manualFallback": false, "shadowParity": "exact"},
+    "roll": {"node": true, "rust": true, "nativeDelegation": true, "nodeFallback": true, "manualFallback": false, "shadowParity": "conditional-exact", "exception": "Validated draw, reroll, invalid-mode, missing-key, and exhaustion shapes shadow exactly; malformed option grammar stays on Node for frozen diagnostics."},
+    "validate-skill": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
+    "status": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
+    "verify": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
+    "context": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
+    "render": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},
+    "test": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},
+    "eval": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},
+    "check": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},
+    "install": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"}
+  }
+}

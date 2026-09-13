@@ -10,6 +10,24 @@ belongs here and what stays in the development log.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-09-13
+
+### Added
+
+- Native Rust engine (`considered-rs`) for `contract`, `gate`, `inventory`,
+  `lint`, `validate`, and `roll`. When the binary is present the CLI selects
+  it for supported argument shapes and otherwise runs the Node implementation;
+  output is byte-identical between engines. Install with
+  `cargo install --path crates/considered-cli`.
+- `--format engine-json`: a versioned envelope stating which engine ran and
+  why, alongside the unchanged `--json` output.
+- Native-only lifecycle commands `validate skill`, `status`, `verify`, and
+  `context --experimental`. Without the binary they report
+  `manual-unavailable` rather than failing silently.
+- Engine capability matrix (`assets/templates/engine-capabilities.json`),
+  with `docs/engine-capabilities.md` and `docs/known-limitations.md`
+  recording what is tested and what is not.
+
 ### Changed
 
 - Install moves to the Agent Skills CLI:
@@ -20,6 +38,8 @@ belongs here and what stays in the development log.
 - README examples invoke `node <skill-dir>/scripts/<util>.mjs`. The bare
   `considered <util>` form required a global npm install and is no longer
   documented.
+- `runtime-manifest.json` is the single authority for which files an install
+  contains.
 
 ### Deprecated
 
