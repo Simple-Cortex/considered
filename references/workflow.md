@@ -6,7 +6,7 @@ This file is the normative protocol for command routing, durable artifacts, ques
 
 Choose the nearest project root that contains the requested target or its source tree. If no project marker or target exists, use the active workspace root. Never write absolute host paths into artifacts.
 
-Derive `<surface-id>` from the requested surface or target basename in kebab case. Reuse it for later work. Use `main-surface` only when no meaningful name is available.
+Derive `<surface-id>` from the requested surface or target basename in kebab case. Prefer a supplied scenario, route, or surface identifier over a derived title slug when one exists. Reuse it for later work. Use `main-surface` only when no meaningful name is available.
 
 ```text
 .considered/PRODUCT.md
@@ -24,7 +24,7 @@ Derive `<surface-id>` from the requested surface or target basename in kebab cas
 
 ### Contract placement
 
-`CONTRACT.md` is the canonical raw contract. When comments are safe, copy the same field values into a top-of-file wrapper in the built artifact. When comments are unsafe, unavailable, stripped by generation, or the target is binary or remote, use the sidecar alone and record that placement in `STRUCTURE.md`, `REVIEW-PACKET.md`, and `REVIEW.json`.
+`.considered/<surface-id>/CONTRACT.md` is the canonical raw contract. When comments are safe, copy the same field values into a top-of-file wrapper in the built artifact. When comments are unsafe, unavailable, stripped by generation, or the target is binary or remote, use the sidecar alone and record that placement in `STRUCTURE.md`, `REVIEW-PACKET.md`, and `REVIEW.json`.
 
 A reviewer and linter use the wrapper when present, otherwise `CONTRACT.md`. The two copies must stay synchronized if both exist.
 
@@ -43,7 +43,9 @@ A fact is **blocking** only when a wrong assumption would materially change one 
 
 All other gaps are nonblocking. Record each as `A#` with the assumption, impact, and validation path in `FRAME.md`, then proceed. Examples include an unconfirmed viewport, provisional data latency, tentative tone, unverified frequency, or a plausible secondary object attribute. An assumption is a design input: it shapes structure and behavior but never renders as product copy (`HON-02`), and every claim that does render must trace to a supplied fact (`HON-01`).
 
-For blocking facts, write `B#`, state why it meets the test, and ask one precise question. Batch simultaneous blockers in one numbered request. Do not ask generic discovery questions, and do not ask a question that existing evidence can answer. If an answer is unavailable, mark the affected command `blocked`; do not disguise an invented answer as an assumption.
+`HON-06` (the chain never renders) extends to the skill's own vocabulary: zone tier labels ("DECIDE NOW", "ROUTINE"), lettered zone ids (A/B1/B2/E), framing names, and "View as `<role>`" scaffolding that exists only to demonstrate a state to the reviewer are not user copy. Render the decision the tier encodes — a highlighted card, an order, a divider — and keep the label itself in `STRUCTURE.md`. This scaffolding was independently read as prototype leakage when it surfaced in a built settings surface during evaluation.
+
+For blocking facts, write `B#`, state why it meets the test, and ask one precise question. Batch simultaneous blockers in one numbered request. Do not ask generic discovery questions, and do not ask a question that existing evidence can answer. If an answer is unavailable, mark the affected command `blocked`; do not disguise an invented answer as an assumption. When no answer can arrive at all — a headless or non-interactive run with nothing to pause for — record the question and the assumption taken in the artifact, mark the dependent command `blocked` if that assumption is unsafe, and proceed; never invent the answer. An unrecorded low score is the same defect as an invented answer, and so is an unrecorded question.
 
 A mode is blocking only when two modes are equally supported and each would change density, P0, or primary action. Otherwise choose the strongest evidence and label the choice as an assumption.
 
@@ -117,6 +119,8 @@ Commands run in order unless a command states how it reconstructs a missing earl
 
 `LOOP-01` (no code before the gate): do not build the target before `structure` has produced its zones, tiers, and contract. Composition without a committed structure is the failure this whole chain exists to prevent.
 
+The canonical CLI for every command below is `node <skill-dir>/bin/considered.mjs <utility> …` (`roll`, `lint`, `contract`, `gate`, `inventory`, `validate`, …). The dispatcher runs the native engine when `considered-rs` is on `PATH` or `$CONSIDERED_RS_BIN` names it, and falls back to the Node scripts otherwise; output is identical either way. Running `scripts/*.mjs` directly is still valid.
+
 | Command | Required input | Read in order | Required output | Block only when |
 | --- | --- | --- | --- | --- |
 | `init` | brief or product request; workspace root; optional source target | current `PRODUCT.md` if present, brief, existing source and inventory evidence if present | updated `.considered/PRODUCT.md` with evidence, constraints, assumptions, blockers | no writable artifact root, or the requested product/delivery cannot be identified even provisionally |
@@ -162,10 +166,10 @@ The loop does not change the §2 classification test. Brief-score questions are 
 ### `structure`
 
 1. Stop if a FRAME blocker changes the decision or safety posture.
-2. Run `node <skill-dir>/scripts/roll.mjs --mode <mode>` when available. Record the structure ids, direction id, key, and generation (`ROLL-01`, assigned roll provenance). Present the assigned hand once; rerolls chain from the same key.
+2. Run `node <skill-dir>/bin/considered.mjs roll --mode <mode>` when available. Record the structure ids, direction id, key, and generation (`ROLL-01`, assigned roll provenance). Present the assigned hand once; rerolls chain from the same key.
 3. Map zones by question and object, then assign P0 to P4 and action scope/tier/risk.
 4. Write `STRUCTURE.md` and the raw canonical `CONTRACT.md` before composition.
-5. Validate the contract when the helper exists. Resolve contract findings before `compose` if they affect P0, mode, action safety, or traceability.
+5. Validate the contract with `node <skill-dir>/bin/considered.mjs contract .considered/<surface-id>/CONTRACT.md` when the helper exists. Resolve contract findings before `compose` if they affect P0, mode, action safety, or traceability.
 
 ### `compose`
 
@@ -173,13 +177,13 @@ The loop does not change the §2 classification test. Brief-score questions are 
 2. Preserve an existing system unless redesign is requested. Implement P0 first, then P1, then P2. Keep P3 disclosed and P4 peripheral. Build through the token and component layers in `craft.md`; never style at the view level.
 3. Build the requested source target. For specification-only delivery, write a concrete layout, action, and state specification in `STRUCTURE.md` or `DESIGN.md`.
 4. Copy the contract into the target's correct comment wrapper when safe. Otherwise record sidecar-only placement.
-5. Run available contract/source checks as evidence, not as mid-build design instructions. Mark state for `critique`.
+5. Run available contract/source checks — `node <skill-dir>/bin/considered.mjs contract <target>` and `node <skill-dir>/bin/considered.mjs lint <path>` — as evidence, not as mid-build design instructions. Mark state for `critique`.
 
 ### `critique`
 
 1. The builder freezes `REVIEW-PACKET.md` with current product, frame, structure, raw contract, target, preview, and check evidence. It excludes build rationale.
 2. Start a fresh reviewer context that has not seen the builder's reasoning. Give it the packet, artifact, and reviewer references only.
-3. The reviewer runs `references/critique.md` in pass order, records evidence-bound findings, and writes `REVIEW.json`.
+3. The reviewer runs `references/critique.md` in pass order, records evidence-bound findings, and writes `REVIEW.json`. Combine the check evidence with the review via `node <skill-dir>/bin/considered.mjs gate <report.json...> --review .considered/<surface-id>/REVIEW.json`.
 4. If a fresh reviewer cannot be created, start a separate conversation or session and supply only the packet. If that is impossible, make a blind packet-only pass, set `freshContext: false`, and label the review weaker.
 5. If no render exists, review source or specification but mark visual, responsive, and render accessibility checks `blocked`; do not claim a visual gate passed.
 
@@ -228,7 +232,7 @@ The artifacts and command semantics do not require slash commands, a particular 
 | --- | --- | --- |
 | Slash commands or router | Treat `considered <command>` in natural language as the explicit stage and follow this file. | `router: manual` |
 | Structured question UI | Print the blocking questions as one numbered batch and wait only for those answers. | `questions: text` |
-| Shell or Node helper | Make one unbiased selection per roll layer from eligible deck entries in file order. Generate one `cns-` key, record selected ids, method `host-fallback`, and generation. Never shortlist, score, or reselect by taste. | `roll method: host-fallback` |
+| Shell or Node helper | Make one unbiased selection per roll layer from eligible deck entries in file order: first `assets/decks/structures.json` (one pick per tier, in tier order `organizing-axis`, `depth-strategy`, `framing`), then `assets/decks/directions.json` (one pick). Generate one `cns-` key, record selected ids, method `host-fallback`, and generation. Never shortlist, score, or reselect by taste. | `roll method: host-fallback` |
 | Editable source comments | Store the raw contract in `CONTRACT.md` and set contract placement to `sidecar`. | `contract placement: sidecar` |
 | Source target | Produce a specification-only route with the same durable artifacts. | `delivery: specification-only` |
 | Subagent or fresh context | Open a separate session with only the frozen packet. If impossible, run a blind packet-only pass and set `freshContext: false`. | `fresh context limitation` |

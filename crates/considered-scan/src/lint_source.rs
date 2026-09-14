@@ -166,6 +166,30 @@ fn line_of(text: &str, index: usize) -> u32 {
     text[..index.min(text.len())].matches('\n').count() as u32 + 1
 }
 
+/// Byte offset that is exactly `count` Unicode scalar values (code points)
+/// before `byte_index`, clamped to the start of the text. Windows must be
+/// measured in code points — not bytes, and not UTF-16 units — so this and
+/// the Node port (which counts via `Array.from`) agree on where a
+/// multi-byte run (em dashes, curly quotes, …) puts the window boundary.
+fn code_points_before(text: &str, byte_index: usize, count: usize) -> usize {
+    let prefix = &text[..byte_index];
+    let char_starts: Vec<usize> = prefix.char_indices().map(|(i, _)| i).collect();
+    if char_starts.len() <= count {
+        0
+    } else {
+        char_starts[char_starts.len() - count]
+    }
+}
+
+/// The byte-length prefix of `text` containing its first `count` code
+/// points (or the whole text if shorter).
+fn code_points_prefix(text: &str, count: usize) -> &str {
+    match text.char_indices().nth(count) {
+        Some((idx, _)) => &text[..idx],
+        None => text,
+    }
+}
+
 fn collect_files(root: &Path) -> Result<Vec<PathBuf>, EngineError> {
     let mut files = Vec::new();
 
@@ -196,6 +220,9 @@ fn severity_for_rule(rule: &str) -> Severity {
         "A11Y-04" | "A11Y-09" | "A11Y-11" | "STATE-01" | "ACT-06" => Severity::S1,
         "ACT-01" | "IA-03" => Severity::S2,
         "ACT-05" | "COMP-03" | "COMP-04" | "COMP-07" | "COMP-16" | "COMP-17" => Severity::S3,
+        // HON-03's declared severity lives in assets/rules/guidance.json (S2);
+        // this lint lead must emit the catalog severity like every other
+        // rule, never a hand-picked override.
         _ => Severity::S2,
     }
 }
@@ -582,6 +609,192 @@ fn check_markup(text: &str, file: &str, findings: &mut Vec<Finding>) {
 // State checks
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Instance-data checks (HON-03)
+// ---------------------------------------------------------------------------
+
+/// HON-03 (craft.md / guidance.json): sample data instantiates, never
+/// asserts. Detect instance-data patterns (emails, card numbers, invoice or
+/// period labels, recency phrases, name+email pairs, current-value
+/// settings) that are not marked illustrative anywhere nearby. These are
+/// leads for a reviewer against the brief's fact list, not proof — the
+/// checker cannot know what the brief supplied, only that the text reads as
+/// a specific real-world instance. Port of `checkInstanceData` in
+/// `scripts/lint-source.mjs`; keep both in lockstep.
+fn check_instance_data(text: &str, file: &str, findings: &mut Vec<Finding>) {
+    static RE_EMAIL: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b").unwrap());
+    // The final alternative catches the raw-data-field shape a card's last
+    // four digits usually take before a template renders it into "Card
+    // ending in 4242" text (e.g. `paymentMethodLast4: "4242"`), which the
+    // phrase patterns never see because the phrase is assembled at render
+    // time. The key name is anchored to card/last-four vocabulary (never a
+    // bare "card" or "wildcard" substring) and the value must be a quoted
+    // 4-digit string, so `cardWidth = 1280` and `wildcardTimeout = 3000`
+    // never match.
+    static RE_CARD: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(
+            r#"(?i)(?:Card\s+)?ending in \d{4}|\u{2022}{4}\s?\d{4}|\*{4}\s?\d{4}|last 4 \d{4}|\b(?:\w*last_?4|lastFour|card_?number)\b\s*[:=]\s*["']\d{4}["']"#,
+        )
+        .unwrap()
+    });
+    static RE_INVOICE: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(
+            r"(?i)(?:Invoice\s*[\u{2014}\u{2013}-]?\s*)?(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}",
+        )
+        .unwrap()
+    });
+    static RE_RECENCY: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(
+            r"(?i)last used \d+ (?:minutes?|hours?|days?|weeks?|months?|years?) ago|\d+ (?:days?|hours?|months?) ago",
+        )
+        .unwrap()
+    });
+    // Timezone matches are anchored to actual IANA area names so import
+    // specifiers like "Components/Button" never qualify. The bare locale
+    // label form ("Time (ET)") was dropped: it fired on ordinary prose too
+    // often to carry as a lead.
+    static RE_CURRENT: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(
+            r"\b(?:America|Europe|Asia|Africa|Australia|Pacific|Atlantic|Indian|Antarctic|Etc|US)/[A-Z][A-Za-z_]+\b|\b\d{2}:\d{2}\s*[\u{2013}-]\s*\d{2}:\d{2}\b|\bMM/DD/YYYY\b|\bDD/MM/YYYY\b|\bYYYY-MM-DD\b",
+        )
+        .unwrap()
+    });
+    static RE_NAME_PAIR: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"\b[A-Z][a-zA-Z]+ [A-Z][a-zA-Z]+\b").unwrap());
+    static RE_ILLUSTRATIVE_FILE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"(?i)illustrative data").unwrap());
+    static RE_SUPPRESS: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r#"(?i)illustrative|sample|example|placeholder|data-illustrative|aria-label="illustrative"#)
+            .unwrap()
+    });
+    static RE_INVOICE_PREFIX: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"(?i)^invoice").unwrap());
+    static RE_INVOICE_CONTEXT: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"(?i)invoice|receipt|billed|statement").unwrap());
+
+    let file_illustrative = RE_ILLUSTRATIVE_FILE.is_match(code_points_prefix(text, 400));
+
+    let is_suppressed = |index: usize| -> bool {
+        if file_illustrative {
+            return true;
+        }
+        let start = code_points_before(text, index, 200);
+        RE_SUPPRESS.is_match(&text[start..index])
+    };
+
+    let mut emails: Vec<(usize, String)> = Vec::new();
+    for m in RE_EMAIL.find_iter(text) {
+        let value = m.as_str();
+        let domain = value.split('@').nth(1).unwrap_or("").to_lowercase();
+        if domain.contains("example.") {
+            continue;
+        }
+        if is_suppressed(m.start()) {
+            continue;
+        }
+        emails.push((m.start(), value.to_string()));
+    }
+
+    let card_values: Vec<String> = RE_CARD
+        .find_iter(text)
+        .filter(|m| !is_suppressed(m.start()))
+        .map(|m| m.as_str().to_string())
+        .collect();
+
+    let mut invoice_values: Vec<String> = Vec::new();
+    for m in RE_INVOICE.find_iter(text) {
+        let matched = m.as_str();
+        if !RE_INVOICE_PREFIX.is_match(matched) {
+            let start = code_points_before(text, m.start(), 40);
+            let before = &text[start..m.start()];
+            if !RE_INVOICE_CONTEXT.is_match(before) {
+                continue;
+            }
+        }
+        if is_suppressed(m.start()) {
+            continue;
+        }
+        invoice_values.push(matched.to_string());
+    }
+
+    let recency_values: Vec<String> = RE_RECENCY
+        .find_iter(text)
+        .filter(|m| !is_suppressed(m.start()))
+        .map(|m| m.as_str().to_string())
+        .collect();
+
+    let mut person_values: Vec<String> = Vec::new();
+    for (index, value) in &emails {
+        let line_start = text[..*index].rfind('\n').map(|i| i + 1).unwrap_or(0);
+        let cp_start = code_points_before(text, *index, 80);
+        let window_start = line_start.max(cp_start);
+        let before = &text[window_start..*index];
+        let mut name: Option<&str> = None;
+        for m in RE_NAME_PAIR.find_iter(before) {
+            name = Some(m.as_str());
+        }
+        let Some(name) = name else { continue };
+        if is_suppressed(*index) {
+            continue;
+        }
+        person_values.push(format!("{name} {value}"));
+    }
+
+    let current_values: Vec<String> = RE_CURRENT
+        .find_iter(text)
+        .filter(|m| !is_suppressed(m.start()))
+        .map(|m| m.as_str().to_string())
+        .collect();
+
+    let email_values: Vec<String> = emails.into_iter().map(|(_, value)| value).collect();
+
+    let classes: [(&str, Vec<String>); 6] = [
+        ("email", email_values),
+        ("card", card_values),
+        ("invoice_or_period", invoice_values),
+        ("recency", recency_values),
+        ("person", person_values),
+        ("current_value", current_values),
+    ];
+
+    let mut parts: Vec<String> = Vec::new();
+    for (name, values) in classes.iter() {
+        if values.is_empty() {
+            continue;
+        }
+        let mut distinct: Vec<&String> = Vec::new();
+        for value in values {
+            if !distinct.iter().any(|seen| *seen == value) {
+                distinct.push(value);
+            }
+        }
+        let mut display: Vec<String> = distinct.into_iter().take(3).map(|s| s.clone()).collect();
+        if values.len() > display.len() {
+            display.push("\u{2026}".to_string());
+        }
+        parts.push(format!(
+            "{} \u{d7}{} ({})",
+            name,
+            values.len(),
+            display.join(", ")
+        ));
+    }
+
+    if parts.is_empty() {
+        return;
+    }
+
+    add_finding(
+        findings,
+        "HON-03",
+        file,
+        0,
+        &format!("Instance data not marked illustrative: {}.", parts.join(", ")),
+        "Confirm each value is supplied by the brief or label it illustrative / render unset state.",
+    );
+}
+
 fn check_states(text: &str, file: &str, findings: &mut Vec<Finding>) {
     let re_fetch =
         regex!(r"(?i)useQuery|useSWR|fetch\(|axios\.|await\s+\w+\.(?:get|post|find|query)");
@@ -712,6 +925,7 @@ pub fn lint_source(target: &Path) -> Result<LintSourceReport, EngineError> {
 
         let mut budget = Budget::new();
         check_styles(&text, &rel, &mut budget, &mut findings);
+        check_instance_data(&text, &rel, &mut findings);
 
         if !is_style_file(file) {
             check_markup(&text, &rel, &mut findings);

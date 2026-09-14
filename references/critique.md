@@ -56,7 +56,7 @@ Run passes in order. Stop and return early if a pass produces an `S1` finding th
 - Significance thresholds prevent signaling noise? (`DASH-08`)
 - Favorability, not direction, drives color? (`DASH-09`)
 - Every material claim — policy, capability, commitment, prior condition, definition, quantity, duration, data fact — traces to a supplied fact? (`HON-01`, `HON-02`)
-- Sample records stay inside the supplied schema and figures? (`HON-03`)
+- Sample records stay inside the supplied schema and figures? (`HON-03`) Before the gate, list every rendered instance value (names, emails, amounts, dates, current settings, usage recency) and check each against the brief's fact list; any value the brief does not supply is rendered as unset state or labelled illustrative in copy, and `lint`'s HON-03 leads are the starting checklist, not the whole one.
 - Success and confirmation copy claims only what the mechanism verifiably does? (`HON-04`)
 - Assistive text asserts nothing beyond the visible copy? (`HON-05`)
 - No design rationale, restated builder constraint, or completeness meta-claim rendered as copy? (`HON-06`)
@@ -70,6 +70,7 @@ Run passes in order. Stop and return early if a pass produces an `S1` finding th
 - All `A11Y-01` through `A11Y-12` gates pass (`references/accessibility.md` states each gate and its check; every failed gate is S1).
 - Priority order holds across breakpoints? (`COMP-09`)
 - Charts have accessible equivalents? (`A11Y-10`)
+- Every native control carries the surface's ground, ink, border, and focus tokens, with no default-state select or input? (`COMP-19`)
 
 ### Pass 8: Craft
 - Restraint budget respected on all nine counts? (`COMP-16`)

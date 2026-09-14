@@ -4,11 +4,14 @@ Maintained evidence register. For every claimed host, model family, engine, and 
 
 Last updated: 2026-09-13
 
+"Observed" means a recorded, informal internal evaluation record exists (workdir, prompt hash, tool calls, CLI calls, artifacts). It is not "supported": these are single builds recorded informally, not the published `m0-*` evaluations.
+
 ## Host support
 
 | Host | Tested | Evidence | Status |
 | --- | --- | --- | --- |
-| Claude Code (Anthropic) | unmeasured | Used during development, but no recorded host-routing/workflow trace meets the evaluation schema | unmeasured |
+| Claude Code (Anthropic) | observed — 4 builds, 2026-09-13 | internal evaluation record, 2026-09-13. All four builds read `SKILL.md` and produced the full artifact chain; all four ran `scripts/roll.mjs` and the linters directly and none executed `bin/considered.mjs` utilities (one opened its `--help`). Three of four self-reviewed; one spawned two fresh reviewers. | observed on one host — the skill's workflow is followed; the dispatcher is not on the builder's path (skill text names `scripts/`) |
+| Qwen Code | observed — 2 headless builds of `read-docs-home`, 2026-09-13 | internal evaluation record, 2026-09-13. Skill discovered by name from `~/.qwen/skills`. Both runs read `SKILL.md`, `workflow.md` and 6–7 reference files, ran `scripts/roll.mjs` and both linters, wrote PRODUCT/FRAME/STRUCTURE/CONTRACT; one run also wrote REVIEW-PACKET + REVIEW.json, the other skipped critique (run variance, not engine). Neither executed `bin/considered.mjs`. `CONTRACT.md` sidecar landed under `.considered/<surface>/` (same as Claude Code builds). | observed on a second host — workflow followed end to end; friction noted was cosmetic/doc-level, none blocking |
 | Codex (OpenAI) | unmeasured | No formal evaluation run | unmeasured — implicit invocation enabled |
 | Cursor | unmeasured | No formal evaluation run | unmeasured |
 | Generic LLM with file access | unmeasured | No formal evaluation run | unmeasured — manual fallback path available |
@@ -27,7 +30,8 @@ Last updated: 2026-09-13
 | Engine | Tested | Evidence | Status |
 | --- | --- | --- | --- |
 | Node.js (scripts/) | yes | 58 fixture tests and the frozen 34-case public compatibility suite pass | supported — authoritative fallback |
-| Rust (considered-rs) | yes | 143 Rust tests; shadow suite covers 23 JSON/error cases, 6 human streams, 7 native feature shapes, 4 lifecycle commands, cold file effects, and ten-run determinism | supported for direct use and validated public delegation shapes |
+| Rust (considered-rs) | yes | 143 Rust tests; shadow suite covers 27 JSON/error cases, 6 human streams, 7 native feature shapes, 4 lifecycle commands, cold file effects, ten-run determinism, and (2026-09-13) an installed-skill outside-cwd parity block for validate/contract/gate/roll/context/validate-skill | supported for direct use and validated public delegation shapes |
+| Rust — engine used inside builds (binary placed on PATH for real builds) | observed — builds on two hosts with the binary present and absent | internal evaluation record, 2026-09-13. No builder invoked `bin/considered.mjs` directly, so the engine never ran inside a build; every script the builders used (`scripts/roll.mjs`, `lint-source.mjs`, `lint-contract.mjs`) is Node-only and the skill text names only `scripts/`. A separate check confirmed native `validate`/`contract`/`gate`/`roll`/`context`/`validate-skill` now resolve the project root correctly from any installed-skill workdir (previously failed with exit 2, "Cannot find project root"). | observed: engine correct after a fix, but unexercised by builders — a doc/routing change is needed before the engine can affect a build |
 | WASM | unmeasured | Not yet implemented | not available |
 
 ## Review modes
@@ -47,6 +51,7 @@ Last updated: 2026-09-13
 - All findings are heuristic leads for a reviewer, not proof. A clean scan is never a design or accessibility pass.
 - Regex-based checks may produce false positives on unconventional code patterns.
 - Does not analyze Tailwind AST, framework-specific component APIs, or rendered output.
+- Instance-data leads are pattern-based (emails, card fragments, invoice/period labels, recency phrases, name+email pairs, current-value settings) and cannot know what the brief actually supplied — they flag text that reads as a specific real-world instance, not a confirmed violation.
 
 ### Gate
 - Gate thresholds are calibrated against one evaluation (the published m0-001 evaluation record). Provisional — recalibration needed with more data.

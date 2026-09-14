@@ -1,6 +1,6 @@
 {
   "$schema": "considered-runtime-manifest/v1",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Authority for installed skill files. Everything listed here is included in the runtime skill package. Everything not listed is excluded.",
   "include": [
     "SKILL.md",

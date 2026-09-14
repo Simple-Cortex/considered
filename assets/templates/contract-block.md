@@ -8,7 +8,7 @@
 
 `compose` copies the identical contract into a comment wrapper at the top of the built artifact when that file type and ownership make comments safe. The raw sidecar is mandatory for generated, binary, remote, or comment-hostile targets, and is the checker target when no wrapper exists.
 
-Do not rename fields or change separators. `scripts/lint-contract.mjs` parses the raw body and comment-wrapped forms. `P4` documents chrome outside the content hierarchy, so keep P4 chrome out of the zone element list.
+Do not rename fields or change separators. `node <skill-dir>/bin/considered.mjs contract` (backed by `scripts/lint-contract.mjs`) parses the raw body and comment-wrapped forms. `P4` documents chrome outside the content hierarchy, so keep P4 chrome out of the zone element list.
 
 ## Canonical raw body
 
@@ -39,7 +39,7 @@ ROLL:       <structure ids>, <direction id>, cns-<key>/<generation>
 
 ## Wrapper forms
 
-Use one wrapper that matches the target. The body between wrapper markers must match `CONTRACT.md` byte for byte apart from line indentation introduced by the comment syntax.
+Use one wrapper that matches the target: an HTML comment for `.html`, `.md`, `.vue`, `.svelte`, or `.astro`; a block comment for `.js`, `.ts`, `.jsx`, `.tsx`, or `.css`; a line comment for a line-comment-only source; and the sidecar alone — no wrapper — for generated, binary, remote, or comment-hostile targets. The body between wrapper markers must match `CONTRACT.md` byte for byte apart from line indentation introduced by the comment syntax.
 
 ### HTML, Markdown, Vue, Svelte, or Astro
 
@@ -113,4 +113,4 @@ ROLL:       ids, direction, cns-<key>/0
 1. Write the raw body to `CONTRACT.md` before composing.
 2. Add the matching wrapper to the target when safe. If not safe, record `contract placement: sidecar` in `STRUCTURE.md`.
 3. After any contract change, compare the field values in both copies.
-4. Run `node <skill-dir>/scripts/lint-contract.mjs <target>` for a wrapper, or target `CONTRACT.md` for sidecar-only delivery.
+4. Run `node <skill-dir>/bin/considered.mjs contract <target>` for a wrapper, or target `.considered/<surface-id>/CONTRACT.md` for sidecar-only delivery.

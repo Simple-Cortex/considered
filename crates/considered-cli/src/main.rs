@@ -72,8 +72,14 @@ enum Commands {
         /// Limit output to N findings.
         #[arg(long)]
         max_findings: Option<usize>,
+        /// Project root to load rule manifests from (defaults to auto-detection).
+        #[arg(long)]
+        root: Option<PathBuf>,
     },
     /// Evaluate the ship gate from checker reports and a review.
+    #[command(
+        long_about = "Evaluate the ship gate from checker reports and a review.\n\nCombines one or more checker report files (JSON output from `contract\n--json` and/or `lint --json`) with an independent review file into the real\nship gate. Both a report and --review are required.\n\nExample: considered gate contract.json lint.json --review REVIEW.json"
+    )]
     Gate {
         /// Report JSON files (from `contract --json` or `lint --json`).
         reports: Vec<String>,
@@ -86,6 +92,9 @@ enum Commands {
         /// Output format.
         #[arg(long, value_enum)]
         format: Option<OutputFormat>,
+        /// Project root to load the gate policy from (defaults to auto-detection).
+        #[arg(long)]
+        root: Option<PathBuf>,
     },
     /// Assign a structure and direction for a build.
     Roll {
@@ -104,9 +113,16 @@ enum Commands {
         /// Output as JSON.
         #[arg(long)]
         json: bool,
+        /// Project root to load decks from (defaults to auto-detection).
+        #[arg(long)]
+        root: Option<PathBuf>,
     },
     /// Validate rule manifests, decks, and reference coverage.
-    Validate,
+    Validate {
+        /// Project root to validate (defaults to auto-detection).
+        #[arg(long)]
+        root: Option<PathBuf>,
+    },
     /// Validate the skill package for drift and correctness.
     ValidateSkill {
         /// Output as JSON.
@@ -177,6 +193,9 @@ enum Commands {
         /// Output as JSON.
         #[arg(long)]
         json: bool,
+        /// Project root to build the manifest from (defaults to auto-detection).
+        #[arg(long)]
+        root: Option<PathBuf>,
     },
 }
 
@@ -612,8 +631,9 @@ fn run_contract(
     severity_filter: &[Severity],
     path_filter: Option<&str>,
     max_findings: Option<usize>,
+    root: Option<PathBuf>,
 ) -> i32 {
-    let root = match find_root() {
+    let root = match root.or_else(find_root) {
         Some(r) => r,
         None => {
             eprintln!("Cannot locate project root (no assets/rules/ found).");
@@ -637,8 +657,17 @@ fn run_contract(
         }
     };
 
-    // Check cache.
-    let cache_dir = root.join(".considered").join("cache");
+    // Check cache. The cache is project (caller) state — it belongs wherever
+    // the audited file lives, the same way `.considered/` surface state
+    // does for status/verify, and must NOT move to the skill's own root
+    // (which may be a shared, read-only, or unrelated install location).
+    // The corpus hash stays anchored to `root` on purpose: it identifies
+    // which rule corpus produced the cached result, and that corpus always
+    // lives at the skill's own root.
+    let cache_dir = std::env::current_dir()
+        .unwrap_or_else(|_| PathBuf::from("."))
+        .join(".considered")
+        .join("cache");
     let corpus_hash = hash_corpus(&root.join("assets").join("rules"));
     let file_hash = hash_file_content(Path::new(file)).unwrap_or_default();
     let mut file_hashes = BTreeMap::new();
@@ -769,8 +798,13 @@ fn run_contract(
     }
 }
 
-fn run_gate(reports: &[String], review_path: &str, format: OutputFormat) -> i32 {
-    let root = match find_root() {
+fn run_gate(
+    reports: &[String],
+    review_path: &str,
+    format: OutputFormat,
+    root: Option<PathBuf>,
+) -> i32 {
+    let root = match root.or_else(find_root) {
         Some(r) => r,
         None => {
             eprintln!("Cannot locate project root (no assets/rules/ found).");
@@ -1037,26 +1071,36 @@ fn main() {
             severity,
             path,
             max_findings,
+            root,
         }) => {
             let fmt = resolve_format(json, format);
             let sev_filter = severity
                 .as_ref()
                 .map(|s| parse_severity_filter(s))
                 .unwrap_or_default();
-            run_contract(&file, gate, fmt, &sev_filter, path.as_deref(), max_findings)
+            run_contract(
+                &file,
+                gate,
+                fmt,
+                &sev_filter,
+                path.as_deref(),
+                max_findings,
+                root,
+            )
         }
         Some(Commands::Gate {
             reports,
             review,
             json,
             format,
+            root,
         }) => {
             if reports.is_empty() {
                 eprintln!("Usage: considered-rs gate <report.json> [...report.json] --review <REVIEW.json> [--json]");
                 process::exit(2);
             }
             let fmt = resolve_format(json, format);
-            run_gate(&reports, &review, fmt)
+            run_gate(&reports, &review, fmt, root)
         }
         Some(Commands::Roll {
             mode,
@@ -1064,8 +1108,9 @@ fn main() {
             gen,
             reroll,
             json,
-        }) => run_roll(mode, key, gen, reroll, json),
-        Some(Commands::Validate) => run_validate(),
+            root,
+        }) => run_roll(mode, key, gen, reroll, json, root),
+        Some(Commands::Validate { root }) => run_validate(root),
         Some(Commands::ValidateSkill { json, root }) => run_validate_skill(json, root),
         Some(Commands::Inventory { path, json, format }) => {
             let fmt = resolve_format(json, format);
@@ -1103,7 +1148,11 @@ fn main() {
             run_status(surface.as_deref(), fmt)
         }
         Some(Commands::Verify { surface, json }) => run_verify(surface.as_deref(), json),
-        Some(Commands::Context { experimental, json }) => run_context(experimental, json),
+        Some(Commands::Context {
+            experimental,
+            json,
+            root,
+        }) => run_context(experimental, json, root),
     };
 
     process::exit(exit_code);
@@ -1115,12 +1164,13 @@ fn run_roll(
     gen: Option<u64>,
     reroll: bool,
     json: bool,
+    root: Option<PathBuf>,
 ) -> i32 {
     use considered_core::roll::{
         draw_chained, generation_capacity, load_deck, new_key, render_human, RollOutput,
     };
 
-    let root = match find_root() {
+    let root = match root.or_else(find_root) {
         Some(r) => r,
         None => {
             eprintln!("Cannot find project root (no assets/rules/ directory found).");
@@ -1229,10 +1279,10 @@ fn run_roll(
     0
 }
 
-fn run_validate() -> i32 {
+fn run_validate(root: Option<PathBuf>) -> i32 {
     use considered_core::validate::validate_assets;
 
-    let root = match find_root() {
+    let root = match root.or_else(find_root) {
         Some(r) => r,
         None => {
             eprintln!("Cannot find project root (no assets/rules/ directory found).");
@@ -1945,14 +1995,14 @@ fn run_verify(surface: Option<&str>, json: bool) -> i32 {
     }
 }
 
-fn run_context(experimental: bool, json: bool) -> i32 {
+fn run_context(experimental: bool, json: bool, root: Option<PathBuf>) -> i32 {
     if !experimental {
         eprintln!("considered context: this command is experimental.");
         eprintln!("Pass --experimental to enable it.");
         return 2;
     }
 
-    let root = match find_root() {
+    let root = match root.or_else(find_root) {
         Some(r) => r,
         None => {
             eprintln!("Cannot find project root (no assets/rules/ directory found).");
@@ -2000,7 +2050,7 @@ mod tests {
     #[test]
     fn version_matches_package() {
         let version = env!("CARGO_PKG_VERSION");
-        assert_eq!(version, "0.7.0");
+        assert_eq!(version, "0.7.1");
     }
 
     #[test]

@@ -14,10 +14,17 @@ const BANNED_LABELS = new Set(['submit', 'ok', 'yes', 'no', 'go', 'continue', 'm
 const BANNED_HEADINGS = new Set(['overview', 'metrics', 'kpis', 'charts', 'tables', 'other', 'analytics', 'data', 'stats', 'misc']);
 const BUDGET = { typeSizes: 5, fontWeights: 3, textColors: 3, radiusValues: 2, shadowLevels: 2, borderStyles: 2 };
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('Usage: node lint-source.mjs [directory|file] [--json] [--enforce-heuristics]\n\nRuns static heuristic source checks against one directory or file and\nreports review leads. It does not prove semantic, visual, or per-viewport\ndesign requirements — pair it with the independent review gate.');
+  process.exit(0);
+}
 const json = args.includes('--json');
 const enforce = args.includes('--enforce-heuristics');
 const positional = args.filter(arg => !['--json', '--enforce-heuristics'].includes(arg));
-if (positional.length > 1) { console.error('Usage: node lint-source.mjs [directory|file] [--json] [--enforce-heuristics]'); process.exit(2); }
+if (positional.length > 1) {
+  console.error(`lint-source accepts a single directory or file, not multiple paths (got ${positional.length}: ${positional.join(', ')}). Pass the shared parent directory instead, e.g. "." to lint the whole project.`);
+  process.exit(2);
+}
 const target = positional[0] || '.';
 
 let catalog;
@@ -108,6 +115,145 @@ function checkStates(text, file) {
   if (missing.length) add('STATE-01', file, 0, `Data fetching may lack ${missing.join(', ')} handling.`, 'Inspect the rendered region and record all eight states in REVIEW-PACKET.md.');
 }
 
+// HON-03 (craft.md / guidance.json): sample data instantiates, never asserts.
+// Detect instance-data patterns (emails, card numbers, invoice/period labels,
+// recency phrases, name+email pairs, current-value settings) that are not
+// marked illustrative anywhere nearby. These are leads for a reviewer against
+// the brief's fact list, not proof — the checker cannot know what the brief
+// supplied, only that the text reads as a specific real-world instance.
+const MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December';
+const EMAIL_PATTERN = /\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g;
+// The final alternative catches the raw-data-field shape a card's last four
+// digits usually take before a template renders it into "Card ending in
+// 4242" text (e.g. `paymentMethodLast4: "4242"`), which the phrase patterns
+// above never see because the phrase is assembled at render time. The key
+// name is anchored to card/last-four vocabulary (never a bare "card" or
+// "wildcard" substring) and the value must be a quoted 4-digit string, so
+// `cardWidth = 1280` and `wildcardTimeout = 3000` never match.
+const CARD_KEY_PATTERN = String.raw`\b(?:\w*last_?4|lastFour|card_?number)\b`;
+const CARD_PATTERN = new RegExp(
+  String.raw`(?:Card\s+)?ending in \d{4}|•{4}\s?\d{4}|\*{4}\s?\d{4}|last 4 \d{4}|${CARD_KEY_PATTERN}\s*[:=]\s*["']\d{4}["']`,
+  'gi'
+);
+const INVOICE_PATTERN = new RegExp(`(?:Invoice\\s*[\\u2014\\u2013-]?\\s*)?(?:${MONTHS})\\s+\\d{4}`, 'gi');
+const RECENCY_PATTERN = /last used \d+ (?:minutes?|hours?|days?|weeks?|months?|years?) ago|\d+ (?:days?|hours?|months?) ago/gi;
+// Timezone matches are anchored to actual IANA area names so import
+// specifiers like "Components/Button" never qualify. The bare locale label
+// form ("Time (ET)") was dropped: it fired on ordinary prose too often to
+// carry as a lead.
+const IANA_AREAS = 'America|Europe|Asia|Africa|Australia|Pacific|Atlantic|Indian|Antarctic|Etc|US';
+const CURRENT_VALUE_PATTERN = new RegExp(
+  String.raw`\b(?:${IANA_AREAS})\/[A-Z][A-Za-z_]+\b|\b\d{2}:\d{2}\s*[–-]\s*\d{2}:\d{2}\b|\bMM\/DD\/YYYY\b|\bDD\/MM\/YYYY\b|\bYYYY-MM-DD\b`,
+  'g'
+);
+const NAME_PAIR_PATTERN = /\b[A-Z][a-zA-Z]+ [A-Z][a-zA-Z]+\b/g;
+const SUPPRESSION_MARKERS = /illustrative|sample|example|placeholder|data-illustrative|aria-label="illustrative/i;
+
+// Suppression windows are measured in Unicode code points (not UTF-16 code
+// units, and never bytes), so a run of multi-byte characters (em dashes,
+// curly quotes, etc.) can never shift the window relative to the Rust port,
+// which counts the same way over `char`s.
+function codePointsBefore(text, index, count) {
+  const prefix = Array.from(text.slice(0, index));
+  return prefix.slice(Math.max(0, prefix.length - count)).join('');
+}
+function codePointsPrefix(text, count) {
+  return Array.from(text).slice(0, count).join('');
+}
+
+function isFileMarkedIllustrative(text) { return /illustrative data/i.test(codePointsPrefix(text, 400)); }
+function isSuppressed(text, index, fileIllustrative) {
+  if (fileIllustrative) return true;
+  return SUPPRESSION_MARKERS.test(codePointsBefore(text, index, 200));
+}
+function isPlaceholderEmail(email) {
+  const domain = (email.split('@')[1] || '').toLowerCase();
+  return domain.includes('example.');
+}
+
+function collectEmails(text, fileIllustrative) {
+  const out = [];
+  for (const match of text.matchAll(EMAIL_PATTERN)) {
+    if (isPlaceholderEmail(match[0])) continue;
+    if (isSuppressed(text, match.index, fileIllustrative)) continue;
+    out.push({ index: match.index, value: match[0] });
+  }
+  return out;
+}
+function collectCards(text, fileIllustrative) {
+  const out = [];
+  for (const match of text.matchAll(CARD_PATTERN)) {
+    if (isSuppressed(text, match.index, fileIllustrative)) continue;
+    out.push(match[0]);
+  }
+  return out;
+}
+function collectInvoicePeriods(text, fileIllustrative) {
+  const out = [];
+  for (const match of text.matchAll(INVOICE_PATTERN)) {
+    if (!/^invoice/i.test(match[0])) {
+      const before = codePointsBefore(text, match.index, 40);
+      if (!/invoice|receipt|billed|statement/i.test(before)) continue;
+    }
+    if (isSuppressed(text, match.index, fileIllustrative)) continue;
+    out.push(match[0]);
+  }
+  return out;
+}
+function collectRecency(text, fileIllustrative) {
+  const out = [];
+  for (const match of text.matchAll(RECENCY_PATTERN)) {
+    if (isSuppressed(text, match.index, fileIllustrative)) continue;
+    out.push(match[0]);
+  }
+  return out;
+}
+function collectPersons(text, fileIllustrative, emails) {
+  const out = [];
+  for (const { index, value } of emails) {
+    const lineStart = text.lastIndexOf('\n', index - 1) + 1;
+    const windowStart = Math.max(lineStart, index - 80);
+    const before = text.slice(windowStart, index);
+    let name = null;
+    for (const match of before.matchAll(NAME_PAIR_PATTERN)) name = match[0];
+    if (!name) continue;
+    if (isSuppressed(text, index, fileIllustrative)) continue;
+    out.push(`${name} ${value}`);
+  }
+  return out;
+}
+function collectCurrentValues(text, fileIllustrative) {
+  const out = [];
+  for (const match of text.matchAll(CURRENT_VALUE_PATTERN)) {
+    if (isSuppressed(text, match.index, fileIllustrative)) continue;
+    out.push(match[0]);
+  }
+  return out;
+}
+
+function checkInstanceData(text, file) {
+  const fileIllustrative = isFileMarkedIllustrative(text);
+  const emails = collectEmails(text, fileIllustrative);
+  const classes = [
+    ['email', emails.map(entry => entry.value)],
+    ['card', collectCards(text, fileIllustrative)],
+    ['invoice_or_period', collectInvoicePeriods(text, fileIllustrative)],
+    ['recency', collectRecency(text, fileIllustrative)],
+    ['person', collectPersons(text, fileIllustrative, emails)],
+    ['current_value', collectCurrentValues(text, fileIllustrative)],
+  ];
+  const parts = [];
+  for (const [name, values] of classes) {
+    if (!values.length) continue;
+    const distinct = [...new Set(values)];
+    const shown = distinct.slice(0, 3);
+    const display = values.length > shown.length ? [...shown, '…'] : shown;
+    parts.push(`${name} ×${values.length} (${display.join(', ')})`);
+  }
+  if (!parts.length) return;
+  add('HON-03', file, 0, `Instance data not marked illustrative: ${parts.join(', ')}.`, 'Confirm each value is supplied by the brief or label it illustrative / render unset state.');
+}
+
 let stats;
 try { stats = await stat(target); }
 catch (error) { console.error(`Cannot read ${target}: ${error.message}`); process.exit(2); }
@@ -120,6 +266,7 @@ for (const file of files) {
   const rel = relative(process.cwd(), file) || basename(file);
   const budget = blankBudget();
   checkStyles(text, rel, budget);
+  checkInstanceData(text, rel);
   if (!STYLE.has(extname(file))) { checkMarkup(text, rel); checkStates(text, rel); }
   checkBudget(budget, rel);
 }

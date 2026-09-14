@@ -268,6 +268,19 @@ if (!capability) fail(`engine capability matrix has no entry for "${selectedUtil
 // Node diagnostics are frozen too, and clap's usage text is not byte-for-byte
 // compatible for malformed argument shapes.  Unsupported shapes therefore
 // remain on the authoritative Node path instead of receiving a near-match.
+//
+// --help/-h rides this same mechanism rather than a special case: neither
+// this function nor any per-utility branch below ever recognizes "--help" or
+// "-h" as a matched flag, so every one of them falls through to `return
+// false` and --help is refused native delegation. For a utility that has a
+// Node script (UTILITIES[selectedUtility] is non-null — lint, contract,
+// gate, render, roll, inventory, validate, test, eval, check), that routes
+// --help to the script's own usage text below (each now handles --help/-h
+// directly) instead of to considered-rs's clap-generated help, which is
+// worded differently and not part of the frozen Node contract. A utility
+// with no Node script (status, verify, context) has no alternate text to
+// diverge from, so its --help reaches the native binary's clap help either
+// way once native is otherwise available.
 function canDelegateNative() {
   if (selectedUtility === 'contract') {
     let fileCount = 0;
@@ -275,7 +288,7 @@ function canDelegateNative() {
     for (let index = 0; index < selectedArgs.length; index += 1) {
       const arg = selectedArgs[index];
       if (arg === '--json' || arg === '--gate') continue;
-      if (['--format', '--severity', '--path', '--max-findings'].includes(arg) && !values.has(arg) && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
+      if (['--format', '--severity', '--path', '--max-findings', '--root'].includes(arg) && !values.has(arg) && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
         const value = selectedArgs[index + 1];
         if (arg === '--format' && !['compatibility', 'compact', 'json', 'ndjson'].includes(value)) return false;
         if (arg === '--severity' && !/^(S[1-4])(,S[1-4])*$/.test(value)) return false;
@@ -312,12 +325,18 @@ function canDelegateNative() {
   if (selectedUtility === 'gate') {
     let reports = 0;
     let review = false;
+    let root = false;
     for (let index = 0; index < selectedArgs.length; index += 1) {
       const arg = selectedArgs[index];
       if (arg === '--json') continue;
       if (arg === '--format' && ['compatibility', 'compact', 'json'].includes(selectedArgs[index + 1])) { index += 1; continue; }
       if (arg === '--review' && !review && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
         review = true;
+        index += 1;
+        continue;
+      }
+      if (arg === '--root' && !root && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
+        root = true;
         index += 1;
         continue;
       }
@@ -337,17 +356,35 @@ function canDelegateNative() {
     }
     return paths <= 1;
   }
-  if (selectedUtility === 'validate') return selectedArgs.length === 0;
+  if (selectedUtility === 'validate') {
+    let root = false;
+    for (let index = 0; index < selectedArgs.length; index += 1) {
+      const arg = selectedArgs[index];
+      if (arg === '--root' && !root && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
+        root = true;
+        index += 1;
+        continue;
+      }
+      return false;
+    }
+    return true;
+  }
   if (selectedUtility === 'roll') {
     let mode = null;
     let key = null;
     let generation = null;
     let reroll = false;
     let json = false;
+    let root = false;
     for (let index = 0; index < selectedArgs.length; index += 1) {
       const arg = selectedArgs[index];
       if (arg === '--json' && !json) { json = true; continue; }
       if (arg === '--reroll' && !reroll) { reroll = true; continue; }
+      if (arg === '--root' && !root && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
+        root = true;
+        index += 1;
+        continue;
+      }
       if (['--mode', '--key', '--gen'].includes(arg) && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
         const value = selectedArgs[index + 1];
         if (arg === '--mode' && mode === null) mode = value;
@@ -393,8 +430,19 @@ function canDelegateNative() {
     return positional.length <= 1 && selectedArgs.every(arg => !arg.startsWith('-') || arg === '--json');
   }
   if (selectedUtility === 'context') {
-    return selectedArgs.filter(arg => arg === '--experimental').length === 1 &&
-      selectedArgs.every(arg => arg === '--experimental' || arg === '--json');
+    if (selectedArgs.filter(arg => arg === '--experimental').length !== 1) return false;
+    let root = false;
+    for (let index = 0; index < selectedArgs.length; index += 1) {
+      const arg = selectedArgs[index];
+      if (arg === '--experimental' || arg === '--json') continue;
+      if (arg === '--root' && !root && selectedArgs[index + 1] && !selectedArgs[index + 1].startsWith('-')) {
+        root = true;
+        index += 1;
+        continue;
+      }
+      return false;
+    }
+    return true;
   }
   return false;
 }
@@ -422,8 +470,23 @@ const wantsMachineJson = globalJson || (envelope && machineJson.has(selectedUtil
 // script tolerates the flag, the Rust subcommand rejects it with exit 2).
 const nativeWantsJson = wantsMachineJson && machineJson.has(selectedUtility) && !selectedArgs.includes('--json');
 const selectedChildArgs = nativeWantsJson ? [...selectedArgs, '--json'] : selectedArgs;
+// These utilities operate on the skill's OWN package data (assets/rules/,
+// decks, SKILL.md, the route manifest) rather than on the caller's project,
+// so their root is always this skill's install location — never the
+// invocation cwd. The Node fallback gets this right implicitly (each script
+// locates itself via import.meta.url), but the native binary only knows its
+// own cwd, so it resolves the wrong root (or none) whenever it is invoked
+// from outside the skill directory. Pin it explicitly to the skill root the
+// dispatcher already knows, so both engines agree from any invocation
+// directory. (`status`/`verify` are deliberately excluded: they report the
+// CALLER's .considered/ design-surface state, which is genuinely
+// cwd-relative by design, not a bug.)
+const SKILL_ROOTED_UTILITIES = new Set(['validate', 'validate-skill', 'contract', 'gate', 'roll', 'context']);
+const nativeChildArgs = SKILL_ROOTED_UTILITIES.has(selectedUtility) && !selectedChildArgs.includes('--root')
+  ? [...selectedChildArgs, '--root', ROOT]
+  : selectedChildArgs;
 const childArgs = nativeBinary
-  ? [selectedUtility, ...selectedChildArgs]
+  ? [selectedUtility, ...nativeChildArgs]
   : capability.nodeFallback
     ? [join(ROOT, 'scripts', UTILITIES[selectedUtility]), ...(wantsMachineJson && !selectedArgs.includes('--json') ? ['--json'] : []), ...selectedArgs]
     : [];
@@ -473,10 +536,24 @@ if (envelope) {
     if (stderr) process.stderr.write(stderr);
     let result;
     try { result = JSON.parse(stdout); } catch { result = { stdout }; }
-    const expectedExit = [0, 1, 2, 3].includes(code);
-    const failure = nativeBinary && (signal || !expectedExit)
-      ? { code: 'native_child_failed', signal: signal || null, exitCode: code ?? 1 }
-      : undefined;
+    // Exit codes 1 (findings/failed gate) and 3 (deck exhaustion) are
+    // legitimate domain outcomes, not engine failures, and must stay
+    // error-free so callers do not mistake a normal result for a crash. Exit
+    // 2 is documented as strictly a usage/config error (see considered-rs
+    // --help and each Node script's own usage diagnostics) and never a valid
+    // protocol response, so it always carries an error — and this rule is
+    // engine-agnostic: a usage error means the same thing whether it came
+    // from the native binary or the Node fallback, so both engines produce
+    // the identical error shape (only `result`/`fallback`/`engine` may
+    // differ). An unexpected exit code or signal outside 0/1/2/3, however,
+    // remains a native-only failure mode: it signals a native child
+    // genuinely crashing, which has no Node-side equivalent to compare.
+    const domainExit = [0, 1, 3].includes(code);
+    const failure = !signal && code === 2
+      ? { code: 'usage_error', message: stderr.trim() || 'command exited with a usage error.', exitCode: 2 }
+      : nativeBinary && (signal || !domainExit)
+        ? { code: 'native_child_failed', signal: signal || null, exitCode: code ?? 1 }
+        : undefined;
     process.stdout.write(`${JSON.stringify(engineEnvelope(result, failure))}\n`);
     process.exit(signal ? 1 : (code ?? 1));
   });

@@ -7,6 +7,10 @@ import { loadRuleCatalog, loadGatePolicy } from './lib/rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
+if (process.argv.slice(2).some(arg => arg === '--help' || arg === '-h')) {
+  console.log('Usage: node validate-assets.mjs\n\nValidates packaged rule manifests, the gate policy, and the structure and\ndirection decks: internal consistency, and that every declared rule id is\nboth taught in a reference and reachable, with no dangling citations.');
+  process.exit(0);
+}
 const MODES = new Set(['persuade', 'operate', 'analyze', 'read', 'experience']);
 const TIERS = new Set(['organizing-axis', 'depth-strategy', 'framing']);
 const failures = [];

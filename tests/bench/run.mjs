@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Benchmark runner for lint/inventory performance.
+ * Benchmark runner for Milestone 0 baseline.
  *
  * Measures lint (source scan) and inventory performance across small, medium,
  * and large fixture trees. Records OS, architecture, Node version, repository

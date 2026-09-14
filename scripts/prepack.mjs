@@ -7,6 +7,10 @@ import { dirname, join } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
+if (process.argv.slice(2).some(arg => arg === '--help' || arg === '-h')) {
+  console.log('Usage: node prepack.mjs\n\nRelease checks that do not require a completed evaluation result: required\nfiles present, package.json fields, SKILL.md frontmatter, and that\nvalidate-assets.mjs and test.mjs both pass. Takes no arguments.');
+  process.exit(0);
+}
 const required = [
   'SKILL.md', 'README.md', 'LICENSE', 'package.json',
   'scripts/validate-assets.mjs', 'scripts/test.mjs', 'scripts/gate.mjs', 'scripts/lint-render.mjs', 'scripts/install.mjs',

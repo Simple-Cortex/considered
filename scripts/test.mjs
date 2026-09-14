@@ -12,6 +12,10 @@ import {
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
+if (process.argv.slice(2).some(arg => arg === '--help' || arg === '-h')) {
+  console.log('Usage: node test.mjs\n\nRuns the dependency-free fixture test suite for maintained CLI behavior\n(wizard planning, install, and script-level regressions). Takes no arguments.');
+  process.exit(0);
+}
 const FIXTURES = join(ROOT, 'tests', 'fixtures');
 let failed = 0;
 const pass = message => console.log(`pass  ${message}`);

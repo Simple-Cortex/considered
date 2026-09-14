@@ -19,6 +19,7 @@ result JSON per evaluation id. It never scores its own output.
 | Temperature / seed | not exposed by the harness; recorded `null`; outputs are stochastic samples |
 | Web access | not mechanically disabled; both conditions receive the same instruction to use only supplied facts and local assets; recorded as an instruction-level control |
 | Time budget | one executor invocation per build, no mid-build coaching |
+| Browser | each builder launches its own Playwright/Chromium from a script inside its working directory; the session-shared browser tool (Playwright MCP tab) is never used by a builder because concurrent builders share one tab |
 
 ## Condition procedure
 
@@ -42,6 +43,20 @@ inherits the session's repository cwd and skill listing, and one such builder
 read a prior evaluation's archives and reported treatment awareness. The sentence
 names no treatment and is part of the harness, not the task envelope; prompt.txt
 and its recorded sha are unchanged by it.
+
+The invocation carries a fourth line, identical for both conditions, after the
+confinement sentence: "If you need a browser to verify your work, start your own
+Playwright or Chromium instance from a script in the working directory; do not
+use a shared browser tool." This line names no treatment either and is part of
+the harness like the confinement sentence, the same way the
+spawn-permission line ("You may spawn subagents where the task's own workflow
+calls for an independent reviewer.") is a harness line applied identically to
+every build regardless of condition — it governs how the builder may operate,
+not what it builds. If `stage.mjs` or the protocol text ever embeds these
+invocation lines directly, keep this file and that code in step; as of this
+writing neither `stage.mjs` nor `protocol.md` embeds them, so only this file
+carries the wording, and `prompt.txt` content itself must not change to
+include them.
 
 ## Evidence procedure (identical for both conditions)
 
@@ -71,7 +86,7 @@ and its recorded sha are unchanged by it.
    state, saving one labeled screenshot per item to `evidence/`. The same executor
    procedure, prompt template, and model run for both conditions. If a state cannot be
    reached, it records `unreachable-<state>.txt` with the reason instead of a screenshot.
-3. Considered runs additionally copy `CONTRACT.md` to `contract.txt` and record
+3. Considered runs additionally copy `.considered/<surface-id>/CONTRACT.md` to `contract.txt` and record
    `lint-contract.json` and `lint-source.json` using the repo scripts.
 4. Artifacts are copied into `evals/results/<evaluation-id>/<condition>/<scenario-id>/run-001/`
    and `manifest.json` is completed with times, prompt sha256, and status.
@@ -140,3 +155,17 @@ independently (selectors must never see candidate builds) and reused across
 rounds. Host requirements: macOS `sips`, `codex` on PATH. Same-seed runs
 replay the same shuffle. These verdicts are directional benchmarks, never
 `m0-*` evidence.
+
+## Landmines and notes
+
+- **Shared browser tab.** Three of seven builders across two rounds reported
+  that the session-shared Playwright MCP browser tab was navigated away by
+  another concurrent builder mid-capture, because every concurrent builder in
+  a session shares that one tab. Each affected builder recovered by checking
+  `document.title` (or an equivalent page identity check) against what it
+  expected before trusting a screenshot or DOM read, then re-navigated and
+  retried. The rule that prevents the incident, not just the recovery from
+  it, is the browser line in the Environment freeze table and the condition
+  procedure above: a builder that needs a browser starts its own
+  Playwright/Chromium instance from a script in its own working directory
+  and never touches the shared browser tool.

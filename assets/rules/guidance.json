@@ -24,7 +24,7 @@
       "definition": "Craft refinement with no functional impact."
     }
   },
-  "ruleCount": 110,
+  "ruleCount": 113,
   "rules": [
     {
       "id": "HIER-04c",
@@ -319,6 +319,13 @@
       "severity": "S3",
       "check": "Date range controls offer presets before a calendar.",
       "fix": "Add presets and order them first."
+    },
+    {
+      "id": "COMP-19",
+      "name": "Native controls wear the theme",
+      "severity": "S2",
+      "check": "Every native form control that renders — select, input, textarea, checkbox, radio, button — carries the surface's ground, ink, border, and focus tokens; a control that shows the user agent's default white box, default border, or default text color on a themed ground is a render defect, and a select whose current value is not legible is an unset-state defect.",
+      "fix": "Style each native control family with the surface tokens (background, color, border, accent-color, focus ring) and verify by screenshot on the surface's actual ground."
     },
     {
       "id": "A11Y-07",
@@ -716,8 +723,8 @@
       "id": "EXP-07",
       "name": "Action color matches the emotional target",
       "severity": "S2",
-      "check": "On surfaces whose job is calming or focus, primary actions and ambient chrome avoid alarm-coded hues; when the dealt direction's accent conflicts with the surface's emotional target, the accent is re-mapped rather than applied verbatim.",
-      "fix": "Reserve alarm hues for destructive or warning actions and choose a calm-coded accent consistent with the direction."
+      "check": "Primary actions and ambient chrome avoid alarm-coded hues on every surface unless the action is destructive or the surface's job is to warn; on surfaces whose job is calming or focus this extends to accents, and when the dealt direction's accent conflicts with the surface's emotional target or with the action's meaning, the accent is re-mapped rather than applied verbatim.",
+      "fix": "Reserve alarm hues for destructive or warning actions; choose a calm-coded or neutral-coded accent consistent with the direction for every other primary action."
     },
     {
       "id": "READ-07",
@@ -760,6 +767,20 @@
       "severity": "S2",
       "check": "At rest — before any hover, expansion, or navigation — each offered case or item presents its claim plus at least one decisive supplied evidence element (scope, constraint, outcome, metric, or mechanism); collapse and disclosure defer depth, never the case itself, and a block showing only a name and kicker asks for the click on faith.",
       "fix": "Lift the evidence spine into the resting block and move only elaboration behind disclosure; if the facts supply scope, constraint, and outcome, the resting card carries them."
+    },
+    {
+      "id": "PERS-12",
+      "name": "Whole before large",
+      "severity": "S2",
+      "check": "A reproduced work (poster, screen, print, artwork supplied as evidence) is shown whole — uncropped, its title or wordmark fully legible — within the first viewport before any at-scale, zoomed, or cropped view; a text column paired with an artifact either matches the artifact's height or the artifact is sized to the column, so no viewport shows a cut-off artifact beside a void.",
+      "fix": "Lead with the complete artifact at a size that fits the viewport, offer scale as a second view, and size the paired column and artifact to the same bounds."
+    },
+    {
+      "id": "PERS-13",
+      "name": "The offer set is visible before the argument",
+      "severity": "S2",
+      "check": "On a pricing or plan-selection surface every offered plan's name and price is visible in the first viewport, whatever framing the dealt hand supplies; an objection, calculation, or story that precedes the offer set organises around it, never above it, so a visitor who has not chosen a tier can scan the options without scrolling.",
+      "fix": "Place the plan set (names and prices at minimum) in the first viewport and let the framing sit beside or beneath it; keep the full comparison below."
     },
     {
       "id": "FORM-03",

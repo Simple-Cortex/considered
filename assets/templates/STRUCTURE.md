@@ -8,7 +8,7 @@
 
 ## Assigned hand
 
-Use `scripts/roll.mjs` when available. Record the assigned hand exactly. On the all-host fallback, record the single unbiased selection method and do not reselect by preference.
+Use `node <skill-dir>/bin/considered.mjs roll` when available. Record the assigned hand exactly. On the all-host fallback, record the single unbiased selection method and do not reselect by preference.
 
 | Layer | Assigned id | Name | Law carried into the surface |
 | --- | --- | --- | --- |

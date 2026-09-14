@@ -427,6 +427,10 @@ ${renderFindings(contract, source, review)}
 
 function parseArgs() {
   const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log('Usage: node cockpit.mjs <result-directory> [--output <path>]\n\nReads JSON artifacts (run-record.json, contract.json, source.json,\nreview.json, known-limitations.json — all optional) from a result\ndirectory and writes a self-contained static HTML review cockpit. No\nJavaScript, no external dependencies, no live functionality.');
+    process.exit(0);
+  }
   const outputIndex = args.indexOf('--output');
   let outputPath = null;
   if (outputIndex !== -1) {

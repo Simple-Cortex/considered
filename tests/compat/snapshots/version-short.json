@@ -5,8 +5,8 @@
     "-v"
   ],
   "exit_code": 0,
-  "stdout": "0.7.0\n",
+  "stdout": "0.7.1\n",
   "stderr": "",
-  "stdout_sha256": "967d9afb101346667166f2e76e81910bc190488d7d41d50ca0072e9d92f00e32",
+  "stdout_sha256": "902311c7bb38fa1658ff403def6158ee7378fe9d6e2e284fa1c38735c31bd30b",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

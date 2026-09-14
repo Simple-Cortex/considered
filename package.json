@@ -1,6 +1,6 @@
 {
   "name": "considered",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A design-reasoning skill for AI coding agents. Information architecture, priority hierarchy, and action semantics, enforced as a checkable artifact chain.",
   "type": "module",
   "license": "MIT",
@@ -70,6 +70,7 @@
     "gate": "node scripts/gate.mjs",
     "cockpit": "node scripts/cockpit.mjs",
     "test:validate-skill": "node tests/validate-skill-fixtures.mjs",
+    "test:recovery-snapshot": "node --test tests/recovery-snapshot.test.mjs",
     "test:packed-artifact": "node tests/packed-artifact.mjs",
     "test:compat-shadow": "node tests/compat/shadow.mjs",
     "bench:compare": "node tests/bench/compare.mjs"

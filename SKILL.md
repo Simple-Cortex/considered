@@ -9,7 +9,7 @@ Work from decision to structure to composition, then review the result independe
 
 ## Start and route
 
-1. Resolve the workspace root and the surface id. Use the host-neutral paths in `references/workflow.md`.
+1. Resolve the workspace root and the surface id. Use the host-neutral paths in `references/workflow.md`. `<skill-dir>` is the directory that contains this `SKILL.md`; every path below is relative to it or to the workspace root.
 2. Select one mode: `persuade`, `operate`, `analyze`, `read`, or `experience`.
 3. Select the surface route: `page`, `flow`, `component`, or `existing`.
 4. Read only the command route plus its mode and surface branches. Do not load rule catalogs while building.
@@ -45,7 +45,7 @@ All durable artifacts are workspace-relative. The canonical paths are:
 .considered/<surface-id>/DESIGN.md
 ```
 
-Put the contract in a comment wrapper at the top of the built artifact when that is safe. Always retain the identical raw contract in `CONTRACT.md`; it is the sidecar fallback for generated, binary, remote, or comment-hostile targets. See `assets/templates/contract-block.md`.
+Put the contract in a comment wrapper at the top of the built artifact when that is safe. Always retain the identical raw contract at `.considered/<surface-id>/CONTRACT.md`; it is the sidecar fallback for generated, binary, remote, or comment-hostile targets. See `assets/templates/contract-block.md`.
 
 ## Ask narrowly, assume explicitly
 
@@ -76,7 +76,7 @@ The one structured exception is the brief gate: `frame` scores the brief on the 
 - One surface has one mode, one P0, and one primary action per scope.
 - Every element traces to a ranked question. P4 is chrome and does not compete for focus.
 - No design below a brief score of 8 of 16 without the user's recorded acceptance in `FRAME.md`.
-- `structure` uses the assigned hand from `scripts/roll.mjs` when available. Do not choose from a shortlist.
+- `structure` uses the assigned hand from `node <skill-dir>/bin/considered.mjs roll` when available. Do not choose from a shortlist.
 - The accessibility gates in `references/accessibility.md` are gates, not scores. An unverified gate is `blocked`, never `pass`.
 - `critique` receives a fresh reviewer packet, not the build reasoning.
 - Guidance rules surface by reading the routed catalog at its stage; no command emits them, and none of them has an executable checker.

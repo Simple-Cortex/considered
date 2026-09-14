@@ -6,8 +6,8 @@
     "validate"
   ],
   "exit_code": 0,
-  "stdout": "Asset validation passed: 190 unique rules, two valid decks, and a gate policy at 120/140.\n",
+  "stdout": "Asset validation passed: 193 unique rules, two valid decks, and a gate policy at 120/140.\n",
   "stderr": "",
-  "stdout_sha256": "c90312da815167acdc55f7fd311a97bae88936415592f149f7fcdad35ec0575c",
+  "stdout_sha256": "d3645563d054b820c732cb9fcd9c238163d67883f64b46399da844fc19d9c1f7",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

@@ -24,7 +24,7 @@ Name the intended encounter: where attention begins, what it discovers, and the 
 
 `EXP-05` (point of view over spectacle): do not use spectacle as a substitute for point of view. Do not hide a safety, consent, or essential accessibility control in the name of immersion.
 
-`EXP-07` (action color matches the emotional target): the surface's job sets the color temperature of its actions. On a calming or focus surface, a saturated red or orange primary reads as alarm — two independent blind reviews flagged exactly this on a breathing-session build. When the dealt direction's accent is alarm-coded, re-map it: keep the direction's character in structure and type, choose a calm-coded accent for the primary action, and reserve alarm hues for genuinely destructive or warning actions.
+`EXP-07` (action color matches the emotional target): primary actions and ambient chrome avoid alarm-coded hues on every surface unless the action is destructive or the surface's job is to warn. On a calming or focus surface the restriction extends to accents generally, not only primary actions — a saturated red or orange anywhere reads as alarm, two independent blind reviews flagged exactly this on a breathing-session build, and the same failure was independently confirmed again on an operate surface. When the dealt direction's accent conflicts with the surface's emotional target or with the action's meaning, re-map it: keep the direction's character in structure and type, choose a calm-coded or neutral-coded accent, and reserve alarm hues for genuinely destructive or warning actions.
 
 ## Review
 

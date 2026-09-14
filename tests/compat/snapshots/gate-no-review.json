@@ -7,7 +7,7 @@
   ],
   "exit_code": 2,
   "stdout": "",
-  "stderr": "Usage: node gate.mjs <report.json> [...report.json] --review <REVIEW.json> [--json]\n",
+  "stderr": "Usage: node gate.mjs <report.json> [...report.json] --review <REVIEW.json> [--json]\n\nCombines one or more checker report files (JSON output from\n\"considered contract --json\" and/or \"considered lint --json\") with an\nindependent review file into the real ship gate. Both a report and\n--review are required.\n\nExample: node gate.mjs contract.json lint.json --review REVIEW.json\n",
   "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-  "stderr_sha256": "ae310b07d0b11d52bfbf8033aa2e08f16fa4ecf8baa917aace740518f08e936f"
+  "stderr_sha256": "5d1d73936252998f6724b481e2b6f4aacbe46840318d7c7e31ccb82c4d80fb0c"
 }

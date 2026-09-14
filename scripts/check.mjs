@@ -9,6 +9,10 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 const SCENARIOS = join(ROOT, 'evals', 'scenarios');
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('Usage: node check.mjs <evaluation-result-directory> [--json]\n\nValidates a completed matched evaluation record for structural integrity\n(schema version, scenario catalog hashes, paired runs, artifact paths,\nreview score math). Does not score or claim an effectiveness result.');
+  process.exit(0);
+}
 const json = args.includes('--json');
 const positional = args.filter(arg => arg !== '--json');
 if (positional.length !== 1) { console.error('Usage: node check.mjs <evaluation-result-directory> [--json]'); process.exit(2); }

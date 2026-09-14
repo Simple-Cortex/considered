@@ -17,6 +17,6 @@ Stage `structure` of the Considered chain. The root skill (`../../SKILL.md`) rou
 2. `../../references/ia.md`, `../../references/hierarchy.md`, `../../references/actions.md`.
 3. `../../assets/templates/STRUCTURE.md`, `../../assets/templates/contract-block.md`.
 
-**Assignment, not taste:** run `node <skill-dir>/scripts/roll.mjs --mode <mode>` when available and record ids, key, and generation (`ROLL-01`). Never shortlist or reselect.
+**Assignment, not taste:** run `node <skill-dir>/bin/considered.mjs roll --mode <mode>` when available and record ids, key, and generation (`ROLL-01`). Never shortlist or reselect. The dispatcher runs the native engine when `considered-rs` is on `PATH` or `$CONSIDERED_RS_BIN` names it, and falls back to the Node scripts otherwise; output is identical either way. Running `scripts/roll.mjs` directly is still valid.
 
 **Block only when** an unresolved FRAME blocker affects decision, mode, P0, action risk, or target ownership.

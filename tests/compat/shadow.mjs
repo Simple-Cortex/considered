@@ -121,11 +121,16 @@ async function makeFixture() {
   await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'valid-operate.tsx'), join(root, 'contract-valid.tsx'));
   await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'invalid-operate.tsx'), join(root, 'contract-invalid.tsx'));
   await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'missing-contract.tsx'), join(root, 'contract-missing.tsx'));
+  await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'hierarchy-reason-comma.tsx'), join(root, 'contract-hierarchy-reason-comma.tsx'));
+  await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'hierarchy-reason-narrows-row.tsx'), join(root, 'contract-hierarchy-reason-narrows-row.tsx'));
+  await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'code-fence-after-roll.tsx'), join(root, 'contract-code-fence-after-roll.tsx'));
+  await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'indented-comment-body.tsx'), join(root, 'contract-indented-comment-body.tsx'));
   await cp(join(ROOT, 'tests', 'fixtures', 'source', 'clean'), join(root, 'clean'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'source', 'violations'), join(root, 'violations'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'source', 'spacing-edge'), join(root, 'spacing-edge'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'source', 'unsupported-only'), join(root, 'unsupported-only'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'source', 'real-admin-surface'), join(root, 'real-admin-surface'), { recursive: true });
+  await cp(join(ROOT, 'tests', 'fixtures', 'source', 'instance-data'), join(root, 'instance-data'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'gate'), join(root, 'gate'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'projects', 'system'), join(root, 'system'), { recursive: true });
   await cp(join(ROOT, 'tests', 'fixtures', 'projects', 'empty'), join(root, 'empty'), { recursive: true });
@@ -166,11 +171,40 @@ const cases = [
   { command: 'contract', name: 'clean-success', node: ['scripts/lint-contract.mjs', 'contract-valid.tsx', '--json'], rust: ['contract', 'contract-valid.tsx', '--json'], public: ['--json', 'contract', 'contract-valid.tsx'], exit: 0 },
   { command: 'contract', name: 'gate-findings', node: ['scripts/lint-contract.mjs', 'contract-invalid.tsx', '--gate', '--json'], rust: ['contract', 'contract-invalid.tsx', '--gate', '--json'], public: ['--json', 'contract', 'contract-invalid.tsx', '--gate'], exit: 1 },
   { command: 'contract', name: 'missing-contract', node: ['scripts/lint-contract.mjs', 'contract-missing.tsx', '--json'], rust: ['contract', 'contract-missing.tsx', '--json'], public: ['--json', 'contract', 'contract-missing.tsx'], exit: 1 },
+  // internal evaluation record, 2026-09-13: a comma inside a HIERARCHY
+  // row's reason text must never split off a phantom element.
+  { command: 'contract', name: 'hierarchy-reason-comma', node: ['scripts/lint-contract.mjs', 'contract-hierarchy-reason-comma.tsx', '--json'], rust: ['contract', 'contract-hierarchy-reason-comma.tsx', '--json'], public: ['--json', 'contract', 'contract-hierarchy-reason-comma.tsx'], exit: 0 },
+  // internal evaluation record, 2026-09-13: pins the chosen HIERARCHY
+  // grammar itself — " - reason" is trailing free text for the whole row
+  // (matching contract-block.md), so a comma-bearing reason never yields a
+  // second element, while a separate comma-only row (no reason marker)
+  // still splits normally.
+  { command: 'contract', name: 'hierarchy-reason-narrows-row', node: ['scripts/lint-contract.mjs', 'contract-hierarchy-reason-narrows-row.tsx', '--json'], rust: ['contract', 'contract-hierarchy-reason-narrows-row.tsx', '--json'], public: ['--json', 'contract', 'contract-hierarchy-reason-narrows-row.tsx'], exit: 0 },
+  // internal evaluation record, 2026-09-13: a Markdown code-fence line
+  // right after the contract's closing comment must never be swept into ROLL.
+  { command: 'contract', name: 'code-fence-after-roll', node: ['scripts/lint-contract.mjs', 'contract-code-fence-after-roll.tsx', '--json'], rust: ['contract', 'contract-code-fence-after-roll.tsx', '--json'], public: ['--json', 'contract', 'contract-code-fence-after-roll.tsx'], exit: 0 },
+  // internal evaluation record, 2026-09-13: an indented contract body
+  // inside an HTML/JS comment must still stop extraction at ROLL.
+  { command: 'contract', name: 'indented-comment-body', node: ['scripts/lint-contract.mjs', 'contract-indented-comment-body.tsx', '--json'], rust: ['contract', 'contract-indented-comment-body.tsx', '--json'], public: ['--json', 'contract', 'contract-indented-comment-body.tsx'], exit: 0 },
   { command: 'lint', name: 'clean-success', node: ['scripts/lint-source.mjs', 'clean/QueueSurface.tsx', '--json'], rust: ['lint', 'clean/QueueSurface.tsx', '--json'], public: ['--json', 'lint', 'clean/QueueSurface.tsx'], exit: 0 },
   { command: 'lint', name: 'findings', node: ['scripts/lint-source.mjs', 'violations', '--json'], rust: ['lint', 'violations', '--json'], public: ['--json', 'lint', 'violations'], exit: 0 },
   { command: 'lint', name: 'spacing-edge', node: ['scripts/lint-source.mjs', 'spacing-edge', '--json'], rust: ['lint', 'spacing-edge', '--json'], public: ['--json', 'lint', 'spacing-edge'], exit: 0 },
   { command: 'lint', name: 'unsupported-only', node: ['scripts/lint-source.mjs', 'unsupported-only', '--json'], rust: ['lint', 'unsupported-only', '--json'], public: ['--json', 'lint', 'unsupported-only'], exit: 2 },
   { command: 'lint', name: 'real-admin-surface', node: ['scripts/lint-source.mjs', 'real-admin-surface', '--json'], rust: ['lint', 'real-admin-surface', '--json'], public: ['--json', 'lint', 'real-admin-surface'], exit: 0 },
+  // instance-data (HON-03): all six classes unmarked must lead; the sibling
+  // with an "illustrative data" top-of-file comment must suppress every
+  // class; the example.com-only file must stay clean.
+  { command: 'lint', name: 'instance-data-unmarked', node: ['scripts/lint-source.mjs', 'instance-data/app.js', '--json'], rust: ['lint', 'instance-data/app.js', '--json'], public: ['--json', 'lint', 'instance-data/app.js'], exit: 0 },
+  { command: 'lint', name: 'instance-data-illustrative', node: ['scripts/lint-source.mjs', 'instance-data/app-illustrative.js', '--json'], rust: ['lint', 'instance-data/app-illustrative.js', '--json'], public: ['--json', 'lint', 'instance-data/app-illustrative.js'], exit: 0 },
+  { command: 'lint', name: 'instance-data-clean', node: ['scripts/lint-source.mjs', 'instance-data/app-clean.js', '--json'], rust: ['lint', 'instance-data/app-clean.js', '--json'], public: ['--json', 'lint', 'instance-data/app-clean.js'], exit: 0 },
+  // Code-point vs byte/UTF-16 window parity: a multi-byte run inside the
+  // 200-code-point suppression window and the 40-code-point invoice context
+  // window must land the same way in both engines.
+  { command: 'lint', name: 'instance-data-mbyte-suppressed', node: ['scripts/lint-source.mjs', 'instance-data/mbyte-suppressed.js', '--json'], rust: ['lint', 'instance-data/mbyte-suppressed.js', '--json'], public: ['--json', 'lint', 'instance-data/mbyte-suppressed.js'], exit: 0 },
+  { command: 'lint', name: 'instance-data-mbyte-invoice-window', node: ['scripts/lint-source.mjs', 'instance-data/mbyte-invoice-window.js', '--json'], rust: ['lint', 'instance-data/mbyte-invoice-window.js', '--json'], public: ['--json', 'lint', 'instance-data/mbyte-invoice-window.js'], exit: 0 },
+  // False positives that must never lead: IANA-area-looking import
+  // specifiers and card-substring identifiers with unquoted numeric values.
+  { command: 'lint', name: 'instance-data-false-positives', node: ['scripts/lint-source.mjs', 'instance-data/false-positives.jsx', '--json'], rust: ['lint', 'instance-data/false-positives.jsx', '--json'], public: ['--json', 'lint', 'instance-data/false-positives.jsx'], exit: 0 },
   { command: 'gate', name: 'ship', node: ['scripts/gate.mjs', 'gate/contract.json', 'gate/source.json', '--review', 'gate/review-ship.json', '--json'], rust: ['gate', 'gate/contract.json', 'gate/source.json', '--review', 'gate/review-ship.json', '--json'], public: ['--json', 'gate', 'gate/contract.json', 'gate/source.json', '--review', 'gate/review-ship.json'], exit: 0 },
   { command: 'gate', name: 'revise', node: ['scripts/gate.mjs', 'gate/contract.json', '--review', 'gate/review-revise.json', '--json'], rust: ['gate', 'gate/contract.json', '--review', 'gate/review-revise.json', '--json'], public: ['--json', 'gate', 'gate/contract.json', '--review', 'gate/review-revise.json'], exit: 1 },
   { command: 'gate', name: 'missing-outcome', node: ['scripts/gate.mjs', 'gate/contract.json', '--review', 'gate/review-no-outcome.json', '--json'], rust: ['gate', 'gate/contract.json', '--review', 'gate/review-no-outcome.json', '--json'], public: ['--json', 'gate', 'gate/contract.json', '--review', 'gate/review-no-outcome.json'], exit: 1 },
@@ -192,7 +226,11 @@ const lifecycleCases = [
   { command: 'validate-skill', direct: ['validate-skill', '--root', ROOT, '--json'], public: ['--json', 'validate-skill', '--root', ROOT] },
   { command: 'status', direct: ['status', '--json'], public: ['--json', 'status'] },
   { command: 'verify', direct: ['verify', '--json'], public: ['--json', 'verify'] },
-  { command: 'context', direct: ['context', '--experimental', '--json'], public: ['--json', 'context', '--experimental'] }
+  // Like validate-skill above, context reports on the skill's OWN package
+  // (its route manifest, references, skills/) rather than the invocation
+  // cwd, so both sides pin the same explicit root rather than relying on
+  // cwd-relative auto-detection to coincidentally agree.
+  { command: 'context', direct: ['context', '--experimental', '--root', ROOT, '--json'], public: ['--json', 'context', '--experimental', '--root', ROOT] }
 ];
 
 const humanCases = [
@@ -320,6 +358,33 @@ async function main() {
     const exhaustedEnvelopeResult = await run(process.execPath, [BIN, '--format', 'engine-json', 'roll', '--mode', 'operate', '--key', 'cns-eval0001', '--gen', '4'], { cwd: workspace, env: { CONSIDERED_RS_BIN: RUST } });
     const exhaustedEnvelope = JSON.parse(exhaustedEnvelopeResult.stdout);
     assert(exhaustedEnvelopeResult.code === 3 && exhaustedEnvelope.engine === 'native-rust' && exhaustedEnvelope.fallback === null && !exhaustedEnvelope.error, 'deck exhaustion was mislabeled as an engine failure');
+
+    // A usage error (exit 2) means the same thing regardless of which
+    // engine produced it, so the envelope's error shape must be identical
+    // across engines — everything except `engine`/`fallback` (which
+    // correctly differ) and `error.message` (each engine's own OS/runtime
+    // diagnostic text for a missing file legitimately differs in wording,
+    // e.g. Rust's "No such file or directory (os error 2)" vs Node's
+    // "ENOENT: no such file or directory, open '...'" — the CODE and
+    // EXIT are the parity contract, not the literal OS error string).
+    // These diagnostics are expected on stderr (the failure message itself),
+    // so this bypasses the `envelope()` helper, which asserts empty stderr
+    // for the success-path cases elsewhere in this suite — same reasoning
+    // as the `failedEnvelope` native-child-failure check just below.
+    const usageNativeResult = await run(process.execPath, [BIN, '--format', 'engine-json', 'contract', 'does-not-exist.tsx'], { cwd: workspace, env: { CONSIDERED_RS_BIN: RUST } });
+    const usageNodeResult = await run(process.execPath, [BIN, '--format', 'engine-json', 'contract', 'does-not-exist.tsx'], { cwd: workspace, env: { CONSIDERED_RS_BIN: join(workspace, 'no-native-here') } });
+    const usageNativeEnvelope = JSON.parse(usageNativeResult.stdout);
+    const usageNodeEnvelope = JSON.parse(usageNodeResult.stdout);
+    assert(usageNativeResult.code === 2 && usageNodeResult.code === 2, `usage error should exit 2 on both engines (native ${usageNativeResult.code}, node ${usageNodeResult.code})`);
+    assert(usageNativeEnvelope.engine === 'native-rust' && usageNodeEnvelope.engine === 'node-fallback', 'usage-error parity check did not exercise both engines');
+    assert(usageNativeEnvelope.schemaVersion === usageNodeEnvelope.schemaVersion && usageNativeEnvelope.protocolVersion === usageNodeEnvelope.protocolVersion, 'usage-error envelope schema/protocol version differs between engines');
+    assert(JSON.stringify(usageNativeEnvelope.result) === JSON.stringify(usageNodeEnvelope.result), 'usage-error result differs between engines');
+    assert(usageNativeEnvelope.error && usageNodeEnvelope.error, 'usage error (exit 2) must carry an error field on both engines');
+    assert(usageNativeEnvelope.error.code === 'usage_error' && usageNodeEnvelope.error.code === 'usage_error', `usage-error code must be identical and engine-agnostic (native ${usageNativeEnvelope.error.code}, node ${usageNodeEnvelope.error.code})`);
+    assert(usageNativeEnvelope.error.exitCode === 2 && usageNodeEnvelope.error.exitCode === 2, 'usage-error exitCode must be 2 on both engines');
+    assert(typeof usageNativeEnvelope.error.message === 'string' && usageNativeEnvelope.error.message.length > 0, 'native usage-error message must be present');
+    assert(typeof usageNodeEnvelope.error.message === 'string' && usageNodeEnvelope.error.message.length > 0, 'node-fallback usage-error message must be present');
+
     const childFailure = await fakeBinary(workspace, 'child-failure-native', 'if [ "$1" = "--protocol-version" ]; then printf "1.0.0\\n"; exit 0; fi\nprintf "simulated native failure\\n" >&2\nexit 70');
     const failedNative = await run(process.execPath, [BIN, '--format', 'engine-json', 'contract', 'contract-valid.tsx'], { cwd: workspace, env: { CONSIDERED_RS_BIN: childFailure } });
     assert(failedNative.code === 70, `native child failure did not propagate exit 70 (${failedNative.code})`);
@@ -334,6 +399,69 @@ async function main() {
       const unavailable = await run(process.execPath, [BIN, '--format', 'engine-json', ...args], { cwd: workspace, env: { CONSIDERED_RS_BIN: join(workspace, `no-${command}-native`) } });
       const unavailableEnvelope = JSON.parse(unavailable.stdout);
       assert(unavailable.code === 2 && unavailableEnvelope.engine === 'manual-unavailable' && unavailableEnvelope.fallback === 'manual_unavailable', `${command}: missing native companion was not explicit`);
+    }
+
+    // Several commands (`validate`, `contract`, `gate`, `roll`, `context`,
+    // `validate-skill` with no explicit --root) resolve data that belongs to
+    // the skill's OWN package — assets/rules/, decks, SKILL.md, the route
+    // manifest — never to the caller's project. Once the skill is installed
+    // somewhere and invoked from OUTSIDE that install directory (the
+    // realistic case: a project's cwd, not the skill's own folder), both
+    // engines must still agree byte-for-byte instead of the native binary
+    // silently failing to find its own package root. `status`/`verify` are
+    // intentionally excluded below: they report the CALLER's .considered/
+    // design-surface state, which is genuinely cwd-relative by design (both
+    // report a clean "no surface state found" from outside any project, on
+    // both engines, which is correct — not a divergence to guard here).
+    const installRoot = await mkdtemp(join(tmpdir(), 'considered-shadow-install-'));
+    try {
+      const skillDir = join(installRoot, 'skill');
+      const installed = await run(process.execPath, [join(ROOT, 'scripts', 'install.mjs'), '--dest', skillDir]);
+      assert(installed.code === 0, `install into fixture failed: ${installed.stderr}`);
+      const installedBin = join(skillDir, 'bin', 'considered.mjs');
+      await cp(join(ROOT, 'tests', 'fixtures', 'contracts', 'valid-operate.tsx'), join(installRoot, 'contract-valid.tsx'));
+      await cp(join(ROOT, 'tests', 'fixtures', 'gate'), join(installRoot, 'gate'), { recursive: true });
+
+      const outsideCwdCommands = [
+        { name: 'validate', args: ['validate'] },
+        // A user-supplied --root must be honored (not silently dropped by
+        // the argument-shape gate that decides native eligibility) and
+        // must still select the same skill root as the injected default.
+        { name: 'validate (explicit --root)', args: ['validate', '--root', skillDir] },
+        { name: 'contract', args: ['contract', 'contract-valid.tsx'] },
+        { name: 'gate', args: ['gate', 'gate/contract.json', '--review', 'gate/review-ship.json'] },
+        { name: 'roll', args: ['roll', '--mode', 'operate', '--key', 'cns-outside0001', '--gen', '0'] },
+        // Rust-only: no Node engine to cross-check, so only assert the
+        // native binary itself succeeds and is not mislabeled as an error.
+        { name: 'context', args: ['context', '--experimental'], nativeOnly: true },
+        { name: 'validate-skill (default root)', args: ['validate-skill'], nativeOnly: true }
+      ];
+
+      for (const test of outsideCwdCommands) {
+        const publicArgs = test.args;
+        const outsideNative = await run(process.execPath, [installedBin, ...publicArgs], { cwd: installRoot, env: { CONSIDERED_RS_BIN: RUST } });
+        assert(outsideNative.code === 0, `${test.name}: native from outside cwd should succeed, got exit ${outsideNative.code}: ${outsideNative.stderr}`);
+
+        const outsideNativeEnvelopeResult = await run(process.execPath, [installedBin, '--format', 'engine-json', ...publicArgs], { cwd: installRoot, env: { CONSIDERED_RS_BIN: RUST } });
+        const outsideNativeEnvelope = envelope(outsideNativeEnvelopeResult);
+        assert(outsideNativeEnvelopeResult.code === 0, `${test.name}: native engine-json from outside cwd should succeed, got exit ${outsideNativeEnvelopeResult.code}`);
+        assert(outsideNativeEnvelope.engine === 'native-rust', `${test.name}: expected native-rust engine, got ${outsideNativeEnvelope.engine}`);
+        assert(!outsideNativeEnvelope.error, `${test.name}: installed outside-cwd success should not report an engine error`);
+
+        if (test.nativeOnly) continue;
+
+        const outsideNode = await run(process.execPath, [installedBin, ...publicArgs], { cwd: installRoot, env: { CONSIDERED_RS_BIN: join(installRoot, 'no-native-here') } });
+        assertEquivalent(`${test.name} plain output from outside cwd (Node fallback vs native)`, outsideNode, outsideNative, installRoot);
+
+        const outsideNodeEnvelopeResult = await run(process.execPath, [installedBin, '--format', 'engine-json', ...publicArgs], { cwd: installRoot, env: { CONSIDERED_RS_BIN: join(installRoot, 'no-native-here') } });
+        const outsideNodeEnvelope = envelope(outsideNodeEnvelopeResult);
+        assert(outsideNodeEnvelopeResult.code === 0, `${test.name}: node-fallback engine-json from outside cwd should succeed, got exit ${outsideNodeEnvelopeResult.code}`);
+        assert(outsideNodeEnvelope.engine === 'node-fallback', `${test.name}: expected node-fallback engine, got ${outsideNodeEnvelope.engine}`);
+        assert(JSON.stringify(outsideNodeEnvelope.result) === JSON.stringify(outsideNativeEnvelope.result), `${test.name}: installed outside-cwd result differs between engines`);
+        assert(!outsideNodeEnvelope.error, `${test.name}: installed outside-cwd success should not report an engine error`);
+      }
+    } finally {
+      await rm(installRoot, { recursive: true, force: true });
     }
 
     const compact = await run(process.execPath, [BIN, 'contract', 'contract-valid.tsx', '--format', 'compact'], { cwd: workspace, env: { CONSIDERED_RS_BIN: RUST } });

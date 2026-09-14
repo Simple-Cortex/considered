@@ -21,6 +21,8 @@ values       button, input      metric card,       the dashboard
 
 `COMP-05` (module consistency): the same pattern renders the same way everywhere. Two metric cards with different padding, heading weight, or label placement read as two systems.
 
+`COMP-19` (native controls wear the theme): every native form control that renders — select, input, textarea, checkbox, radio, button — carries the surface's ground, ink, border, and focus tokens rather than the user agent default; a select whose current value is not legible against a themed ground is an unset-state defect, not a cosmetic one. This render-only loss was independently named on a settings surface, matching the failure already recorded in `m0-002`.
+
 ## 2. The token set
 
 Define this before writing any component. It is the minimum viable set for a data-dense product.

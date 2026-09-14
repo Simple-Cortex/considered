@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Deterministic compatibility runner for the Node/Rust CLI contract.
+ * Deterministic compatibility runner for Milestone 0.
  *
  * For each case in manifest.json, captures command, exit code, stdout, stderr,
  * and named file effects. Normalizes only temporary absolute paths, platform

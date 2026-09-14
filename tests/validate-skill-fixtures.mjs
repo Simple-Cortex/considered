@@ -23,7 +23,7 @@ const cases = [
 function run(root) { return new Promise(resolve => { const child = spawn(BIN, ['validate-skill', '--json', '--root', root], { cwd: root }); let out=''; let err=''; child.stdout.on('data', d => out += d); child.stderr.on('data', d => err += d); child.on('close', code => resolve({ code, out, err })); }); }
 for (const [name, mutate, expectedCode, expected] of cases) {
   const root = await mkdtemp(join(tmpdir(), 'considered-validator-'));
-  await cp(ROOT, root, { recursive: true, filter: source => !source.includes('/.git') && !source.includes('/target') && !/[\\/]\.[^\\/]+$/.test(source) });
+  await cp(ROOT, root, { recursive: true, filter: source => !source.includes('/.git') && !source.includes('/target') && !source.includes('/.qwen') });
   if (mutate) await mutate(root);
   const result = await run(root);
   const text = result.out + result.err;

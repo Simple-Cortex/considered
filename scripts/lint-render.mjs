@@ -11,6 +11,10 @@ import { readFile } from 'node:fs/promises';
 import { loadRuleCatalog, severityFor, summarizeFindings } from './lib/rules.mjs';
 
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('Usage: node lint-render.mjs <render-evidence.json> [--json]\n\nValidates a render-evidence/v1 JSON record (from capture tooling or the\nindependent reviewer) against hierarchy, whitespace, and responsive-reflow\nassertions measured at declared viewports.');
+  process.exit(0);
+}
 const json = args.includes('--json');
 const positional = args.filter(arg => arg !== '--json');
 if (positional.length !== 1) {

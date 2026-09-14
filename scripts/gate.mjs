@@ -6,20 +6,31 @@
 import { readFile } from 'node:fs/promises';
 import { evaluateGate } from './lib/rules.mjs';
 
+const USAGE = 'Usage: node gate.mjs <report.json> [...report.json] --review <REVIEW.json> [--json]\n\n' +
+  'Combines one or more checker report files (JSON output from\n' +
+  '"considered contract --json" and/or "considered lint --json") with an\n' +
+  'independent review file into the real ship gate. Both a report and\n' +
+  '--review are required.\n\n' +
+  'Example: node gate.mjs contract.json lint.json --review REVIEW.json';
+
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(USAGE);
+  process.exit(0);
+}
 const json = args.includes('--json');
 const reviewIndex = args.indexOf('--review');
 let reviewPath = null;
 if (reviewIndex !== -1) {
   reviewPath = args[reviewIndex + 1];
   if (!reviewPath || reviewPath.startsWith('--')) {
-    console.error('Usage: node gate.mjs <report.json> [...report.json] --review <REVIEW.json> [--json]');
+    console.error(USAGE);
     process.exit(2);
   }
 }
 const reportPaths = args.filter((arg, index) => arg !== '--json' && arg !== '--review' && index !== reviewIndex + 1);
 if (!reportPaths.length) {
-  console.error('Usage: node gate.mjs <report.json> [...report.json] --review <REVIEW.json> [--json]');
+  console.error(USAGE);
   process.exit(2);
 }
 

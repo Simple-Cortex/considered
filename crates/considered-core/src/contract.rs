@@ -112,12 +112,27 @@ pub fn extract_contract(text: &str) -> Option<String> {
     let mut body = Vec::new();
     let mut saw_roll = false;
     let re_end = Regex::new(r"(?i)CONSIDERED-CONTRACT-END").unwrap();
-    let re_roll = Regex::new(r"(?i)^ROLL\s*:").unwrap();
+    // Leading whitespace must be tolerated here exactly like parse_fields'
+    // own field-start regex tolerates it: an indented contract body (e.g.
+    // one written inside an HTML/JS comment for readability) otherwise never
+    // sets saw_roll, so the break condition below never fires and every line
+    // through end-of-file gets swept into whatever field was last open.
+    let re_roll = Regex::new(r"(?i)^\s*ROLL\s*:").unwrap();
     let re_break =
         Regex::new(r"(?i)^\s*(?:import|export|const|let|var|function|class|@|<[A-Za-z])").unwrap();
+    let re_fence = Regex::new(r"^```").unwrap();
 
     for &line in lines.iter().skip(start + 1) {
         let raw = strip_comment(line);
+        // A Markdown code-fence line (```, optionally with a language tag
+        // such as ```html) is never contract content, whether it appears
+        // inside the contract body or immediately after the comment closes
+        // (e.g. the contract was pasted into a fenced code block in a design
+        // doc). Skip it outright so it can never be swept into whatever
+        // field was last open.
+        if re_fence.is_match(raw.trim()) {
+            continue;
+        }
         if re_end.is_match(&raw) {
             break;
         }
@@ -261,11 +276,25 @@ pub fn parse_hierarchy(lines: &[String]) -> Hierarchy {
     let mut errors = Vec::new();
     let re = Regex::new(r"(?i)^(P[0-4])\s+(.+)$").unwrap();
     let re_chrome = Regex::new(r"(?i)^chrome\s*:").unwrap();
+    let re_reason_split = Regex::new(r"^(.*?)\s+-\s+(.*)$").unwrap();
 
     for line in lines {
         if let Some(caps) = re.captures(line.trim()) {
             let tier = caps[1].to_uppercase();
             let raw = caps[2].trim().to_string();
+
+            // The optional " - reason" suffix is trailing free text and must
+            // never be split on: a comma or semicolon inside the reason
+            // (e.g. "E1 - it beats every rival, including the summary card")
+            // previously split the row on the delimiter first and stripped
+            // the reason per-piece afterward, turning reason text after the
+            // first delimiter into a phantom extra element. Split the reason
+            // off the raw row first (on the first " - "), then only split
+            // the remaining element list.
+            let elements_source = re_reason_split
+                .captures(&raw)
+                .map(|c| c[1].to_string())
+                .unwrap_or_else(|| raw.clone());
 
             let parts: Vec<String> = if tier == "P4" && re_chrome.is_match(&raw) {
                 re_chrome
@@ -275,16 +304,9 @@ pub fn parse_hierarchy(lines: &[String]) -> Hierarchy {
                     .filter(|v| !v.is_empty())
                     .collect()
             } else {
-                raw.split([',', ';'])
-                    .map(|v| {
-                        // Strip " - reason" suffix
-                        let s = v.trim();
-                        if let Some(idx) = s.find(" - ") {
-                            s[..idx].trim().to_string()
-                        } else {
-                            s.to_string()
-                        }
-                    })
+                elements_source
+                    .split([',', ';'])
+                    .map(|v| v.trim().to_string())
                     .filter(|v| !v.is_empty())
                     .collect()
             };
@@ -599,7 +621,13 @@ pub fn validate_contract(
     let banned: HashSet<&str> = BANNED_HEADINGS.iter().copied().collect();
 
     // Zone checks
+    //
+    // element_to_zone must preserve first-insertion order to match JS's
+    // `Map` (insertion-ordered) iteration, since the "no hierarchy tier"
+    // pass below reports findings in that order. `element_order` tracks it
+    // alongside the HashMap, which stays purely for O(1) membership lookups.
     let mut element_to_zone: HashMap<String, String> = HashMap::new();
+    let mut element_order: Vec<String> = Vec::new();
     for zone in &zones {
         // IA-09: banned headings
         if banned.contains(zone.heading.to_lowercase().as_str()) {
@@ -688,6 +716,7 @@ pub fn validate_contract(
                 );
             } else {
                 element_to_zone.insert(element.clone(), zone.heading.clone());
+                element_order.push(element.clone());
             }
         }
     }
@@ -788,7 +817,7 @@ pub fn validate_contract(
     }
 
     // IA-01: elements without hierarchy tier
-    for element in element_to_zone.keys() {
+    for element in &element_order {
         if !hierarchy.elements.iter().any(|(e, _)| e == element) {
             add_finding(
                 &mut findings,

@@ -16,6 +16,10 @@ const REQUIRED = ['THESIS', 'DECISION', 'MODE', 'QUESTIONS', 'ZONES', 'HIERARCHY
 const MODES = ['persuade', 'operate', 'analyze', 'read', 'experience'];
 const BANNED_HEADINGS = new Set(['overview', 'metrics', 'kpis', 'charts', 'tables', 'other', 'analytics', 'data', 'stats', 'misc']);
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('Usage: node lint-contract.mjs <file> [--json] [--gate]\n\nValidates the machine-readable facts in a CONSIDERED-CONTRACT block for\ninternal consistency only (hierarchy, zones, questions, actions, roll\nprovenance). Visual rank, responsive behavior, and state behavior are\nverified through REVIEW-PACKET.md and the independent reviewer, never\ninferred from a text contract.');
+  process.exit(0);
+}
 const json = args.includes('--json');
 const gate = args.includes('--gate');
 const positional = args.filter(arg => !['--json', '--gate'].includes(arg));
@@ -49,9 +53,20 @@ function extractContract(text) {
   let sawRoll = false;
   for (let i = start + 1; i < lines.length; i++) {
     const raw = stripComment(lines[i]);
+    // A Markdown code-fence line (```, optionally with a language tag such as
+    // ```html) is never contract content, whether it appears inside the
+    // contract body or immediately after the comment closes (e.g. the
+    // contract was pasted into a fenced code block in a design doc). Skip it
+    // outright so it can never be swept into whatever field was last open.
+    if (/^```/.test(raw.trim())) continue;
     if (/CONSIDERED-CONTRACT-END/i.test(raw)) break;
+    // Leading whitespace must be tolerated here exactly like parseFields'
+    // own field-start regex tolerates it: an indented contract body (e.g.
+    // one written inside an HTML/JS comment for readability) otherwise never
+    // sets sawRoll, so the break condition below never fires and every line
+    // through end-of-file gets swept into whatever field was last open.
     if (sawRoll && (raw.trim() === '' || /^\s*(?:import|export|const|let|var|function|class|@|<[A-Za-z])/i.test(raw))) break;
-    if (/^ROLL\s*:/i.test(raw)) sawRoll = true;
+    if (/^\s*ROLL\s*:/i.test(raw)) sawRoll = true;
     body.push(raw);
   }
   return body.join('\n');
@@ -123,9 +138,18 @@ function parseHierarchy(lines) {
     const raw = match[2].trim();
     // P4 is chrome. It may be written as "P4 chrome: nav, filters" and is
     // intentionally excluded from the question-to-zone element graph.
+    // The optional " - reason" suffix is trailing free text and must never
+    // be split on: a comma or semicolon inside the reason (e.g. "E1 - it
+    // beats every rival, including the summary card") previously split the
+    // row on the delimiter first and stripped the reason per-piece
+    // afterward, turning reason text after the first delimiter into a
+    // phantom extra element. Split the reason off the raw row first (on the
+    // first " - "), then only split the remaining element list.
+    const reasonSplit = raw.match(/^(.*?)\s+-\s+(.*)$/);
+    const elementsSource = reasonSplit ? reasonSplit[1] : raw;
     const parts = tier === 'P4' && /^chrome\s*:/i.test(raw)
       ? raw.replace(/^chrome\s*:/i, '').split(/[,;]/).map(value => value.trim()).filter(Boolean)
-      : raw.split(/[,;]/).map(value => value.replace(/\s+-\s+.*$/, '').trim()).filter(Boolean);
+      : elementsSource.split(/[,;]/).map(value => value.trim()).filter(Boolean);
     if (!parts.length) errors.push(`No elements in ${tier}.`);
     tiers[tier].push(...parts);
   }
