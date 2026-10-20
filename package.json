@@ -1,6 +1,6 @@
 {
   "name": "considered",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A design-reasoning skill for AI coding agents. Information architecture, priority hierarchy, and action semantics, enforced as a checkable artifact chain.",
   "type": "module",
   "license": "MIT",

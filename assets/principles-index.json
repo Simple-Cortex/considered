@@ -1,6 +1,6 @@
 {
   "$schema": "considered-principles/v2",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "source": "assets/rules/guidance.json",
   "excludedPrefixes": [
     "EVAL",

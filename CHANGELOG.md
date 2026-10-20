@@ -10,6 +10,13 @@ belongs here and what stays in the development log.
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-10-20
+
+### Changed
+
+- Portfolio guidance: a reproduced work keeps its native aspect inside its frame and carries its title and client or role in the same viewport; the identity line above the work is limited to a name, a role, and one sentence.
+- Pricing guidance: a plan priced by usage, seat, or quote still shows its price state beside its name ("Free", "Custom pricing", a per-seat rate with its billing basis), and a billing toggle or audience switch takes one row above the plans.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added
