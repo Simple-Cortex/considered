@@ -91,7 +91,7 @@ plain JSON and Markdown, a design team can extend it: house rules ride
 alongside the built-in ones and are enforced the same way.
 
 **Developers who ship UI without a designer.** The skill carries the judgment
-you would otherwise have to source: 190 rules distilled from design practice
+you would otherwise have to source: 193 rules distilled from design practice
 and from measured failures, routed to the moment they apply — persuasion rules
 when composing a pricing page, density rules in a data workspace, honesty
 rules everywhere. You do not read the corpus; the workflow surfaces the
@@ -130,7 +130,7 @@ evals/                       frozen scenarios, the matched-evaluation harness, b
 
 ### The rule corpus
 
-190 rules across five manifests, split by what can honestly enforce them:
+193 rules across five manifests, split by what can honestly enforce them:
 
 - **Contract rules** validate `CONTRACT.md` mechanically — tiers, action
   scopes, roll provenance. High confidence, machine-checked.
