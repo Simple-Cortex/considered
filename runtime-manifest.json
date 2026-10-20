@@ -1,6 +1,6 @@
 {
   "$schema": "considered-runtime-manifest/v1",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Authority for installed skill files. Everything listed here is included in the runtime skill package. Everything not listed is excluded.",
   "include": [
     "SKILL.md",
@@ -27,6 +27,7 @@
     "assets/decks/*.json",
     "assets/templates/*.md",
     "assets/templates/*.json",
+    "assets/principles-index.json",
     "references/*.md",
     "skills/*/SKILL.md",
     "runtime-manifest.json"
@@ -60,6 +61,7 @@
     "scripts/manifest.mjs",
     "scripts/mint.mjs",
     "scripts/extract.mjs",
+    "scripts/extract-principles.mjs",
     "scripts/extract-all.mjs",
     "scripts/audit.mjs",
     "scripts/audit-update.mjs",

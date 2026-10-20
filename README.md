@@ -388,6 +388,20 @@ From a checkout, the `npm run` aliases in `package.json` cover the same set: `ro
 
 Exit codes: `0` success, `1` failed gate or validation, `2` usage or input error, `3` dice deck exhausted.
 
+### Design-system evidence cache
+
+The Rust companion can import normalized design-system evidence prepared by a host, then query it, check local-source freshness, or write selected component snapshots. It does not crawl remote documentation or discover a library catalog; the host prepares the source index and component evidence first. See [design-system-evidence.md](references/design-system-evidence.md) for the evidence and cache protocol.
+
+```text
+considered-rs design-system import <source-index.json> [--workspace .]
+considered-rs design-system query <index.json> [--query <text>] [--component <name> ...] \
+  [--fields purpose,api,accessibility] [--limit 10] [--max-bytes 8192] [--details]
+considered-rs design-system freshness <index.json> [--workspace .]
+considered-rs design-system snapshot <index.json> --component <name> ... --output-dir <directory>
+```
+
+Every command prints one compact JSON object on success; errors are plain text on stderr. Design-system input and processing errors use exit code `2`. The query response is bounded by `--max-bytes` in UTF-8 bytes, including its trailing newline; `--max-bytes 0` disables the bound. `--details` embeds full detail documents and may need a larger `--max-bytes`; components that cannot fit even alone are skipped and named in `coverage.oversized` (first 10, with `oversized_count`; `truncated: true`) rather than ending the result list. Request only the fields and component details needed for the current task. In hosts using the native companion dispatch, the equivalent entry point is `considered design-system ...` after configuring the companion as described by that host.
+
 Run the maintained fixture and package checks:
 
 ```bash
@@ -409,7 +423,7 @@ npm run eval -- --condition considered --evaluation-id m0-001 --out evals/result
 
 ## Status
 
-**v0.7.1.** The corpus is at 193 rules (167 → 193 since v0.3.0, every mint evidence-driven and documented in `CHANGELOG.md`), the blind gold-standard panel pipeline is included, and the ship gate is calibrated against the first evaluation's review distribution. The workflow, deterministic direction assignment, validators, independent-review packet, fixtures, and matched evaluation harness are included, and both complete matched evaluations have been collected, blind-reviewed, and validated: `m0-001` (the honesty deficit found and named) and `m0-002` (the deficit closed at parity while the preference margin held). Both records — metrics, all sixty anonymized review forms, and every harness incident — are published in `evals/results/m0-001/` and `evals/results/m0-002/`. The Rust accelerator serves validated contract, gate, inventory, lint, asset-validation, roll, lifecycle, and compact-output shapes; malformed legacy grammar stays on the byte-compatible Node fallback. The versioned [engine capability matrix](assets/templates/engine-capabilities.json) is the authority for selection and exceptions.
+**v0.8.0.** The corpus is at 193 rules (167 → 193 since v0.3.0, every mint evidence-driven and documented in `CHANGELOG.md`), the blind gold-standard panel pipeline is included, and the ship gate is calibrated against the first evaluation's review distribution. The workflow, deterministic direction assignment, validators, independent-review packet, fixtures, and matched evaluation harness are included, and both complete matched evaluations have been collected, blind-reviewed, and validated: `m0-001` (the honesty deficit found and named) and `m0-002` (the deficit closed at parity while the preference margin held). Both records — metrics, all sixty anonymized review forms, and every harness incident — are published in `evals/results/m0-001/` and `evals/results/m0-002/`. The Rust accelerator serves validated contract, gate, inventory, lint, asset-validation, roll, lifecycle, and compact-output shapes; malformed legacy grammar stays on the byte-compatible Node fallback. The versioned [engine capability matrix](assets/templates/engine-capabilities.json) is the authority for selection and exceptions.
 
 ## Attribution
 

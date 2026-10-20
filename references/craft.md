@@ -89,6 +89,8 @@ Numeric values in tables and metric blocks use tabular figures (`font-variant-nu
 
 `COMP-12` (component from question): component choice follows from the question and the object count, not from visual preference.
 
+When the target has a component library, apply `design-system-evidence.md` before recommending a component: verify that it exists in the installed version, check its documented purpose and constraints, and connect those to the task. Treat library documentation as evidence about the available implementation, not as a substitute for judging whether the component fits the user need.
+
 ### Display container
 
 | Situation | Component |

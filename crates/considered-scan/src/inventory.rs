@@ -206,14 +206,30 @@ struct TokenExtraction {
     spacing: Vec<String>,
     radii: Vec<String>,
     warnings: Vec<String>,
+    components: BTreeMap<String, Vec<String>>,
+    component_order: Vec<String>,
+    component_dirs: Vec<String>,
 }
 
-fn extract_tokens(code_files: &[PathBuf], root: &Path) -> TokenExtraction {
+fn extract_inventory_data(
+    code_files: &[PathBuf],
+    root: &Path,
+    target_kind: &str,
+) -> TokenExtraction {
     let re_custom_prop = Regex::new(r"(--[a-zA-Z0-9-]+)\s*:\s*([^;{}]+)").unwrap();
     let re_font_family = Regex::new(r"(?i)font-family\s*:\s*([^;{}]+)").unwrap();
     let re_spacing = Regex::new(r"(?i)(?:margin|padding|gap)(?:-[a-z]+)?\s*:\s*([^;{}]+)").unwrap();
     let re_spacing_val = Regex::new(r"(\d+(?:\.\d+)?(?:px|rem))").unwrap();
     let re_radius = Regex::new(r"(?i)border-radius\s*:\s*([^;{}]+)").unwrap();
+    let re_component_path = Regex::new(r"(?i)components?|ui/|design-system|primitives").unwrap();
+    let re_skip_name = Regex::new(r"(?i)^(index|types|utils|constants)$").unwrap();
+    let re_variant1 =
+        Regex::new(r#"(?:variant|appearance|kind|intent|tone)\s*[:?]?\s*["']([a-zA-Z-]+)["']"#)
+            .unwrap();
+    let re_variant2 = Regex::new(
+        r#"["'](primary|secondary|tertiary|ghost|subtle|outline|destructive|danger|link)["']"#,
+    )
+    .unwrap();
 
     let mut tokens: BTreeMap<String, String> = BTreeMap::new();
     let mut token_order = Vec::new();
@@ -221,8 +237,49 @@ fn extract_tokens(code_files: &[PathBuf], root: &Path) -> TokenExtraction {
     let mut spacing = Vec::new();
     let mut radii = Vec::new();
     let mut warnings: Vec<String> = Vec::new();
+    let mut components: BTreeMap<String, Vec<String>> = BTreeMap::new();
+    let mut component_order = Vec::new();
+    let mut component_dirs = Vec::new();
 
     for file in code_files {
+        let component_rel = if target_kind == "file" {
+            let parent = file
+                .parent()
+                .and_then(|p| p.file_name())
+                .unwrap_or_default();
+            let name = file.file_name().unwrap_or_default();
+            format!("{}/{}", parent.to_string_lossy(), name.to_string_lossy())
+        } else {
+            let r = file.strip_prefix(root).unwrap_or(file);
+            r.to_string_lossy().replace('\\', "/")
+        };
+        let is_component_path = re_component_path.is_match(&component_rel);
+        let stem = if is_component_path {
+            Some(
+                file.file_stem()
+                    .unwrap_or_default()
+                    .to_string_lossy()
+                    .to_string(),
+            )
+        } else {
+            None
+        };
+        if is_component_path {
+            let dir = if target_kind == "file" {
+                ".".to_string()
+            } else {
+                let d = file.parent().unwrap_or(root);
+                d.strip_prefix(root)
+                    .unwrap_or(d)
+                    .to_string_lossy()
+                    .replace('\\', "/")
+            };
+            let dir = if dir.is_empty() { ".".to_string() } else { dir };
+            if !component_dirs.contains(&dir) {
+                component_dirs.push(dir);
+            }
+        }
+
         let text = match fs::read_to_string(file) {
             Ok(t) => t,
             Err(e) => {
@@ -263,6 +320,26 @@ fn extract_tokens(code_files: &[PathBuf], root: &Path) -> TokenExtraction {
                 radii.push(value);
             }
         }
+
+        if let Some(stem) = stem.filter(|stem| !re_skip_name.is_match(stem)) {
+            let mut variants = Vec::new();
+            for cap in re_variant1.captures_iter(&text) {
+                let value = cap[1].to_string();
+                if !variants.contains(&value) {
+                    variants.push(value);
+                }
+            }
+            for cap in re_variant2.captures_iter(&text) {
+                let value = cap[1].to_string();
+                if !variants.contains(&value) {
+                    variants.push(value);
+                }
+            }
+            if !components.contains_key(&stem) {
+                component_order.push(stem.clone());
+            }
+            components.insert(stem, variants);
+        }
     }
 
     TokenExtraction {
@@ -272,98 +349,10 @@ fn extract_tokens(code_files: &[PathBuf], root: &Path) -> TokenExtraction {
         spacing,
         radii,
         warnings,
+        components,
+        component_order,
+        component_dirs,
     }
-}
-
-// ---------------------------------------------------------------------------
-// Component detection
-// ---------------------------------------------------------------------------
-
-fn detect_components(
-    code_files: &[PathBuf],
-    root: &Path,
-    target_kind: &str,
-) -> (BTreeMap<String, Vec<String>>, Vec<String>, Vec<String>) {
-    let re_component_path = Regex::new(r"(?i)components?|ui/|design-system|primitives").unwrap();
-    let re_skip_name = Regex::new(r"(?i)^(index|types|utils|constants)$").unwrap();
-    let re_variant1 =
-        Regex::new(r#"(?:variant|appearance|kind|intent|tone)\s*[:?]?\s*["']([a-zA-Z-]+)["']"#)
-            .unwrap();
-    let re_variant2 = Regex::new(
-        r#"["'](primary|secondary|tertiary|ghost|subtle|outline|destructive|danger|link)["']"#,
-    )
-    .unwrap();
-
-    let mut components: BTreeMap<String, Vec<String>> = BTreeMap::new();
-    let mut component_order = Vec::new();
-    let mut component_dirs = Vec::new();
-
-    for file in code_files {
-        let rel = if target_kind == "file" {
-            let parent = file
-                .parent()
-                .and_then(|p| p.file_name())
-                .unwrap_or_default();
-            let name = file.file_name().unwrap_or_default();
-            format!("{}/{}", parent.to_string_lossy(), name.to_string_lossy())
-        } else {
-            let r = file.strip_prefix(root).unwrap_or(file);
-            r.to_string_lossy().replace('\\', "/")
-        };
-
-        if !re_component_path.is_match(&rel) {
-            continue;
-        }
-
-        let dir = if target_kind == "file" {
-            ".".to_string()
-        } else {
-            let d = file.parent().unwrap_or(root);
-            d.strip_prefix(root)
-                .unwrap_or(d)
-                .to_string_lossy()
-                .replace('\\', "/")
-        };
-        let dir = if dir.is_empty() { ".".to_string() } else { dir };
-        if !component_dirs.contains(&dir) {
-            component_dirs.push(dir);
-        }
-
-        let stem = file
-            .file_stem()
-            .unwrap_or_default()
-            .to_string_lossy()
-            .to_string();
-        if re_skip_name.is_match(&stem) {
-            continue;
-        }
-
-        let text = match fs::read_to_string(file) {
-            Ok(t) => t,
-            Err(_) => continue,
-        };
-
-        let mut variants = Vec::new();
-        for cap in re_variant1.captures_iter(&text) {
-            let value = cap[1].to_string();
-            if !variants.contains(&value) {
-                variants.push(value);
-            }
-        }
-        for cap in re_variant2.captures_iter(&text) {
-            let value = cap[1].to_string();
-            if !variants.contains(&value) {
-                variants.push(value);
-            }
-        }
-
-        if !components.contains_key(&stem) {
-            component_order.push(stem.clone());
-        }
-        components.insert(stem, variants);
-    }
-
-    (components, component_order, component_dirs)
 }
 
 // ---------------------------------------------------------------------------
@@ -446,9 +435,7 @@ pub fn inventory(target: &Path) -> Result<InventoryReport, EngineError> {
         )));
     };
 
-    let extracted = extract_tokens(&code_files, &scan_root);
-    let (components, component_order, component_dirs) =
-        detect_components(&code_files, &scan_root, &target_kind);
+    let extracted = extract_inventory_data(&code_files, &scan_root, &target_kind);
     let (configs, docs) = detect_configs_and_docs(
         target,
         &target_kind,
@@ -471,13 +458,13 @@ pub fn inventory(target: &Path) -> Result<InventoryReport, EngineError> {
         fonts: extracted.fonts,
         spacing: extracted.spacing,
         radii: extracted.radii,
-        components,
+        components: extracted.components,
         configs,
         docs,
         warnings,
         token_order: extracted.token_order,
-        component_order,
-        component_dirs,
+        component_order: extracted.component_order,
+        component_dirs: extracted.component_dirs,
     })
 }
 

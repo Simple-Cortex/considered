@@ -162,3 +162,4 @@ Confirm that the primary action matches the mode's action posture.
 Confirm that motion spends attention only where the mode earns it.
 Confirm that the named characteristic failure is absent.
 Confirm that one success signal governs the full surface.
+When component choice affects a finding or recommendation, inspect the target's design system and consult `design-system-evidence.md`. Ground claims in the installed library's actual components, intended uses, and constraints; cite the source and version. Mark missing or uncertain evidence as a limitation, not as a defect.

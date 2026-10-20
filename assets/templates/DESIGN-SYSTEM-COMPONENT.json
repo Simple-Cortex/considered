@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "design_system": "",
+    "resolved_version": "",
+    "component": ""
+  },
+  "purpose": "",
+  "constraints": [],
+  "project_overrides": [],
+  "usage": {
+    "use_for": [],
+    "avoid_when": [],
+    "examples": []
+  },
+  "api": {
+    "import": "",
+    "props": [],
+    "variants": [],
+    "events": [],
+    "slots": []
+  },
+  "accessibility": {
+    "semantics": [],
+    "keyboard": [],
+    "screen_reader": [],
+    "requirements": []
+  },
+  "provenance": {
+    "sources": [
+      {
+        "kind": "library",
+        "path": "",
+        "fingerprint": "",
+        "observed_at": ""
+      }
+    ],
+    "indexed_at": "",
+    "freshness": {
+      "status": "unknown",
+      "checked_at": ""
+    }
+  }
+}

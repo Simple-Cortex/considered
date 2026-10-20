@@ -51,7 +51,7 @@ Last updated: 2026-09-13
 - All findings are heuristic leads for a reviewer, not proof. A clean scan is never a design or accessibility pass.
 - Regex-based checks may produce false positives on unconventional code patterns.
 - Does not analyze Tailwind AST, framework-specific component APIs, or rendered output.
-- Instance-data leads are pattern-based (emails, card fragments, invoice/period labels, recency phrases, name+email pairs, current-value settings) and cannot know what the brief actually supplied — they flag text that reads as a specific real-world instance, not a confirmed violation.
+- HON-03 instance-data leads are pattern-based (emails, card fragments, invoice/period labels, recency phrases, name+email pairs, current-value settings) and cannot know what the brief actually supplied — they flag text that reads as a specific real-world instance, not a confirmed violation.
 
 ### Gate
 - Gate thresholds are calibrated against one evaluation (the published m0-001 evaluation record). Provisional — recalibration needed with more data.

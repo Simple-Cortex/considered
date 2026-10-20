@@ -28,6 +28,7 @@ const UTILITIES = {
   status: null,
   verify: null,
   context: null,
+  'design-system': null,
   test: 'test.mjs',
   eval: 'eval.mjs',
   check: 'check.mjs',
@@ -67,6 +68,8 @@ CLI utilities:
   status [surface]              report current surface state (native companion)
   verify [surface]              verify artifact integrity (native companion)
   context --experimental        emit the bounded route manifest (native companion)
+  design-system <command>       import, query, check freshness, or snapshot component evidence
+                                 (native companion; compact JSON output)
   test                          run deterministic fixture tests
   eval [options]                initialize one matched evaluation condition
   check <result-dir>            validate a completed evaluation record
@@ -282,6 +285,8 @@ if (!capability) fail(`engine capability matrix has no entry for "${selectedUtil
 // diverge from, so its --help reaches the native binary's clap help either
 // way once native is otherwise available.
 function canDelegateNative() {
+  // This new native-only utility lets clap own its argument grammar.
+  if (selectedUtility === 'design-system') return true;
   if (selectedUtility === 'contract') {
     let fileCount = 0;
     const values = new Set();

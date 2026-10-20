@@ -55,6 +55,7 @@ Run passes in order. Stop and return early if a pass produces an `S1` finding th
 - Every value carries context? (`DASH-05`)
 - Significance thresholds prevent signaling noise? (`DASH-08`)
 - Favorability, not direction, drives color? (`DASH-09`)
+
 - Every material claim — policy, capability, commitment, prior condition, definition, quantity, duration, data fact — traces to a supplied fact? (`HON-01`, `HON-02`)
 - Sample records stay inside the supplied schema and figures? (`HON-03`) Before the gate, list every rendered instance value (names, emails, amounts, dates, current settings, usage recency) and check each against the brief's fact list; any value the brief does not supply is rendered as unset state or labelled illustrative in copy, and `lint`'s HON-03 leads are the starting checklist, not the whole one.
 - Success and confirmation copy claims only what the mechanism verifiably does? (`HON-04`)
@@ -78,6 +79,19 @@ Run passes in order. Stop and return early if a pass produces an `S1` finding th
 - Spacing tokenized, rhythm limited to 3 values per zone? (`COMP-03`, `COMP-18`)
 - Elevation and radius used semantically and consistently? (`COMP-10`, `COMP-11`)
 - Subtraction pass performed? (`EVAL-06`)
+
+---
+
+## Principles Compliance Pass
+
+After the standard review passes, check the surface against the principles that apply to it:
+
+1. Read `<skill-dir>/assets/principles-index.json`. Keep entries whose `modes` contain the surface's mode or `*` and whose `decision` corresponds to a decision actually present on the surface. Respect `tiers` and `surfaces`; absent means all.
+2. For each kept entry, independently judge whether the built surface complies.
+3. Record a non-compliance finding using that entry's own `severity` field, with the principle ID as the Rule ID and the specific violation as evidence.
+4. Read `STRUCTURE.md`'s "Principles Applied" section for traceability only. If it is missing or absent, record a single S3 finding for lack of traceability, not one per principle. Do not file findings for undocumented principles the surface complies with.
+
+Documentation never substitutes for compliance evidence: a documented principle the surface violates is still a finding, and an undocumented one it satisfies is not.
 
 ---
 

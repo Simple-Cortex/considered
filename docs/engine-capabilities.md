@@ -15,6 +15,7 @@ engine envelope. The legacy `--json` stream is intentionally unchanged.
 | --- | --- | --- |
 | `contract`, `gate`, `inventory`, `lint`, `validate`, `roll` | Compatible argument shapes select Rust after a `1.0.0` protocol probe; unavailable or incompatible binaries fall back to Node. Malformed legacy grammar stays on Node. `contract`, `gate`, `roll`, and `validate` resolve rule manifests, gate policy, and decks against the skill's own `assets/rules/`/`assets/decks/`, not the invocation cwd: the dispatcher pins this explicitly by passing `--root <skill-root>` to the native binary (a flag each of `considered-rs contract`/`gate`/`roll`/`validate` accepts alongside its own cwd-relative auto-detection for direct invocation). `contract --format compact`'s result cache is the one piece of this that stays cwd-relative on purpose: it is caller project state, so it is keyed under `<cwd>/.considered/cache`, never under the skill's own root. `inventory` and `lint` take an explicit path argument and were never root-relative. | `npm run test:compat-shadow`: 27 JSON/error cases (including a global `--json` ahead of `validate`, which is not forwarded to the native binary), 6 human-output cases, 7 native feature cases, ten-run determinism, and an installed-outside-cwd parity check (`validate`, `contract`, `gate`, `roll`) across both engines. |
 | `validate skill`, `status`, `verify`, `context --experimental` | Rust-only. A missing companion returns exit 2 and the `manual-unavailable` engine state. `validate skill` and `context` also resolve skill-package data (the skill's own frontmatter/version files, or its `skills/` route manifest) rather than the invocation cwd, and accept the same `--root` pinning the dispatcher applies by default; `status` and `verify` are the opposite — they deliberately stay cwd-relative, reporting the *caller's* project `.considered/` surface state (an absent surface reports a normal "no surface state found" result, not an error, from any cwd). | Four direct/public command comparisons plus compatible, missing, incompatible, and failed-child envelope cases, plus an installed-outside-cwd check for `validate skill` (default root) and `context`. |
+| `design-system import`, `query`, `freshness`, `snapshot` | Rust-only; success output is compact JSON (errors are plain text on stderr). `query` skips items that cannot fit `--max-bytes` even alone and lists the first 10 in `coverage.oversized` with the total in `coverage.oversized_count`; items that merely do not fit after earlier results end the page with `truncated: true`; `coverage.detail_files_read` counts only details in the returned results. The public dispatcher delegates argument validation to the companion. A missing companion returns exit 2. | Rust core and CLI integration tests cover persistence, bounded retrieval, source checks, and frozen evidence. |
 | `render`, `test`, `eval`, `check`, `install` | Node-only. | Frozen 34-case public compatibility suite and Node fixture tests. |
 
 The dispatcher consumes the JSON authority rather than duplicating command
@@ -47,3 +48,10 @@ Release benchmarking is available through `npm run bench:compare` after
 building `considered-rs` in release mode. The runner alternates engine order,
 uses identical small/medium/large trees, and rejects output drift before
 reporting cold, median, and p95 timings.
+
+For component evidence, run
+`cargo run --release -p considered-core --example design_system_bench`.
+This isolated 1,000-component workload reports cold/repeat import time,
+query median/p95, detail files read, freshness time, and response bytes.
+It measures local cache operations; remote documentation fetching and model
+latency are outside the measurement.

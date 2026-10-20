@@ -10,6 +10,51 @@ belongs here and what stays in the development log.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-19
+
+### Added
+
+- Principles documentation: `STRUCTURE.md` gains a "Principles Applied" section where the builder records the principles that drove each decision.
+- Principles compliance pass in `critique`: the reviewer independently checks the built surface against the principles that apply to it and reports violations at each principle's own severity.
+
+### Changed
+
+- `design-system query` coverage drops the always-equal `available` and always-empty `skipped_corrupt` fields.
+
+### Fixed
+
+- `design-system query` skips results larger than `--max-bytes` and reports them as `oversized` (bounded to 10 names plus `oversized_count`) instead of returning nothing.
+- Snapshot digests no longer depend on how the index path is spelled.
+- Source-fingerprint paths with a leading `./` now resolve; other unsafe paths are kept and reported `unknown` by `freshness`.
+- `complete` imports remove cached details of dropped components.
+- The principles index is rebuilt from per-rule text with correct mode tags; cross-cutting rules apply to every mode.
+- The principles index regeneration script no longer ships in the installed skill.
+
+## [0.7.2] - 2026-10-19
+
+### Added
+
+- Design-system evidence cache: reusable component and design-token facts
+  that compose and critique can consult instead of re-deriving library fit
+  on every build. The cache lives under `.considered/cache/design-systems/`
+  and is populated by the agent through the `design-system` command, as described in
+  `references/design-system-evidence.md`.
+- Principles layer: 94 principles extracted from mode references and
+  cross-cutting guidance, tagged with 12 decision types (pricing, hierarchy,
+  action-placement, proof, objection-handling, narrative, density, state,
+  form, navigation, emphasis, disclosure). The agent reads
+  `assets/principles-index.json` during compose and filters by context
+  (mode, decision type, tier, surface) at each major decision point.
+  Principles now actively guide composition instead of just auditing after
+  the fact.
+
+### Changed
+
+- `compose` protocol now reads the principles index (step 2) and consults
+  relevant principles at each major decision point (step 4). The workflow
+  instructs the agent to filter by mode, decision type, tier, and surface,
+  then apply the matching guidance during build.
+
 ## [0.7.1] - 2026-09-14
 
 ### Added

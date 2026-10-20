@@ -1,0 +1,1464 @@
+{
+  "$schema": "considered-principles/v2",
+  "version": "0.8.0",
+  "source": "assets/rules/guidance.json",
+  "excludedPrefixes": [
+    "EVAL",
+    "LOOP"
+  ],
+  "decisionTypes": [
+    "pricing",
+    "hierarchy",
+    "action-placement",
+    "proof",
+    "objection-handling",
+    "narrative",
+    "density",
+    "state",
+    "form",
+    "navigation",
+    "emphasis",
+    "disclosure"
+  ],
+  "principles": [
+    {
+      "id": "A11Y-07",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "Keyboard complete",
+      "guidance": "All actions are keyboard reachable and operable in logical order with no traps. Fix tab order and add keyboard handlers.",
+      "severity": "S1",
+      "source": {
+        "file": "references/accessibility.md",
+        "section": "1. The gates"
+      }
+    },
+    {
+      "id": "A11Y-08",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "Live regions",
+      "guidance": "Async updates, load completion, and errors are announced. Add live region announcements.",
+      "severity": "S1",
+      "source": {
+        "file": "references/accessibility.md",
+        "section": "Motion, targets, and async"
+      }
+    },
+    {
+      "id": "A11Y-10",
+      "modes": [
+        "*"
+      ],
+      "decision": "density",
+      "principle": "Chart alternatives",
+      "guidance": "Every chart has an accessible equivalent: data table, summary sentence, or both. Add a text summary and an accessible data table.",
+      "severity": "S1",
+      "source": {
+        "file": "references/accessibility.md",
+        "section": "3. Data visualization"
+      }
+    },
+    {
+      "id": "ACT-07",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Links for navigation",
+      "guidance": "Controls that change context without performing an operation render as links. Convert navigation buttons to links.",
+      "severity": "S3",
+      "source": {
+        "file": "references/actions.md",
+        "section": "2. Tier assignment procedure"
+      }
+    },
+    {
+      "id": "ACT-09",
+      "modes": [
+        "*"
+      ],
+      "decision": "action-placement",
+      "principle": "No homeless actions",
+      "guidance": "Every action belongs to a scope present on the surface. Remove or relocate actions that belong elsewhere.",
+      "severity": "S3",
+      "source": {
+        "file": "references/actions.md",
+        "section": "2. Tier assignment procedure"
+      }
+    },
+    {
+      "id": "ACT-10",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "principle": "Adjacent-rank pairing",
+      "guidance": "Side-by-side actions differ by 1 to 3 ranks on the emphasis ladder. Adjust treatments so paired actions are neither equal nor extremely distant.",
+      "severity": "S3",
+      "source": {
+        "file": "references/actions.md",
+        "section": "3. Emphasis ladder"
+      }
+    },
+    {
+      "id": "ACT-12",
+      "modes": [
+        "*"
+      ],
+      "decision": "action-placement",
+      "principle": "Placement by container",
+      "guidance": "Primary placement follows the container convention table. Move the primary to the conventional position for its container.",
+      "severity": "S3",
+      "source": {
+        "file": "references/actions.md",
+        "section": "4. Placement, order, grouping"
+      }
+    },
+    {
+      "id": "ACT-13",
+      "modes": [
+        "*"
+      ],
+      "decision": "action-placement",
+      "principle": "Order by workflow then frequency",
+      "guidance": "Action order follows workflow sequence, else descending frequency. Never alphabetical. Reorder.",
+      "severity": "S3",
+      "source": {
+        "file": "references/actions.md",
+        "section": "4. Placement, order, grouping"
+      }
+    },
+    {
+      "id": "ACT-18",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "Optimistic versus pessimistic",
+      "guidance": "Irreversible actions never show optimistic success. Use pending state and server confirmation for irreversible actions.",
+      "severity": "S2",
+      "source": {
+        "file": "references/actions.md",
+        "section": "6. Action states"
+      }
+    },
+    {
+      "id": "ACT-19",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "Confirmation content",
+      "guidance": "Confirmations name the object, state the effect and cascade, state reversibility, and use action-restating labels. Rewrite the confirmation; replace Yes and No with explicit action labels.",
+      "severity": "S1",
+      "source": {
+        "file": "references/actions.md",
+        "section": "7. Destructive actions"
+      }
+    },
+    {
+      "id": "ACT-20",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "Toggles are state, flows get setup affordances",
+      "guidance": "On/off toggles appear only on actions that take complete effect on flip; configuration flows render as a setup affordance with the action label and current status. Replace the toggle with a setup card or button (Configure, Verify) plus status; reserve toggles for immediately effective boolean state.",
+      "severity": "S2",
+      "source": {
+        "file": "references/actions.md",
+        "section": "6. Action states"
+      }
+    },
+    {
+      "id": "COMP-01",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "principle": "System before view",
+      "guidance": "No styling values are defined at the view level. Promote one-off values into tokens or components.",
+      "severity": "S2",
+      "source": {
+        "file": "references/craft.md",
+        "section": "1. Composition order"
+      }
+    },
+    {
+      "id": "COMP-08",
+      "modes": [
+        "*"
+      ],
+      "decision": "density",
+      "principle": "Declared grid",
+      "guidance": "A 12-column grid with defined gutter and max width is declared and followed. Express module widths in columns.",
+      "severity": "S3",
+      "source": {
+        "file": "references/craft.md",
+        "section": "Radius, elevation, grid"
+      }
+    },
+    {
+      "id": "COMP-12",
+      "modes": [
+        "*"
+      ],
+      "decision": "density",
+      "principle": "Component from question",
+      "guidance": "Component choice follows the selection tables. Replace with the component matching the situation.",
+      "severity": "S3",
+      "source": {
+        "file": "references/craft.md",
+        "section": "3. Component selection"
+      }
+    },
+    {
+      "id": "COMP-14",
+      "modes": [
+        "*"
+      ],
+      "decision": "disclosure",
+      "principle": "No nested overlays",
+      "guidance": "No modal opens another modal. Decompose into a page or a multi-step flow.",
+      "severity": "S2",
+      "source": {
+        "file": "references/craft.md",
+        "section": "Overlay and disclosure"
+      }
+    },
+    {
+      "id": "COMP-15",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "Presets before pickers",
+      "guidance": "Date range controls offer presets before a calendar. Add presets and order them first.",
+      "severity": "S3",
+      "source": {
+        "file": "references/craft.md",
+        "section": "Input"
+      }
+    },
+    {
+      "id": "COMP-19",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "Native controls wear the theme",
+      "guidance": "Every native form control that renders — select, input, textarea, checkbox, radio, button — carries the surface's ground, ink, border, and focus tokens; a control that shows the user agent's default white box, default border, or default text color on a themed ground is a render defect, and a select whose current value is not legible is an unset-state defect. Style each native control family with the surface tokens (background, color, border, accent-color, focus ring) and verify by screenshot on the surface's actual ground.",
+      "severity": "S2",
+      "source": {
+        "file": "references/craft.md",
+        "section": "1. Composition order"
+      }
+    },
+    {
+      "id": "CONT-03",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "Label consistency",
+      "guidance": "One concept uses one word across the product. Standardize terminology.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Naming and labeling"
+      }
+    },
+    {
+      "id": "CONT-06",
+      "modes": [
+        "*"
+      ],
+      "decision": "action-placement",
+      "principle": "Controls carry their consequences",
+      "guidance": "Every setting or consequential control carries a point-of-need description drawn from supplied facts, and any gating (plan, permission, prerequisite) is cued on the control rather than discovered on failure. Add a one-line supplied-fact description per control and surface the gating cue beside it; never invent the consequence (HON-02).",
+      "severity": "S3",
+      "source": {
+        "file": "references/craft.md",
+        "section": "Input"
+      }
+    },
+    {
+      "id": "DASH-08",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "emphasis",
+      "principle": "Significance threshold",
+      "guidance": "Deltas below a defined threshold render neutral. Define and apply a significance threshold.",
+      "severity": "S3",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Context rules: making a number mean something"
+      }
+    },
+    {
+      "id": "DASH-09",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "emphasis",
+      "principle": "Direction is not goodness",
+      "guidance": "Color encodes favorability, not the sign of the delta. Bind color to whether the movement is good for this metric.",
+      "severity": "S2",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Context rules: making a number mean something"
+      }
+    },
+    {
+      "id": "DASH-11",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "density",
+      "principle": "Tables are underrated",
+      "guidance": "Which-ones questions are answered by a sorted table, not a chart. Replace with a table and a deliberate default sort.",
+      "severity": "S3",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Chart selection"
+      }
+    },
+    {
+      "id": "DASH-12",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "density",
+      "principle": "Legend adjacency",
+      "guidance": "Legends sit adjacent to their data, or series are labeled directly. Move or replace the legend with direct labels.",
+      "severity": "S3",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Module anatomy"
+      }
+    },
+    {
+      "id": "DASH-14",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "hierarchy",
+      "principle": "Module size from tier",
+      "guidance": "Module span follows the tier span map. Resize modules to match tiers.",
+      "severity": "S2",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Layout, grid, and density"
+      }
+    },
+    {
+      "id": "DASH-15",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "navigation",
+      "principle": "Real drill paths",
+      "guidance": "Drill hierarchies match the user mental model. Replace invented hierarchies with real ones.",
+      "severity": "S3",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Interaction model"
+      }
+    },
+    {
+      "id": "DASH-16",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "navigation",
+      "principle": "Visible cross-filtering",
+      "guidance": "Cross-filter effects are immediately obvious and reversible in one action. Add an explicit applied-filter indicator and a clear control.",
+      "severity": "S2",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Interaction model"
+      }
+    },
+    {
+      "id": "DASH-17",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "navigation",
+      "principle": "Context preserved on drill",
+      "guidance": "Drill-down keeps parent context and restores prior state on return. Add breadcrumb and state restoration.",
+      "severity": "S2",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Interaction model"
+      }
+    },
+    {
+      "id": "DASH-18",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "disclosure",
+      "principle": "Tooltips carry precision only",
+      "guidance": "No information required for a top-ranked question is hover-only. Surface required information; keep tooltips for exact values and definitions.",
+      "severity": "S2",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Interaction model"
+      }
+    },
+    {
+      "id": "DASH-19",
+      "modes": [
+        "operate",
+        "analyze"
+      ],
+      "decision": "proof",
+      "principle": "Trend words require trend data",
+      "guidance": "No rendered or assistive copy states a direction for a metric unless a series is supplied; point-in-time values render as values or endpoint deltas, never as narrated trends. Show the supplied endpoints or delta and delete the direction word; chart a trend only from a supplied series.",
+      "severity": "S2",
+      "source": {
+        "file": "references/dense.md",
+        "section": "Chart selection"
+      }
+    },
+    {
+      "id": "EXP-01",
+      "modes": [
+        "experience"
+      ],
+      "decision": "hierarchy",
+      "tiers": [
+        "P0",
+        "P4"
+      ],
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "The work holds the focal position",
+      "guidance": "P0 is the work or the moment it appoints, never a logo, navigation bar, or explanatory frame. Demote chrome to P4 and give the work visual command.",
+      "severity": "S2",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Structure"
+      }
+    },
+    {
+      "id": "EXP-02",
+      "modes": [
+        "experience"
+      ],
+      "decision": "emphasis",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Motion is authored, not decorative",
+      "guidance": "Every transition carries a narrative or perceptual role, and stillness is used as a deliberate choice. Cut transitions that carry no role in the direction.",
+      "severity": "S2",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Structure"
+      }
+    },
+    {
+      "id": "EXP-03",
+      "modes": [
+        "experience"
+      ],
+      "decision": "action-placement",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Controls stay operable under immersion",
+      "guidance": "Keyboard operation, visible focus, captions or transcripts where applicable, reduced-motion behavior, and mute or pause control for playable media are present, and no safety or consent control is hidden. Restore the missing control. Immersion never justifies removing it.",
+      "severity": "S1",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "EXP-04",
+      "modes": [
+        "experience"
+      ],
+      "decision": "state",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Fallback preserves the encounter",
+      "guidance": "Unsupported media, constrained devices, and reduced-motion paths present a stable fallback that preserves the intended meaning. Author the fallback as part of the direction rather than leaving a degraded remainder.",
+      "severity": "S2",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "EXP-05",
+      "modes": [
+        "experience"
+      ],
+      "decision": "narrative",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Point of view over spectacle",
+      "guidance": "Composition, sound, interaction, and transition carry one stated point of view rather than substituting effect for it. State the point of view and cut what does not carry it.",
+      "severity": "S2",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "EXP-06",
+      "modes": [
+        "experience"
+      ],
+      "decision": "density",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "No competing task on the surface",
+      "guidance": "Concurrent commerce, administration, or reference tasks live on another surface rather than interrupting the authored sequence. Move the competing task off the surface and link to it.",
+      "severity": "S2",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Structure"
+      }
+    },
+    {
+      "id": "EXP-07",
+      "modes": [
+        "experience"
+      ],
+      "decision": "emphasis",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Action color matches the emotional target",
+      "guidance": "Primary actions and ambient chrome avoid alarm-coded hues on every surface unless the action is destructive or the surface's job is to warn; on surfaces whose job is calming or focus this extends to accents, and when the dealt direction's accent conflicts with the surface's emotional target or with the action's meaning, the accent is re-mapped rather than applied verbatim. Reserve alarm hues for destructive or warning actions; choose a calm-coded or neutral-coded accent consistent with the direction for every other primary action.",
+      "severity": "S2",
+      "source": {
+        "file": "references/experience.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "FORM-01",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "One ask per mobile step",
+      "guidance": "On mobile flows each step carries one primary ask; credential pairs and multi-field steps are split rather than stacked on small screens. Split the step; more, lighter steps beat one heavy step on a small screen.",
+      "severity": "S2",
+      "source": {
+        "file": "references/forms.md",
+        "section": "Structure a flow"
+      }
+    },
+    {
+      "id": "FORM-02",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "No step is a dead end",
+      "guidance": "Every flow step renders a visible way back or out, and back honors the preservation the flow promises. Add the back or close affordance and state what leaving or returning preserves.",
+      "severity": "S2",
+      "source": {
+        "file": "references/forms.md",
+        "section": "Structure a flow"
+      }
+    },
+    {
+      "id": "FORM-03",
+      "modes": [
+        "*"
+      ],
+      "decision": "form",
+      "principle": "Inputs look like inputs",
+      "guidance": "Text inputs render a visible boundary or fill, a visible focus state, and a tap target findable by eye; underline-only fields are not used on mobile forms. Give inputs a bounded or filled treatment with a visible focus state sized for touch.",
+      "severity": "S2",
+      "source": {
+        "file": "references/forms.md",
+        "section": "Structure a flow"
+      }
+    },
+    {
+      "id": "HIER-04c",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "tiers": [
+        "P2",
+        "P3"
+      ],
+      "principle": "No redundant low-tier encoding",
+      "guidance": "P2 and P3 elements use at most 2 emphasis devices. Pick one device: border or tint or bold, not all three.",
+      "severity": "S3",
+      "source": {
+        "file": "references/hierarchy.md",
+        "section": "HIER-04 encoding budget by tier"
+      }
+    },
+    {
+      "id": "HIER-04d",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "principle": "Motion reserved for alerts",
+      "guidance": "Motion is applied only to state changes requiring human intervention. Remove decorative animation and entrance effects.",
+      "severity": "S2",
+      "source": {
+        "file": "references/hierarchy.md",
+        "section": "HIER-04 encoding budget by tier"
+      }
+    },
+    {
+      "id": "HIER-13",
+      "modes": [
+        "*"
+      ],
+      "decision": "hierarchy",
+      "principle": "Adjacent tiers separate decisively",
+      "guidance": "Adjacent hierarchy tiers differ in at least two of size step, weight, or spatial treatment, by enough to distinguish at a glance; same-size same-weight tiers, or a distinction carried only by Regular versus Medium, are one tier rendered twice. Move each tier a full scale step apart in two dimensions or merge the tiers; hierarchy that needs inspection to perceive is not hierarchy.",
+      "severity": "S2",
+      "source": {
+        "file": "references/hierarchy.md",
+        "section": "4.2 Typographic scale"
+      }
+    },
+    {
+      "id": "HON-01",
+      "modes": [
+        "*"
+      ],
+      "decision": "proof",
+      "principle": "Rendered claims trace to supplied facts",
+      "guidance": "Every material claim in rendered copy, visible or assistive — a policy, capability, commitment, prior condition, metric definition, quantity, duration, or data fact — traces to the brief, the target source, or user-supplied evidence. Delete the claim, reword it to what the supplied facts support, or record the gap as a FRAME.md assumption that never renders.",
+      "severity": "S1",
+      "source": {
+        "file": "references/craft.md",
+        "section": "4.7 The supplied-fact boundary"
+      }
+    },
+    {
+      "id": "HON-02",
+      "modes": [
+        "*"
+      ],
+      "decision": "proof",
+      "principle": "Unsupplied policy never renders as product fact",
+      "guidance": "No rendered copy asserts an account, permission, reversibility, retention, enforcement, or delivery policy the facts do not supply; unsupplied policies are recorded as assumptions and designed conservatively without being stated. Move the policy to FRAME.md as an assumption, design the conservative behavior, and strip the assertion from the copy.",
+      "severity": "S1",
+      "source": {
+        "file": "references/craft.md",
+        "section": "Input"
+      }
+    },
+    {
+      "id": "HON-03",
+      "modes": [
+        "*"
+      ],
+      "decision": "proof",
+      "principle": "Sample data instantiates, never asserts",
+      "guidance": "Illustrative records fill only the supplied schema and stay consistent with supplied figures; no rendered total, distribution, trend, availability statement, or contact detail extends the supplied facts. Derive every figure from a supplied one, drop unsupplied attributes, render unset state for current values the facts do not supply, and mark instance data as illustrative in the artifact record.",
+      "severity": "S2",
+      "source": {
+        "file": "references/craft.md",
+        "section": "4.7 The supplied-fact boundary"
+      }
+    },
+    {
+      "id": "HON-04",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "Outcome copy states what the system verifiably did",
+      "guidance": "Success and confirmation copy asserts only outcomes the built mechanism actually produces; no claimed delivery, response, follow-up, or restoration without a supplied mechanism. Reword to the verifiable event and remove promised outcomes no supplied mechanism backs.",
+      "severity": "S2",
+      "source": {
+        "file": "references/craft.md",
+        "section": "4.7 The supplied-fact boundary"
+      }
+    },
+    {
+      "id": "HON-05",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "Assistive text never outruns visible copy",
+      "guidance": "No aria-label, alt text, or visually hidden summary asserts a fact stronger or more specific than the visible copy supports. Rewrite assistive text as a restatement of visible, supported content.",
+      "severity": "S2",
+      "source": {
+        "file": "references/craft.md",
+        "section": "4.7 The supplied-fact boundary"
+      }
+    },
+    {
+      "id": "HON-06",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "The chain never renders",
+      "guidance": "No rendered copy exposes the design's own reasoning or the brief's instructions to the builder — no ranking rationale, no completeness meta-claims about the page itself, no restated constraints; internal reasoning lives in the artifact record only. Move the rationale to the artifact record and delete it from the copy; a builder constraint is never a product fact.",
+      "severity": "S2",
+      "source": {
+        "file": "references/workflow.md",
+        "section": "2. Question and assumption protocol"
+      }
+    },
+    {
+      "id": "IA-04",
+      "modes": [
+        "*"
+      ],
+      "decision": "hierarchy",
+      "principle": "Identity first",
+      "guidance": "Lists, tables, and cards lead with the human-recognizable identity attribute. Move the identity attribute to the first and most prominent position.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Object model"
+      }
+    },
+    {
+      "id": "IA-05",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "State always visible",
+      "guidance": "Objects with a lifecycle display their state consistently everywhere. Add a consistent state indicator.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Object model"
+      }
+    },
+    {
+      "id": "IA-08",
+      "modes": [
+        "*"
+      ],
+      "decision": "hierarchy",
+      "principle": "Glance test",
+      "guidance": "Elements in a zone would be read within one 3-second glance to answer one question. Split zones whose elements serve different glances.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Grouping tests"
+      }
+    },
+    {
+      "id": "IA-10",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Move test",
+      "guidance": "Moving an element between zones changes the meaning of both. Merge or redefine arbitrary zones.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Grouping tests"
+      }
+    },
+    {
+      "id": "IA-11",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Card sort simulation",
+      "guidance": "The grouping is independently re-derivable from the element list. Try alternative organizing axes and compare.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Grouping tests"
+      }
+    },
+    {
+      "id": "IA-13",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Maximum 7 nav items per group",
+      "guidance": "Each navigation group holds 7 or fewer items. Introduce labeled groups rather than scrolling.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Navigation architecture"
+      }
+    },
+    {
+      "id": "IA-14",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Never mix nav layers",
+      "guidance": "Global, section, contextual, and detail layers use distinct controls. Separate filters from navigation and areas from views.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Navigation architecture"
+      }
+    },
+    {
+      "id": "IA-15",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Path back preserves state",
+      "guidance": "Return navigation restores filters, sort, and scroll position. Persist view state across navigation.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Navigation architecture"
+      }
+    },
+    {
+      "id": "IA-16",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Dashboard is not the app",
+      "guidance": "Full workflows live in their own area and are linked, not embedded. Link out rather than embedding a workflow.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Navigation architecture"
+      }
+    },
+    {
+      "id": "IA-20",
+      "modes": [
+        "*"
+      ],
+      "decision": "disclosure",
+      "principle": "Disclosure is not navigation",
+      "guidance": "In-place expansion is used for detail; context changes use navigation. Convert misused accordions to navigation, and the reverse.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Progressive disclosure"
+      }
+    },
+    {
+      "id": "IA-21",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Filter scope visible",
+      "guidance": "Global filters sit above all content; local filters are visually contained by their zone. Attach filters to the region they affect.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Filter architecture"
+      }
+    },
+    {
+      "id": "IA-22",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Three to five global filters",
+      "guidance": "Default view shows at most 5 global filters; the rest sit behind a More filters affordance with an active count. Move surplus filters behind a disclosure with a count badge.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Filter architecture"
+      }
+    },
+    {
+      "id": "IA-23",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Active filters shown as content",
+      "guidance": "Applied filters render as removable chips with a Clear all action. Add filter chips and a clear-all control.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Filter architecture"
+      }
+    },
+    {
+      "id": "IA-24",
+      "modes": [
+        "*"
+      ],
+      "decision": "navigation",
+      "principle": "Deliberate defaults",
+      "guidance": "Default filter state answers the top-ranked question for the most common user. Replace all-time or all-segment defaults with a meaningful default.",
+      "severity": "S2",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Filter architecture"
+      }
+    },
+    {
+      "id": "IA-25",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "State in the URL",
+      "guidance": "Filter, sort, and view state is encoded in the URL. Serialize view state to the URL for shareability.",
+      "severity": "S3",
+      "source": {
+        "file": "references/ia.md",
+        "section": "Filter architecture"
+      }
+    },
+    {
+      "id": "MODE-01",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "Mode declared before form",
+      "guidance": "One mode is named in the design contract before layout, components, tone, or motion are chosen. State the human goal as a verb and write the mode into the contract.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Commit to one mode"
+      }
+    },
+    {
+      "id": "MODE-02",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "Mode purity",
+      "guidance": "One success signal governs the whole surface; a second human goal lives on another surface, step, or clearly bounded region. Choose the dominant mode and split the competing goal out. Name the defect Mode Collision.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Enforce mode purity"
+      }
+    },
+    {
+      "id": "MODE-03",
+      "modes": [
+        "*"
+      ],
+      "decision": "density",
+      "principle": "Density matches frequency and expertise",
+      "guidance": "Density follows use frequency, expertise, and consequence rather than a default low-density template. Raise density for frequent expert use and lower it for rare or first-time use.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Compact comparison"
+      }
+    },
+    {
+      "id": "MODE-04",
+      "modes": [
+        "*"
+      ],
+      "decision": "action-placement",
+      "principle": "Action posture matches the mode",
+      "guidance": "The action posture is the one the declared mode prescribes: one commitment for persuade, scoped and reversible for operate, interpretation before action for analyze, quiet and contextual for read, invitational for experience. Restyle or relocate actions to the posture the declared mode prescribes.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Compact comparison"
+      }
+    },
+    {
+      "id": "MODE-05",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "principle": "Motion budget matches the mode",
+      "guidance": "Motion spends only the budget the mode earns: low for operate and read, medium for persuade and analyze, high only where motion is authored into the work. Remove motion the declared mode does not earn.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Compact comparison"
+      }
+    },
+    {
+      "id": "MODE-06",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "Characteristic failure absent",
+      "guidance": "The declared mode's characteristic failure is absent: Promise Parade, Action Flatland, Chart Dump, Content Fog, or Interface Eclipse. Name the failure present and rebuild the offending zone against the mode's commit list.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Compact comparison"
+      }
+    },
+    {
+      "id": "MODE-07",
+      "modes": [
+        "*"
+      ],
+      "decision": "narrative",
+      "principle": "Mode detected from the human verb",
+      "guidance": "Where the brief declares no mode, the mode follows the strongest consequential verb and the observable finish, not the artifact noun. Extract the human, verb, consequence, and finish; state one assumption, or ask when two outcomes carry equal consequence.",
+      "severity": "S3",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Detect the mode from an undeclared brief"
+      }
+    },
+    {
+      "id": "MODE-08",
+      "modes": [
+        "operate"
+      ],
+      "decision": "emphasis",
+      "principle": "Operate chrome stays quiet",
+      "guidance": "On operate-mode surfaces, navigation, headers, and section chrome stay near-monochrome and low-contrast; the palette expresses itself in data color, status, and the primary action, not in filled navigation or display-scale headings. Strip fills and emphasis from chrome, demote heading scale, and reserve the direction's palette for data, status, and the primary action.",
+      "severity": "S3",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Build settings"
+      }
+    },
+    {
+      "id": "MODE-09",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "principle": "The direction serves the genre",
+      "guidance": "On trust- or genre-governed surfaces (auth, payment, pricing, documentation, daily-operate tools), genre conventions own ground color, chrome, input affordances, and color semantics; the dealt direction expresses itself in accents, type details, and structure rather than as a costume. Restore the genre's conventions and re-map the direction into accents and details; adapting the direction to the genre is required fidelity, not a re-roll.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Commit to one mode"
+      }
+    },
+    {
+      "id": "MODE-10",
+      "modes": [
+        "*"
+      ],
+      "decision": "emphasis",
+      "principle": "The direction survives the register",
+      "guidance": "When a house style or brand register is supplied as fact, the dealt direction still gets at least one unmistakable, considered expression inside that register — a signature structural move, a deliberate density rhythm, a scale contrast; a build whose only register-compliant answer is the default component set reads as a template. Find the degrees of freedom the register leaves open and spend the direction there; never spend it by breaking the supplied register, and never spend it nowhere.",
+      "severity": "S2",
+      "source": {
+        "file": "references/modes.md",
+        "section": "Commit to one mode"
+      }
+    },
+    {
+      "id": "PERS-01",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "action-placement",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Single primary commitment",
+      "guidance": "The surface carries one primary commitment; secondary paths are subordinate in contrast, area, or placement. Demote every competing call to action and keep one label, destination, and promise.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Make one primary commitment"
+      }
+    },
+    {
+      "id": "PERS-02",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "proof",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Claim-proof adjacency",
+      "guidance": "Every meaningful claim carries its evidence in the same viewport, module, or reading beat. Move the evidence beside the claim, or drop the claim.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Pair every claim with proof"
+      }
+    },
+    {
+      "id": "PERS-03",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "proof",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Evidence is real and attributable",
+      "guidance": "Every metric, quote, customer, logo, certification, award, and urgency signal is real, attributable, and within the permission granted. Remove invented proof and replace it with an honest operating fact or a direct demonstration.",
+      "severity": "S1",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Protect credibility"
+      }
+    },
+    {
+      "id": "PERS-04",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "narrative",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "First viewport orients",
+      "guidance": "Without scrolling the visitor can name what this is, the sharpest promise, one adjacent reason to believe, and the next step. Rebuild the first viewport around those four answers and move feature grids and FAQ below it.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Win the first viewport"
+      }
+    },
+    {
+      "id": "PERS-05",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "objection-handling",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Objections ordered by decision cost",
+      "guidance": "Objections are resolved in the order they block progress, and no purchase-blocking objection sits in an FAQ or footer. Rank objections by prevalence, severity, and how early they block, then place each beside the claim that creates it.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Order objections by decision cost"
+      }
+    },
+    {
+      "id": "PERS-06",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "narrative",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Every section carries a belief delta",
+      "guidance": "Each section names the belief before it and the stronger belief after it, and survives the removal, objection, and unique-evidence tests. Delete, merge, or rewrite sections that produce no belief delta.",
+      "severity": "S3",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Make every section persuade"
+      }
+    },
+    {
+      "id": "PERS-07",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "pricing",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Pricing exposes the real decision",
+      "guidance": "Comparison leads with the criteria that change plan choice and states total cost drivers, limits, renewal, and cancellation terms in plain language. Surface the deciding criteria and mandatory costs; remove decoy plans and unevidenced popularity marks.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Build pricing around the real decision"
+      }
+    },
+    {
+      "id": "PERS-08",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "proof",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Proof shows the mechanism",
+      "guidance": "When the brief supplies no proof asset for a claim, the proof zone renders a schema-faithful depiction of the product mechanism built only from supplied fields, flows, or records, rather than prose alone. Draw the mechanism from supplied facts — the template, the flow, the record — and place it as the claim's evidence; add nothing the facts do not supply.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Choose proof that fits the claim"
+      }
+    },
+    {
+      "id": "PERS-09",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "pricing",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "The price is the P0 value",
+      "guidance": "On a pricing surface, price carries value-weight above its labels, and every choosable tier renders a reachable action. Apply label-value inversion to the price and give each tier a working commitment path.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Build pricing around the real decision"
+      }
+    },
+    {
+      "id": "PERS-10",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "proof",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Visual products get visual evidence",
+      "guidance": "When the offer is a physical or visual object, the page develops its visual evidence within the supplied facts — the supplied depiction rendered at more than one honest view (full object, meaningful detail, in-context scale, per-variant state) — rather than a single lone rendering; missing photography is a constraint to design around, not a void to leave. Render the supplied geometry or spec at several honest views; generic context (a wall, a hand, a room) is instantiation, invented product attributes are not.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Build pricing around the real decision"
+      }
+    },
+    {
+      "id": "PERS-11",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "disclosure",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "The argument survives collapse",
+      "guidance": "At rest — before any hover, expansion, or navigation — each offered case or item presents its claim plus at least one decisive supplied evidence element (scope, constraint, outcome, metric, or mechanism); collapse and disclosure defer depth, never the case itself, and a block showing only a name and kicker asks for the click on faith. Lift the evidence spine into the resting block and move only elaboration behind disclosure; if the facts supply scope, constraint, and outcome, the resting card carries them.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Build pricing around the real decision"
+      }
+    },
+    {
+      "id": "PERS-12",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "proof",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "Whole before large",
+      "guidance": "A reproduced work (poster, screen, print, artwork supplied as evidence) is shown whole — uncropped, its title or wordmark fully legible — within the first viewport before any at-scale, zoomed, or cropped view; a text column paired with an artifact either matches the artifact's height or the artifact is sized to the column, so no viewport shows a cut-off artifact beside a void. Lead with the complete artifact at a size that fits the viewport, offer scale as a second view, and size the paired column and artifact to the same bounds.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Build pricing around the real decision"
+      }
+    },
+    {
+      "id": "PERS-13",
+      "modes": [
+        "persuade"
+      ],
+      "decision": "pricing",
+      "surfaces": [
+        "page",
+        "flow"
+      ],
+      "principle": "The offer set is visible before the argument",
+      "guidance": "On a pricing or plan-selection surface every offered plan's name and price is visible in the first viewport, whatever framing the dealt hand supplies; an objection, calculation, or story that precedes the offer set organises around it, never above it, so a visitor who has not chosen a tier can scan the options without scrolling. Place the plan set (names and prices at minimum) in the first viewport and let the framing sit beside or beneath it; keep the full comparison below.",
+      "severity": "S2",
+      "source": {
+        "file": "references/persuade.md",
+        "section": "Build pricing around the real decision"
+      }
+    },
+    {
+      "id": "READ-01",
+      "modes": [
+        "read"
+      ],
+      "decision": "hierarchy",
+      "tiers": [
+        "P0",
+        "P4"
+      ],
+      "surfaces": [
+        "page"
+      ],
+      "principle": "Current idea outranks chrome",
+      "guidance": "P0 is the current proposition, instruction, or answer, not the page title, navigation, or table of contents. Demote chrome to P4 and give the current idea the focal position.",
+      "severity": "S2",
+      "source": {
+        "file": "references/read.md",
+        "section": "Structure"
+      }
+    },
+    {
+      "id": "READ-02",
+      "modes": [
+        "read"
+      ],
+      "decision": "narrative",
+      "surfaces": [
+        "page"
+      ],
+      "principle": "Headings do argumentative work",
+      "guidance": "Every heading advances the argument instead of labeling a container, and card grids do not fragment a line of thought. Rewrite each heading as the claim, question, or step it introduces.",
+      "severity": "S2",
+      "source": {
+        "file": "references/read.md",
+        "section": "Structure"
+      }
+    },
+    {
+      "id": "READ-03",
+      "modes": [
+        "read"
+      ],
+      "decision": "navigation",
+      "surfaces": [
+        "page"
+      ],
+      "principle": "Stable measure and explicit location",
+      "guidance": "Reading measure, semantic heading order, visible focus, readable contrast, and an explicit location in long content are preserved. Restore the measure and heading order, and add a persistent location indicator.",
+      "severity": "S2",
+      "source": {
+        "file": "references/read.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "READ-04",
+      "modes": [
+        "read"
+      ],
+      "decision": "disclosure",
+      "surfaces": [
+        "page"
+      ],
+      "principle": "Definitions at the point of need",
+      "guidance": "Definitions, examples, and references are reachable where comprehension needs them, without losing the reading position. Move the definition inline or into an adjacent reveal at first use.",
+      "severity": "S3",
+      "source": {
+        "file": "references/read.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "READ-05",
+      "modes": [
+        "read"
+      ],
+      "decision": "proof",
+      "surfaces": [
+        "page"
+      ],
+      "principle": "No invented sources or certainty",
+      "guidance": "Citations, results, endorsements, and stated certainty are real. Cite the real source, or state the uncertainty plainly.",
+      "severity": "S1",
+      "source": {
+        "file": "references/read.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "READ-06",
+      "modes": [
+        "read"
+      ],
+      "decision": "state",
+      "surfaces": [
+        "page"
+      ],
+      "principle": "Long-content states specified",
+      "guidance": "Loading, missing sources, outdated guidance, permission-limited sections, broken references, print, copy, and narrow-width reflow behavior are specified. Specify each of those states before compose.",
+      "severity": "S2",
+      "source": {
+        "file": "references/read.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "READ-07",
+      "modes": [
+        "read"
+      ],
+      "decision": "emphasis",
+      "surfaces": [
+        "page"
+      ],
+      "principle": "Retrieval genre outranks the direction",
+      "guidance": "Documentation and reference surfaces keep genre conventions — neutral high-contrast ground, persistent identity and navigation, density tuned for scanning — with the dealt direction expressed in accents and details rather than a re-theme. Restore neutral ground, persistent navigation and page identity, and scannable density; confine the direction to accents.",
+      "severity": "S2",
+      "source": {
+        "file": "references/read.md",
+        "section": "Compose and harden"
+      }
+    },
+    {
+      "id": "STATE-03",
+      "modes": [
+        "*"
+      ],
+      "decision": "state",
+      "principle": "Errors are actionable",
+      "guidance": "Error states say what failed, whether it is retryable, and the remedy. No raw codes alone. Rewrite error content with cause and remedy.",
+      "severity": "S1",
+      "source": {
+        "file": "references/states.md",
+        "section": "Quick audit checklist"
+      }
+    }
+  ]
+}

@@ -55,6 +55,24 @@ CONSIDERED-CONTRACT v1
 | Source lint |  |  |
 | Accessibility or responsive check |  |  |
 
+### Component and library evidence (include only when fit is relevant)
+
+Freeze the minimum selected facts the reviewer needs to assess component fit. Prefer copying the relevant facts below into this packet. An attached snapshot must be immutable and content-addressed (include its digest); a cache path or other mutable pointer alone is not frozen evidence. Do not attach the full cache or builder selection rationale. If component fit is irrelevant to this review, write `not applicable` and do not load the design-system reference.
+
+```text
+Package and resolved version/revision:
+Selected component(s):
+Documented purpose and relevant API/variants:
+Relevant constraints and accessibility behavior:
+Project-local wrapper/theme overrides affecting behavior:
+Provenance (source paths/URLs for these claims):
+Fingerprints (package/source, wrappers, and themes as relevant):
+Snapshot digest or immutable snapshot location, if used:
+Known coverage gaps, unknowns, and freshness limitations:
+```
+
+The reviewer evaluates fit independently against the frozen surface need and evidence. Library documentation informs the judgment; it does not require a recommendation to use that component. Mark unavailable or inconclusive evidence as a limitation, not as proof of fit or defect.
+
 ## Steelman (`EVAL-16`)
 
 The builder leaves this empty. The reviewer fills it after the structure pass: state the strongest structurally different alternative to the shipped hand, the case for it in its own best terms, and why the shipped structure still wins on this brief. If that case cannot be made, the alternative was never genuinely considered and the structure finding is at least S2.

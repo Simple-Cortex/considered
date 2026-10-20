@@ -5,8 +5,8 @@
     "--version"
   ],
   "exit_code": 0,
-  "stdout": "0.7.1\n",
+  "stdout": "0.8.0\n",
   "stderr": "",
-  "stdout_sha256": "902311c7bb38fa1658ff403def6158ee7378fe9d6e2e284fa1c38735c31bd30b",
+  "stdout_sha256": "a66780da23103beaf12432b418508966b31a2a3a787f9468a5b6cdaa8667c1ef",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

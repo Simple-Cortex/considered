@@ -27,6 +27,9 @@ jobs:
       - name: Validate rule manifests and decks
         run: npm run validate
 
+      - name: Check principles index is current
+        run: npm run check:principles
+
       - name: Run fixture tests
         run: npm test
 
@@ -35,6 +38,9 @@ jobs:
 
       - name: Verify packed artifact installs and runs
         run: npm run test:packed-artifact
+
+      - name: Run principles enforcement tests
+        run: npm run test:principles
 
       - name: Run cockpit report tests
         run: node tests/cockpit.test.mjs
@@ -126,6 +132,9 @@ jobs:
 
       - name: Build native binary for shadow compatibility
         run: cargo build -p considered-cli
+
+      - name: Run design-system dispatcher test (needs native binary)
+        run: npm run test:design-system-dispatch
 
       - name: Validate skill drift fixtures (needs native binary)
         run: npm run test:validate-skill

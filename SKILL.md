@@ -67,6 +67,7 @@ The one structured exception is the brief gate: `frame` scores the brief on the 
 | Tiers or focal point | `references/hierarchy.md` |
 | Actions | `references/actions.md` |
 | Tokens, components, or visual finish | `references/craft.md` |
+| Selecting or evaluating an installed library component when its fit matters | `references/design-system-evidence.md` |
 | Any interactive or rendered surface | `references/accessibility.md` |
 | States or resilience | `references/states.md` |
 | Review only | `references/critique.md` |
@@ -79,6 +80,7 @@ The one structured exception is the brief gate: `frame` scores the brief on the 
 - `structure` uses the assigned hand from `node <skill-dir>/bin/considered.mjs roll` when available. Do not choose from a shortlist.
 - The accessibility gates in `references/accessibility.md` are gates, not scores. An unverified gate is `blocked`, never `pass`.
 - `critique` receives a fresh reviewer packet, not the build reasoning.
+- Load design-system evidence only when choosing or evaluating an installed library component is relevant to the task; it is not required for audits where component fit does not affect the diagnosis or recommendation.
 - Guidance rules surface by reading the routed catalog at its stage; no command emits them, and none of them has an executable checker.
 - A host without scripts, structured questions, subagents, screenshots, or editable source uses the fallback in `references/workflow.md` and labels the resulting limitation.
 

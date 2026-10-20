@@ -211,6 +211,10 @@ fn build_command_index() -> BTreeMap<String, CommandEntry> {
             "Evaluate the ship gate from checker reports and review",
         ),
         ("inventory", "Report existing design system in a project"),
+        (
+            "design-system",
+            "Import, query, check freshness, and snapshot reusable component evidence",
+        ),
         ("roll", "Assign a structure and direction for a build"),
         (
             "validate",

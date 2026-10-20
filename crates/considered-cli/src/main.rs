@@ -1,7 +1,7 @@
 //! CLI entry point for the Considered Rust engine.
 //!
 //! Implements `considered-rs` subcommands: contract, gate, roll, validate,
-//! inventory, lint, status, verify, and context (experimental).
+//! inventory, lint, status, verify, context (experimental), and design-system.
 //! The CLI owns serialization, stderr, and exit-code mapping.
 
 use std::collections::BTreeMap;
@@ -50,6 +50,11 @@ enum OutputFormat {
 
 #[derive(Debug, Subcommand)]
 enum Commands {
+    /// Import and query a prepared design-system evidence cache.
+    DesignSystem {
+        #[command(subcommand)]
+        command: DesignSystemCommands,
+    },
     /// Validate a CONSIDERED-CONTRACT v1 block.
     Contract {
         /// Source file to validate.
@@ -196,6 +201,60 @@ enum Commands {
         /// Project root to build the manifest from (defaults to auto-detection).
         #[arg(long)]
         root: Option<PathBuf>,
+    },
+}
+
+#[derive(Debug, Subcommand)]
+enum DesignSystemCommands {
+    /// Import normalized evidence prepared by a host into the local cache.
+    Import {
+        /// Prepared source index JSON.
+        source_index: PathBuf,
+        /// Workspace whose project identity and local sources are checked.
+        #[arg(long, default_value = ".")]
+        workspace: PathBuf,
+    },
+    /// Retrieve bounded catalog or component evidence.
+    Query {
+        /// Cache index JSON.
+        index: PathBuf,
+        /// Optional catalog search text.
+        #[arg(long, default_value = "")]
+        query: String,
+        /// Component name (repeatable).
+        #[arg(long = "component")]
+        names: Vec<String>,
+        /// Comma-separated fields to include.
+        #[arg(long, value_delimiter = ',')]
+        fields: Vec<String>,
+        /// Maximum catalog entries.
+        #[arg(long, default_value_t = 10)]
+        limit: usize,
+        /// Maximum serialized response size in bytes.
+        #[arg(long, default_value_t = 8192)]
+        max_bytes: usize,
+        /// Include component detail documents.
+        #[arg(long)]
+        details: bool,
+    },
+    /// Check cached evidence against the current workspace.
+    Freshness {
+        /// Cache index JSON.
+        index: PathBuf,
+        /// Workspace to compare against.
+        #[arg(long, default_value = ".")]
+        workspace: PathBuf,
+    },
+    /// Write selected component evidence snapshots to a directory.
+    Snapshot {
+        /// Cache index JSON.
+        index: PathBuf,
+        /// Component name (repeatable).
+        #[arg(long = "component", required = true)]
+        names: Vec<String>,
+        /// Destination directory.
+        #[arg(long, required = true)]
+        output_dir: PathBuf,
     },
 }
 
@@ -1110,6 +1169,7 @@ fn main() {
             json,
             root,
         }) => run_roll(mode, key, gen, reroll, json, root),
+        Some(Commands::DesignSystem { command }) => run_design_system(command),
         Some(Commands::Validate { root }) => run_validate(root),
         Some(Commands::ValidateSkill { json, root }) => run_validate_skill(json, root),
         Some(Commands::Inventory { path, json, format }) => {
@@ -1156,6 +1216,61 @@ fn main() {
     };
 
     process::exit(exit_code);
+}
+
+fn run_design_system(command: DesignSystemCommands) -> i32 {
+    use considered_core::design_system::{self, QueryOptions};
+
+    let result = match command {
+        DesignSystemCommands::Import {
+            source_index,
+            workspace,
+        } => design_system::import_cache(&source_index, &workspace),
+        DesignSystemCommands::Query {
+            index,
+            query,
+            names,
+            fields,
+            limit,
+            max_bytes,
+            details,
+        } => design_system::query(
+            &index,
+            &QueryOptions {
+                query,
+                names,
+                fields,
+                limit,
+                max_bytes,
+                details,
+            },
+        ),
+        DesignSystemCommands::Freshness { index, workspace } => {
+            design_system::freshness(&index, &workspace)
+        }
+        DesignSystemCommands::Snapshot {
+            index,
+            names,
+            output_dir,
+        } => design_system::snapshot(&index, &names, &output_dir),
+    };
+
+    match result {
+        Ok(value) => match serde_json::to_string(&value) {
+            Ok(json) => {
+                println!("{json}");
+                0
+            }
+            Err(error) => {
+                eprintln!("failed to serialize design-system response: {error}");
+                2
+            }
+        },
+        Err(error) => {
+            eprintln!("{error}");
+            2
+        }
+    }
 }
 
 fn run_roll(
@@ -2050,7 +2165,7 @@ mod tests {
     #[test]
     fn version_matches_package() {
         let version = env!("CARGO_PKG_VERSION");
-        assert_eq!(version, "0.7.1");
+        assert_eq!(version, "0.8.0");
     }
 
     #[test]

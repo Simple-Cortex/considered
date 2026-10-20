@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "name": "",
+    "resolved_version": "",
+    "source": ""
+  },
+  "indexed_at": "",
+  "coverage": {
+    "status": "partial",
+    "scope": "",
+    "evidence": []
+  },
+  "source_fingerprints": [
+    {
+      "kind": "library",
+      "path": "",
+      "fingerprint": "",
+      "observed_at": ""
+    }
+  ],
+  "components": [
+    {
+      "name": "",
+      "purpose": "",
+      "detail_path": "components/<component-name>.json",
+      "coverage_status": "unreviewed",
+      "freshness": {
+        "status": "unknown",
+        "checked_at": "",
+        "source_fingerprints": []
+      }
+    }
+  ]
+}

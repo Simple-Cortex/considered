@@ -15,7 +15,10 @@ Stage `compose` of the Considered chain. The root skill (`../../SKILL.md`) route
 
 1. `../../references/workflow.md` §4 `compose`.
 2. The chain: `PRODUCT.md`, `FRAME.md`, `STRUCTURE.md`, `CONTRACT.md`, target source.
-3. Only the routed mode catalog — `../../references/persuade.md`, `dense.md`, `forms.md`, `read.md`, or `experience.md` — plus `../../references/craft.md`, `../../references/accessibility.md`, and `../../references/states.md` when triggered.
+3. `../../assets/principles-index.json`, read once and filtered to the current mode (`modes` contains it or `*`).
+4. Only the routed mode catalog — `../../references/persuade.md`, `dense.md`, `forms.md`, `read.md`, or `experience.md` — plus `../../references/craft.md`, `../../references/accessibility.md`, and `../../references/states.md` when triggered.
+
+When selecting or implementing an installed library component, also use `../../references/design-system-evidence.md`: inspect the small cache index, then verify only the relevant component detail, resolved version, supported API, intended use, and constraints before implementation. Do not load the whole component cache. If no library component is being selected or implemented, this reference is not required.
 
 Do not load reviewer catalogs while building. Checks run as evidence, not as mid-build design instructions.
 

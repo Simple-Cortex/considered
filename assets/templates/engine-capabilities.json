@@ -12,6 +12,7 @@
     "status": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
     "verify": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
     "context": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
+    "design-system": {"node": false, "rust": true, "nativeDelegation": true, "nodeFallback": false, "manualFallback": true, "shadowParity": "not-applicable"},
     "render": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},
     "test": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},
     "eval": {"node": true, "rust": false, "nativeDelegation": false, "nodeFallback": true, "manualFallback": false, "shadowParity": "not-applicable"},

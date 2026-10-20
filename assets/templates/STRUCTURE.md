@@ -85,6 +85,24 @@ DELETED:    <item> - <reason>
 ROLL:       <structure ids>, <direction id>, cns-________/0
 ```
 
+## Principles Applied
+
+Record only the principles that drove a decision on this surface, not every principle in the active set. The review packet includes this file but not build rationale, so this section is the only place the reviewer sees them. For each one:
+- Principle ID (e.g., PERS-07, HIER-13)
+- Decision context (what you were deciding)
+- How it was applied (specific treatment, not a restatement of the principle)
+
+Example:
+
+### Pricing Section
+- PERS-07 (pricing exposes the real decision): Led the comparison with seat limit and renewal terms, the criteria that change plan choice. Stated annual renewal price and cancellation terms beside each tier; removed the unevidenced "Most popular" badge.
+- PERS-09 (the price is the P0 value): Set each tier price in display type above its label; every tier has a working "Start" action.
+
+### Hierarchy
+- HIER-13 (adjacent tiers separate decisively): P1 section headings 24px/600 against P2 body 16px/400, a full scale step apart in size and weight.
+
+If you did not consult the principles index, say so and why.
+
 ## Structure exit
 
 - [ ] Every zone answers ranked questions and has 3 to 7 distinct elements.
